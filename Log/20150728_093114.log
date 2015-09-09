@@ -1,0 +1,1 @@
+2015-07-28 09:31:15 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root", errcode: 2003, error: Can't connect to MySQL server on 'localhost' (10061)

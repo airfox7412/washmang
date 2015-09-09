@@ -1,0 +1,492 @@
+2015-08-21 13:26:14 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'compy'
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.compy LIKE '%'
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SELECT * FROM .cr
+
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+
+2015-08-21 13:26:14 cat: Execute, proto: mysql-5, msg: INSERT INTO dailymonitor (ondt) VALUES ('104/08/21 13:26:14')
+2015-08-21 13:26:18 cat: Execute, proto: mysql-5, msg: SELECT a.crcode, a.vpcode, max(a.vpedate) as edate, b.crmoney FROM vip as a
+LEFT JOIN cr as b ON a.crcode = b.crcode
+WHERE b.crmoney>0
+GROUP BY a.crcode
+
+2015-08-21 13:26:18 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-08-21 13:26:18 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-08-21 13:26:23 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:23 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crmark='Y'
+ORDER BY crcode
+
+2015-08-21 13:26:23 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-21 13:26:23 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+AND wiplace<>'' AND wiplace<>'¥I²M'
+
+2015-08-21 13:26:23 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-21 13:26:23 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-21 13:26:23 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-21 13:26:24 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crcode='00001'
+AND crmark='Y'
+
+2015-08-21 13:26:25 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: DELETE FROM pross_log
+WHERE pross_date < '104/07/02'
+
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SELECT * FROM pross_log
+
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'pross_log'
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.pross_log LIKE '%'
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.pross_log (sn,crcode,pross,pross_date,pross_time,sfname) VALUES (NULL,'00001','','104/08/21','13:26:25',NULL)
+2015-08-21 13:26:25 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:25 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:26 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crmark='Y'
+
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE widate BETWEEN '099/09/16' AND '104/08/21'
+AND wiodate=''
+ORDER BY widate DESC, wicode DESC, wisno DESC
+
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-21 13:26:26 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027618'
+
+2015-08-21 13:26:31 cat: Execute, proto: mysql-5, msg: select * from wio
+WHERE wisno like '005972%'
+order by widate desc, wicode desc, wisno desc
+
+2015-08-21 13:26:31 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode=''
+
+2015-08-21 13:26:36 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-08-21 13:26:36 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crcode=''
+AND crmark='Y'
+
+2015-08-21 13:26:36 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode=''
+AND wiodate=''
+
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crmark='Y'
+ORDER BY crcode
+
+2015-08-21 13:26:39 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+AND wiplace<>'' AND wiplace<>'¥I²M'
+
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+AND wiplace<>'' AND wiplace<>'¥I²M'
+
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-21 13:26:39 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crcode='00001'
+AND crmark='Y'
+
+2015-08-21 13:26:41 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-08-21 13:26:41 cat: Execute, proto: mysql-5, msg: DELETE FROM pross_log
+WHERE pross_date < '104/07/02'
+
+2015-08-21 13:26:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM pross_log
+
+2015-08-21 13:26:41 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.pross_log (sn,crcode,pross,pross_date,pross_time,sfname) VALUES (NULL,'00001','','104/08/21','13:26:41',NULL)
+2015-08-21 13:26:41 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-08-21 13:26:41 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:42 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crmark='Y'
+
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE widate BETWEEN '099/09/16' AND '104/08/21'
+AND wiodate=''
+ORDER BY widate DESC, wicode DESC, wisno DESC
+
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-21 13:26:42 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027618'
+
+2015-08-21 13:26:43 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027617'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027616'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027616'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027616'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027616'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027616'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027615'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027614'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027613'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027612'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027611'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027610'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027610'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027609'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027609'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='027608'
+
+2015-08-21 13:26:49 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014597'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014597'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014597'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014597'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014597'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014957'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014957'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014958'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='014995'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015096'
+
+2015-08-21 13:26:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015096'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015096'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015096'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015336'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015336'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='015336'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='016555'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='016555'
+
+2015-08-21 13:26:52 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='017207'
+
+2015-08-21 13:26:53 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='019223'
+
+2015-08-21 13:26:53 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='019670'
+
+2015-08-21 13:26:55 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='019749'
+
+2015-08-21 13:26:56 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as wioquty,sum(wisum)as wiosum FROM wio
+WHERE wicode='019670'
+

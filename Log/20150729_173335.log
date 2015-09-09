@@ -1,0 +1,104 @@
+2015-07-29 17:33:35 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'compy'
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.compy LIKE '%'
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SELECT * FROM .cr
+
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+
+2015-07-29 17:33:35 cat: Execute, proto: mysql-5, msg: INSERT INTO dailymonitor (ondt) VALUES ('104/07/29 17:33:35')
+2015-07-29 17:33:40 cat: Execute, proto: mysql-5, msg: SELECT a.crcode, a.vpcode, max(a.vpedate) as edate, b.crmoney FROM vip as a
+LEFT JOIN cr as b ON a.crcode = b.crcode
+WHERE b.crmoney>0
+GROUP BY a.crcode
+
+2015-07-29 17:33:40 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-07-29 17:33:40 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM employee
+WHERE eid=''
+
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'employee'
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.employee LIKE '%'
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+
+2015-07-29 17:33:41 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE widate='1'
+ORDER BY wicode, wisno
+
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-07-29 17:33:41 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-29 17:33:43 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as sumquty FROM wio
+WHERE widate between '104/07/29' and '104/07/29'
+
+2015-07-29 17:33:43 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE widate between '104/07/29' and '104/07/29'
+ORDER BY wicode, wisno
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: DELETE FROM sumname
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT winame,wiwash,wiwamo FROM wio
+WHERE widate between '104/07/29' and '104/07/29'
+AND wiwash in ('00')
+GROUP BY winame,wiwash
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT * FROM sumname
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'sumname'
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.sumname LIKE '%'
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT * FROM wo
+WHERE widate between '104/07/29' AND '104/07/29'
+AND binary fritem in ('V','I','O','Q','X','x')
+AND (worealmo<>0 OR wocntmo<>0)
+ORDER BY widate,witime
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wo'
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wo LIKE '%'
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT sum(worealmo)as trealmo FROM wo
+WHERE binary fritem in ('V','W','X')
+AND widate between '104/07/29' AND '104/07/29'
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT sum(worealmo)as trealmo,sum(wocntmo)as tcntmo FROM wo
+WHERE binary fritem in ('I','E','Q','O','x')
+AND widate between '104/07/29' AND '104/07/29'
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT sum(frgetmo)as tgetmo FROM wo
+WHERE binary fritem in ('P','G')
+AND widate between '104/07/29' AND '104/07/29'
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT sum(wisum)as tsum FROM wio
+WHERE wiodate between '104/07/29' AND '104/07/29'
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT sum(wiwamo*wiquty)as twamo, sum(wisum)as tsum, sum(wiquty)as tquty, sum(wiexmo)as texmo FROM wio
+WHERE widate between '104/07/29' AND '104/07/29'
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE widate between '104/07/29' and '104/07/29'
+AND wiexkind<>''
+ORDER BY wicode, wisno
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT * FROM wo
+WHERE widate between '104/07/29' and '104/07/29'
+AND ((fritem='E')or(fritem='D')or(fritem='Z')or(fritem='C')or(fritem='x'))
+ORDER BY widate, witime, wicode, wisno
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio_bak
+WHERE indate between '104/07/29' and '104/07/29'
+
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio_bak'
+2015-07-29 17:33:49 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio_bak LIKE '%'
+2015-07-29 17:35:24 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-07-29 17:35:27 cat: Execute, proto: mysql-5, msg: SELECT * FROM dailymonitor 
+ORDER BY sn DESC
+
+2015-07-29 17:35:27 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'dailymonitor'
+2015-07-29 17:35:27 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.dailymonitor LIKE '%'
+2015-07-29 17:35:27 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.dailymonitor
+2015-07-29 17:35:27 cat: Execute, proto: mysql-5, msg: UPDATE washshop.dailymonitor SET offdt='104/07/29 17:35:27' WHERE sn=360

@@ -1,0 +1,570 @@
+2015-07-28 19:38:20 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'compy'
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.compy LIKE '%'
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SELECT * FROM .cr
+
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+
+2015-07-28 19:38:20 cat: Execute, proto: mysql-5, msg: INSERT INTO dailymonitor (ondt) VALUES ('104/07/28 19:38:20')
+2015-07-28 19:38:23 cat: Execute, proto: mysql-5, msg: SELECT a.crcode, a.vpcode, max(a.vpedate) as edate, b.crmoney FROM vip as a
+LEFT JOIN cr as b ON a.crcode = b.crcode
+WHERE b.crmoney>0
+GROUP BY a.crcode
+
+2015-07-28 19:38:23 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-07-28 19:38:23 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crmark='Y'
+ORDER BY crcode
+
+2015-07-28 19:38:24 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+AND wiplace<>'' AND wiplace<>'付清'
+
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-07-28 19:38:24 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:26 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crcode='00001'
+AND crmark='Y'
+
+2015-07-28 19:38:26 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-07-28 19:38:26 cat: Execute, proto: mysql-5, msg: DELETE FROM pross_log
+WHERE pross_date < '104/06/08'
+
+2015-07-28 19:38:26 cat: Execute, proto: mysql-5, msg: SELECT * FROM pross_log
+
+2015-07-28 19:38:26 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'pross_log'
+2015-07-28 19:38:26 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.pross_log LIKE '%'
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.pross_log (sn,crcode,pross,pross_date,pross_time,sfname) VALUES (NULL,'00001','','104/07/28','19:38:27',NULL)
+2015-07-28 19:38:27 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:27 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: DELETE FROM pross_log
+WHERE pross_date < '104/06/08'
+
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SELECT * FROM pross_log
+
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.pross_log (sn,crcode,pross,pross_date,pross_time,sfname) VALUES (NULL,'00001','收件','104/07/28','19:38:28',NULL)
+2015-07-28 19:38:28 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio_temp
+WHERE crcode='00001'
+
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio_temp'
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio_temp LIKE '%'
+2015-07-28 19:38:28 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio_temp
+WHERE crcode='00001'
+AND wicode='027618'
+ORDER BY wisno DESC
+
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SELECT * FROM waitem
+ORDER BY wano3
+
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'waitem'
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.waitem LIKE '%'
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SELECT * FROM wastyle
+ORDER BY wano2
+
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wastyle'
+2015-07-28 19:38:30 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wastyle LIKE '%'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SELECT * FROM wawash
+ORDER BY wano6
+
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wawash'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wawash LIKE '%'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SELECT * FROM waacc
+ORDER BY wano4
+
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'waacc'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.waacc LIKE '%'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SELECT * FROM wamemo
+ORDER BY wano5
+
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wamemo'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wamemo LIKE '%'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SELECT * FROM waexkind
+ORDER BY wano7
+
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'waexkind'
+2015-07-28 19:38:31 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.waexkind LIKE '%'
+2015-07-28 19:38:38 cat: Execute, proto: mysql-5, msg: SELECT * FROM wawash
+WHERE wawash='會員'
+
+2015-07-28 19:38:38 cat: Execute, proto: mysql-5, msg: SELECT * FROM wastyle
+WHERE wastyle='T恤'
+
+2015-07-28 19:38:38 cat: Execute, proto: mysql-5, msg: select * from wio
+where crcode='00001' and winame='T恤' and wiwash='會員'
+order by widate desc
+
+2015-07-28 19:38:38 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-07-28 19:38:38 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-07-28 19:38:46 cat: Execute, proto: mysql-5, msg: SELECT '',0,'','','','','','',''
+2015-07-28 19:38:46 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.wio_temp (sno,wicode,wisno,crcode,wiitem,winame,wiwash,wiacc,wimemo,wiwamo,wiexkind,wiexmo,wiquty,wisum,wiurge,widay,wimdate,wiodate,wiotime,wiplace,widate,witime,wimark,indate,mark,tno,pps,picture) VALUES (NULL,'027618','000014','00001','粉紅','T恤','會員','','',38,'',0,2,76,'N','','104/08/05','',NULL,'','104/07/28','19:38:28','','','','01',0,'')
+2015-07-28 19:38:46 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio_temp
+WHERE crcode='00001'
+AND wicode='027618'
+ORDER BY wisno DESC
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio_temp
+WHERE wicode='027618'
+AND crcode='00001'
+ORDER BY wisno
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.wio (wicode,wisno,crcode,wiitem,winame,wiwash,wiacc,wimemo,wiwamo,wiexkind,wiexmo,wiquty,wisum,wiurge,widay,wimdate,wiodate,wiotime,wiplace,widate,witime,wimark,indate,mark,wisel,pps,picture) VALUES ('027618','000014','00001','粉紅','T恤','會員','','',38,'',0,2,76,'N','','104/08/05','',NULL,'','104/07/28','19:38:28','','','',NULL,0,'')
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.wio_temp
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: DELETE FROM washshop.wio_temp WHERE sno=1331
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.compy
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: UPDATE washshop.compy SET cpwino=27618,cpwisno=14 WHERE cpname='洗衣達人乾洗名店中和店'
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT * FROM wo WHERE wicode='027618'
+AND crcode='00001'
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wo'
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wo LIKE '%'
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.wo (wiosn,crcode,wicode,wisno,wototal,woptotal,worealmo,frgetmo,wocntmo,wopsen,widate,witime,sfname,fritem) VALUES (NULL,'00001','027618',NULL,-144,-68,0,76,0,0,'104/07/28','19:38:48','','I')
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.cr
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: UPDATE washshop.cr SET crmoney=-144,crmoney1=-68 WHERE crcode='00001'
+2015-07-28 19:38:48 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crcode='00001'
+AND crmark='Y'
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-07-28 19:38:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: DELETE FROM pross_log
+WHERE pross_date < '104/06/08'
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM pross_log
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.pross_log (sn,crcode,pross,pross_date,pross_time,sfname) VALUES (NULL,'00001','取件','104/07/28','19:38:51',NULL)
+2015-07-28 19:38:51 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE crcode='00001'
+AND (wiodate='' OR wimemo like '未付%')
+ORDER BY wicode,wisno
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027609'
+AND (wiodate='')
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027609'
+
+2015-07-28 19:38:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-07-28 19:38:53 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:38:53 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+AND (wiodate='')
+
+2015-07-28 19:38:53 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+
+2015-07-28 19:39:02 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:05 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.wio
+2015-07-28 19:39:05 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:39:05',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel IS NULL AND pps=0 AND picture=''
+2015-07-28 19:39:05 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:05 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:39:05' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:39:05 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:10 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:39:10 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027617'
+AND (wiodate='')
+
+2015-07-28 19:39:10 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027617'
+
+2015-07-28 19:39:11 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:39:11 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+AND (wiodate='')
+
+2015-07-28 19:39:11 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+
+2015-07-28 19:39:12 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:16 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:39:16',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:39:16 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:16 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:39:16' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:39:16 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:19 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:20 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:39:20',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:39:20 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:20 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:39:20' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:39:20 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:21 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:39:21 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027617'
+AND (wiodate='')
+
+2015-07-28 19:39:21 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027617'
+
+2015-07-28 19:39:22 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:39:22',wisel='S' WHERE wicode='027617' AND wisno='000013' AND crcode='00001' AND wiitem='天藍點' AND winame='女襯衫' AND wiwash='會員' AND wiacc='一套四' AND wimemo='附袋子' AND wiwamo=68 AND wiexkind='' AND wiexmo=0 AND wiquty=1 AND wisum=68 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:36:01' AND wimark='' AND indate='' AND mark='' AND wisel IS NULL AND pps=0 AND picture=''
+2015-07-28 19:39:22 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:39:22 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+AND (wiodate='')
+
+2015-07-28 19:39:22 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+
+2015-07-28 19:39:22 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:23 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:39:23 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027617'
+AND (wiodate='')
+
+2015-07-28 19:39:23 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027617'
+
+2015-07-28 19:39:24 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027617' AND wisno='000013' AND crcode='00001' AND wiitem='天藍點' AND winame='女襯衫' AND wiwash='會員' AND wiacc='一套四' AND wimemo='附袋子' AND wiwamo=68 AND wiexkind='' AND wiexmo=0 AND wiquty=1 AND wisum=68 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:39:22' AND wiplace='' AND widate='104/07/28' AND witime='19:36:01' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:39:24 cat: Execute, proto: mysql-5, msg: SELECT wicode,crcode,wiodate FROM wio
+WHERE crcode='00001'
+AND ((wiodate='')OR(wimemo like '未付%'))
+GROUP BY wicode
+
+2015-07-28 19:39:24 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+AND (wiodate='')
+
+2015-07-28 19:39:24 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as quty, sum(wisum)as sum FROM wio
+WHERE wicode='027618'
+
+2015-07-28 19:39:24 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:25 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:26 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:39:26',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:39:26 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:26 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:39:26' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:39:26 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:39:56 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:40:39 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:40:39',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:40:39 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:40:54 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:40:39' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:40:54 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:40:56 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:15 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:15',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:15 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:29 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:15' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:29 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:30 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:31 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:31',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:31 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:40 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:31' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:40 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:41 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:42 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:42',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:42 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:42 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:42' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:42 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:43 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:44 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:44',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:44 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:44' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:44 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:45 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:45',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:45 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:45' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:46 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:47 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:47',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:47 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:47' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:47 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:48 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:48',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:48 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:48' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:48 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:49 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:49 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:49',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:49 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:49 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:49' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:49 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:50 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:50 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='104/07/28',wiotime='19:41:50',wisel='S' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='' AND wiotime IS NULL AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='' AND pps=0 AND picture=''
+2015-07-28 19:41:50 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:51 cat: Execute, proto: mysql-5, msg: UPDATE washshop.wio SET wiodate='',wiotime=NULL,wisel='' WHERE wicode='027618' AND wisno='000014' AND crcode='00001' AND wiitem='粉紅' AND winame='T恤' AND wiwash='會員' AND wiacc='' AND wimemo='' AND wiwamo=38 AND wiexkind='' AND wiexmo=0 AND wiquty=2 AND wisum=76 AND wiurge='N' AND widay='' AND wimdate='104/08/05' AND wiodate='104/07/28' AND wiotime='19:41:50' AND wiplace='' AND widate='104/07/28' AND witime='19:38:28' AND wimark='' AND indate='' AND mark='' AND wisel='S' AND pps=0 AND picture=''
+2015-07-28 19:41:51 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty, sum(wisum)as s_sum FROM wio
+WHERE crcode='00001'
+AND wiodate='104/07/28'
+AND wisel='S'
+
+2015-07-28 19:41:59 cat: Execute, proto: mysql-5, msg: UPDATE wio
+SET wisel=''
+WHERE crcode='00001' AND wisel='S'
+
+2015-07-28 19:41:59 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-07-28 19:41:59 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-07-28 19:42:01 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-07-28 19:42:11 cat: Execute, proto: mysql-5, msg: SELECT * FROM dailymonitor 
+ORDER BY sn DESC
+
+2015-07-28 19:42:11 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'dailymonitor'
+2015-07-28 19:42:11 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.dailymonitor LIKE '%'
+2015-07-28 19:42:11 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.dailymonitor
+2015-07-28 19:42:11 cat: Execute, proto: mysql-5, msg: UPDATE washshop.dailymonitor SET offdt='104/07/28 19:42:11' WHERE sn=356

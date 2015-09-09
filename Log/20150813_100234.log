@@ -1,0 +1,110 @@
+2015-08-13 10:02:34 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'compy'
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.compy LIKE '%'
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SELECT * FROM .cr
+
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+
+2015-08-13 10:02:34 cat: Execute, proto: mysql-5, msg: INSERT INTO dailymonitor (ondt) VALUES ('104/08/13 10:02:34')
+2015-08-13 10:02:37 cat: Execute, proto: mysql-5, msg: SELECT a.crcode, a.vpcode, max(a.vpedate) as edate, b.crmoney FROM vip as a
+LEFT JOIN cr as b ON a.crcode = b.crcode
+WHERE b.crmoney>0
+GROUP BY a.crcode
+
+2015-08-13 10:02:37 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-08-13 10:02:37 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crmark='Y'
+ORDER BY crcode
+
+2015-08-13 10:02:42 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+AND wiplace<>'' AND wiplace<>'¥I²M'
+
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty)as s_quty,wiodate,wiplace FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-13 10:02:42 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+WHERE crcode='00001'
+AND crmark='Y'
+
+2015-08-13 10:02:45 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: DELETE FROM pross_log
+WHERE pross_date < '104/06/24'
+
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SELECT * FROM pross_log
+
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'pross_log'
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.pross_log LIKE '%'
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: INSERT INTO washshop.pross_log (sn,crcode,pross,pross_date,pross_time,sfname) VALUES (NULL,'00001','','104/08/13','10:02:45',NULL)
+2015-08-13 10:02:45 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SELECT crcode,vpsdate,vpedate FROM vip
+WHERE crcode='00001'
+ORDER BY vpsdate DESC
+
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SELECT sum(wiquty) as s_quty FROM wio
+WHERE crcode='00001'
+AND wiodate=''
+
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:45 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:47 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE widate between '104/07/24' AND '104/08/13'
+GROUP BY wicode
+ORDER BY wicode DESC
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'wio'
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.wio LIKE '%'
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: select sum(wiquty)as tquty from wio
+where wicode='027618'
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: select sum(wiquty)as tquty from wio
+where wicode='027618'
+and wiwash='°®¬~'
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: select sum(wiquty)as tquty from wio
+where wicode='027618'
+and wiwash='¤ô¬~'
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: select sum(wiquty)as tquty from wio
+where wicode='027618'
+and ((wiwash='¿S¦ç')or(wiwash='¾ã¿S'))
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: SELECT * FROM wio
+WHERE wicode='027618'
+AND widate between '104/08/10' AND '104/08/13'
+ORDER BY wisno
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:47 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-08-13 10:02:51 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-08-13 10:02:53 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-08-13 10:02:56 cat: Execute, proto: mysql-5, msg: SELECT * FROM dailymonitor 
+ORDER BY sn DESC
+
+2015-08-13 10:02:56 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'dailymonitor'
+2015-08-13 10:02:56 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.dailymonitor LIKE '%'
+2015-08-13 10:02:56 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.dailymonitor
+2015-08-13 10:02:56 cat: Execute, proto: mysql-5, msg: UPDATE washshop.dailymonitor SET offdt='104/08/13 10:02:56' WHERE sn=368

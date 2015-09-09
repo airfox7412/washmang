@@ -1,0 +1,34 @@
+2015-09-01 16:39:51 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'compy'
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.compy LIKE '%'
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM .cr
+
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'cr'
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.cr LIKE '%'
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: SELECT * FROM cr
+
+2015-09-01 16:39:51 cat: Execute, proto: mysql-5, msg: INSERT INTO dailymonitor (ondt) VALUES ('104/09/01 16:39:51')
+2015-09-01 16:39:53 cat: Execute, proto: mysql-5, msg: SELECT a.crcode, a.vpcode, max(a.vpedate) as edate, b.crmoney FROM vip as a
+LEFT JOIN cr as b ON a.crcode = b.crcode
+WHERE b.crmoney>0
+GROUP BY a.crcode
+
+2015-09-01 16:39:53 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'vip'
+2015-09-01 16:39:53 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.vip LIKE '%'
+2015-09-01 16:39:56 cat: Connect, proto: mysql-5, msg: CONNECT TO "washshop" AS USER "root"
+2015-09-01 16:39:56 cat: Execute, proto: mysql-5, msg: SELECT * FROM compy
+
+2015-09-01 16:39:56 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'compy'
+2015-09-01 16:39:56 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.compy LIKE '%'
+2015-09-01 16:40:06 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.compy
+2015-09-01 16:40:06 cat: Execute, proto: mysql-5, msg: UPDATE washshop.compy SET cpwisno=15 WHERE cpname='洗衣達人乾洗名店中和店'
+2015-09-01 16:40:10 cat: Disconnect, proto: mysql-5, msg: DISCONNECT FROM "washshop"
+2015-09-01 16:40:13 cat: Execute, proto: mysql-5, msg: SELECT * FROM dailymonitor 
+ORDER BY sn DESC
+
+2015-09-01 16:40:13 cat: Execute, proto: mysql-5, msg: SHOW TABLES FROM washshop LIKE 'dailymonitor'
+2015-09-01 16:40:13 cat: Execute, proto: mysql-5, msg: SHOW COLUMNS FROM washshop.dailymonitor LIKE '%'
+2015-09-01 16:40:13 cat: Execute, proto: mysql-5, msg: SHOW KEYS FROM washshop.dailymonitor
+2015-09-01 16:40:13 cat: Execute, proto: mysql-5, msg: UPDATE washshop.dailymonitor SET offdt='104/09/01 16:40:13' WHERE sn=381
