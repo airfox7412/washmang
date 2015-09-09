@@ -1,0 +1,122 @@
+object LoginForm: TLoginForm
+  Left = 192
+  Top = 127
+  Width = 307
+  Height = 187
+  Caption = '帳號登入'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object RzPanel1: TRzPanel
+    Left = 0
+    Top = 0
+    Width = 291
+    Height = 148
+    Align = alClient
+    Color = 12845056
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -21
+    Font.Name = '細明體'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    object Label6: TLabel
+      Left = 14
+      Top = 19
+      Width = 88
+      Height = 21
+      Caption = '員工帳號'
+    end
+    object Label2: TLabel
+      Left = 14
+      Top = 59
+      Width = 88
+      Height = 21
+      Caption = '員工密碼'
+    end
+    object Edit_ID: TEdit
+      Left = 104
+      Top = 16
+      Width = 169
+      Height = 29
+      Color = clNavy
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -21
+      Font.Name = '細明體'
+      Font.Style = []
+      ImeMode = imSAlpha
+      MaxLength = 20
+      ParentFont = False
+      TabOrder = 0
+      OnKeyDown = Edit_IDKeyDown
+    end
+    object Edit_PW: TEdit
+      Left = 104
+      Top = 56
+      Width = 169
+      Height = 29
+      Color = clNavy
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -21
+      Font.Name = '細明體'
+      Font.Style = []
+      ImeMode = imSAlpha
+      MaxLength = 20
+      ParentFont = False
+      PasswordChar = '*'
+      TabOrder = 1
+      OnKeyDown = Edit_PWKeyDown
+    end
+    object BitBtn1: TBitBtn
+      Left = 104
+      Top = 104
+      Width = 75
+      Height = 25
+      Caption = '登入'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -21
+      Font.Name = '細明體'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnClick = BitBtn1Click
+    end
+  end
+  object ZReadOnlyQuery1: TZReadOnlyQuery
+    Connection = ZConnection1
+    Params = <>
+    Left = 48
+    Top = 96
+  end
+  object ZConnection1: TZConnection
+    Protocol = 'mysql-5'
+    HostName = 'localhost'
+    Database = 'washshop'
+    User = 'root'
+    Password = 'root'
+    Catalog = 'washshop'
+    DesignConnection = True
+    SQLHourGlass = True
+    Left = 16
+    Top = 96
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Params = <>
+    Left = 80
+    Top = 96
+  end
+end
