@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ZConnection, Db, ZAbstractRODataset, ZAbstractDataset,
   ZAbstractTable, ZDataset, frxClass, frxPreview, frxDBSet, ExtCtrls,
-  Buttons, ActnList, RzButton, RzPanel, Mask, RzEdit, RzCmboBx;
+  Buttons, ActnList, RzButton, RzPanel, Mask, RzEdit, RzCmboBx,
+  frxExportXLS;
 
 type
   TPreviewForm = class(TForm)
@@ -27,8 +28,11 @@ type
     ActionF9: TAction;
     ActionEsc: TAction;
     RzComboBox1: TRzComboBox;
-    RzToolbarButton1: TRzToolbarButton;
+    RzToolbarButtonF10: TRzToolbarButton;
     ActionF10: TAction;
+    frxXLSExport1: TfrxXLSExport;
+    ActionF8: TAction;
+    RzToolbarButtonF8: TRzToolbarButton;
     procedure ActionPgDnExecute(Sender: TObject);
     procedure ActionHomeExecute(Sender: TObject);
     procedure ActionPgUpExecute(Sender: TObject);
@@ -39,6 +43,7 @@ type
     procedure frxPreview1PageChanged(Sender: TfrxPreview; PageNo: Integer);
     procedure RzComboBox1Change(Sender: TObject);
     procedure ActionF10Execute(Sender: TObject);
+    procedure ActionF8Execute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -135,6 +140,12 @@ end;
 procedure TPreviewForm.ActionF10Execute(Sender: TObject);
 begin
   frxPreview1.Cancel;
+end;
+
+procedure TPreviewForm.ActionF8Execute(Sender: TObject);
+begin
+  if pos('л╚дс',frxXLSExport1.FileName)<>0 then
+    frxPreview1.Export(frxXLSExport1);
 end;
 
 end.

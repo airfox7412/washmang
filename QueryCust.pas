@@ -119,7 +119,7 @@ type
 var
   QueryCustForm: TQueryCustForm;
   fkey, crcode, fname, AdrStr: String;
-  scflag: Boolean;
+  scflag, hotkey: Boolean;
   pint, qint: Integer;
   FBCode: String;
 
@@ -484,6 +484,7 @@ begin
       Button1.Caption:='全部'
     else
       Button1.Caption:='未取';
+    hotkey:=false;
     //end;
 end;
 
@@ -721,6 +722,7 @@ procedure TQueryCustForm.Action_F8Execute(Sender: TObject);
 begin
   if (SearchEdit.Focused) then //+
      begin
+     hotkey:=true;
      getadrs();
      SearchEdit.SelStart:=Length(SearchEdit.Text);
      end;
@@ -730,6 +732,7 @@ procedure TQueryCustForm.Action_F9Execute(Sender: TObject);
 begin
   if (SearchEdit.Focused) then //+
      begin
+     hotkey:=true;
      getname();
      SearchEdit.SelStart:=Length(SearchEdit.Text);
      end;
@@ -854,7 +857,7 @@ procedure TQueryCustForm.SearchEditKeyUp(Sender: TObject; var Key: Word;
 begin
   if Key=VK_Return then
     begin
-    if copy(FBCode,Length(FBCode)-2,3)<>'ESC' then
+    if (copy(FBCode,Length(FBCode)-2,3)<>'ESC')and(hotkey=false) then
       begin
       if (pint=0) then
         begin
@@ -873,12 +876,15 @@ begin
       RzToolbarButtonF8.Visible:=False;
       RzToolbarButtonF9.Visible:=False;
       FBCode:='';
+      hotkey:=false;
       end
-    else
+    else if hotkey=false then
       begin
       SearchEdit.Text:='';
       FBCode:='';
-      end;
+      end
+    else
+      hotkey:=false;
     end;
   Key:=0;
 end;

@@ -272,7 +272,6 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure wwDBGrid2Enter(Sender: TObject);
-    procedure wwDBGrid1Enter(Sender: TObject);
     procedure wwDBGrid2CalcCellColors(Sender: TObject; Field: TField;
       State: TGridDrawState; Highlight: Boolean; AFont: TFont;
       ABrush: TBrush);
@@ -317,8 +316,9 @@ type
     procedure ProcessGet(cnt: String);
     procedure SigGet(index: integer);
     procedure PrintF9(index: Integer);
-    procedure SP300(flag: Boolean);
     Function Setpflag():Boolean;
+    procedure SP300(flag: Boolean);
+    procedure TT027_50(flag: Boolean);
   end;
 
 var
@@ -332,11 +332,32 @@ var
   f4flag, f5flag: Integer;
   GetKB: String;
 
+procedure EmptyKeyQueue;
+
 implementation
 
 uses WDModule, lcutils, ShowPic, history1, history2, vip, wio_Add, wio_Detail;
 
 {$R *.DFM}
+
+procedure openport(PrinterName:pchar);stdcall;far; external 'tsclib.dll';
+procedure closeport; external 'tsclib.dll';
+procedure sendcommand(Command:pchar);stdcall;far;external 'tsclib.dll';
+procedure setup(LabelWidth, LabelHeight, Speed, Density, Sensor, Vertical, Offset:pchar);stdcall; far; external 'tsclib.dll';
+procedure downloadpcx(Filename,ImageName:pchar);stdcall;far;external 'tsclib.dll';
+procedure barcode(X, Y, CodeType, Height, Readable, Rotation, Narrow, Wide, Code :pchar); stdcall; far; external 'tsclib.dll';
+procedure printerfont(X, Y, FontName, Rotation, Xmul, Ymul, Content:pchar);stdcall;far; external 'tsclib.dll';
+procedure clearbuffer; external 'tsclib.dll';
+procedure printlabel(NumberOfSet, NumberOfCopoy:pchar);stdcall; far;external 'tsclib.dll';
+procedure formfeed;external 'tsclib.dll';
+procedure nobackfeed; external 'tsclib.dll';
+procedure windowsfont (X, Y, FontHeight, Rotation, FontStyle, FontUnderline : integer; FaceName, TextContect:pchar);stdcall;far;external 'tsclib.dll';
+
+procedure EmptyKeyQueue;
+var msg: TMsg;
+begin
+  while PeekMessage(msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
+end;
 
 procedure TWioGetF2Form.SigGet(index: integer);
 begin
@@ -678,6 +699,64 @@ begin
       end;
     ZQueryF9.Close;
     CloseFile(F);
+  end;
+end;
+
+procedure TWioGetF2Form.TT027_50(flag: Boolean);
+var
+  i, j, k, rno: Integer;
+  ret,nLen,sw : integer;
+  pbuf : array[0..127] of AnsiChar;
+
+  ver : PAnsiChar;
+  strmsg : string;
+  len1,len2 : integer;
+  buf1,buf2 : AnsiString;
+  buff1 : array[0..127] of WideChar;
+  himage : HBITMAP;
+begin
+  if flag then
+    begin
+    openport('USB');
+    setup('100', '12', '2.0', '3', '0', '0', '0');
+    sendcommand('DIRECTION 1');
+    ZQueryF9.Open;
+    i:=0;
+    rno:=0;
+    while not ZQueryF9.Eof do
+      begin
+      rno:=rno+ZQueryF9.FieldByName('wiquty').AsInteger;
+      ZQueryF9.Next;
+      end;
+    ZQueryF9.First;
+    while not ZQueryF9.Eof do
+      begin
+      for j:=1 to ZQueryF9.FieldByName('wiquty').AsInteger do
+        begin
+        i:=i+1;
+        clearbuffer;
+        windowsfont(50, 1, 46, 0, 2, 0, 'Arial', pchar(ZQueryF9.FieldByName('wicode').AsString+'-'+IntToStr(i)+'-'+ZQueryF9.FieldByName('widate').AsString));
+        windowsfont(50, 46, 46, 0, 2, 0, '標楷體', pchar(ZQueryF9.FieldByName('wiwash').AsString+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+ZQueryF9.FieldByName('winame').AsString));
+        printlabel('1', '1'); //開始印
+        end;
+      k:=1;
+      if Pos('2',ZQueryF9.FieldByName('winame').AsString)<>0 then
+        k:=2;
+      if Pos('3',ZQueryF9.FieldByName('winame').AsString)<>0 then
+        k:=3;
+      if k<>1 then
+        for j:=2 to k do
+          begin
+          i:=i+1;
+          clearbuffer;
+          windowsfont(50, 1, 46, 0, 2, 0, 'Arial', pchar(ZQueryF9.FieldByName('wicode').AsString+'-'+IntToStr(i)+'-'+ZQueryF9.FieldByName('widate').AsString));
+          windowsfont(50, 46, 46, 0, 2, 0, '標楷體', pchar(ZQueryF9.FieldByName('wiwash').AsString+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+ZQueryF9.FieldByName('winame').AsString));
+          printlabel('1', '1'); //開始印
+          end;
+      ZQueryF9.Next;
+      end;
+    ZQueryF9.Close;
+    closeport;
   end;
 end;
 
@@ -1077,14 +1156,17 @@ begin
     end
   else if fkey='G' then
     begin
-    fkey:='';
+    fkey:=''; 
     if wwdbgrid1.IsSelected then
        wwdbgrid1.UnselectRecord;
     PanelGet.SendToBack;
     end
   else
+    begin
     Close;
-
+    fkey:='Esc';
+    exit;
+    end;
   wwDBGrid1.Enabled:=True;
   wwDBGrid1.SetFocus;
 end;
@@ -1815,14 +1897,6 @@ begin
   wwDBGrid1.Options:=wwDBGrid1.Options-[dgRowSelect,dgAlwaysShowSelection];
 end;
 
-procedure TWioGetF2Form.wwDBGrid1Enter(Sender: TObject);
-begin
-  {wwDBGrid1.Options:=wwDBGrid1.Options+[dgRowSelect,dgAlwaysShowSelection];
-  wwDBGrid1.SetFocus;
-  wwDBGrid2.Options:=wwDBGrid2.Options-[dgRowSelect,dgAlwaysShowSelection];}
-  //焦點進入處
-end;
-
 procedure TWioGetF2Form.wwDBGrid2CalcCellColors(Sender: TObject;
   Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont;
   ABrush: TBrush);
@@ -1865,7 +1939,7 @@ var
   ret: Word;
 begin
   if exitstr='是' then
-    ret:=MessageBox(handle,PChar('存檔離開？'),'存檔',MB_ICONQUESTION+MB_YESNO +MB_DEFBUTTON2)
+    ret:=MessageBox(handle,PChar('存檔離開？'),'存檔',MB_ICONQUESTION+MB_YESNO+MB_DEFBUTTON2)
   else
     ret:=idYes;
 
@@ -1922,11 +1996,24 @@ begin
   ZQueryF9.Close;
   ZQueryF9.SQL.Clear;
   ZQueryF9.SQL.Add('SELECT * FROM wio');
-  ZQueryF9.SQL.Add('WHERE crcode='''+crcode+'''');
+  ZQueryF9.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
   ZQueryF9.SQL.Add('AND wicode='''+ZQuery_wio.FieldByName('wicode').AsString+'''');
   ZQueryF9.SQL.Add('ORDER BY wisno');
   ZQueryF9.Open;
-  SP300(True);
+  //標示已列印洗衣單
+  if WDM.ZTableCompy.FieldByName('SP300').AsString='是' then
+    begin
+    if WDM.pkind.Value='SP300' then
+      begin
+      SP300(True);
+      TT027_50(False);
+      end
+    else if WDM.pkind.Value='TT027_50' then
+      begin
+      SP300(False);
+      TT027_50(True);
+      end;
+    end;
 end;
 
 procedure TWioGetF2Form.Action_CA1Execute(Sender: TObject);
@@ -2121,23 +2208,32 @@ begin
     SigGet(1);
     FBCode:='';
     end
-  else if Key=78 then // Press N
+  else if (fkey='Esc')AND((Key=78)or(Key=VK_RETURN)) then //20151009 增加
     begin
-    //if (ZQuery_wio.FieldByName('wiodate').AsString<>'') then
+    Key:=0;
+    fkey:='';
+    Exit;
+    end;
+  if (fkey='') then  //20151009 增加
+    begin
+    if (Key=78) then // Press N
+      begin
+      //if (ZQuery_wio.FieldByName('wiodate').AsString<>'') then
       notPay();
-    end
-  else if Key=80 then // Press P
-    begin
-    //if (ZQuery_wio.FieldByName('wiodate').AsString<>'') then
-      PayClear();
-    end
-  else if Key=67 then // Press C
-    begin
-    ClearPlace();
-    end
-  else if Key=89 then //Press Y
-    begin
-    setpflag();
+      end
+    else if (Key=80) then // Press P
+      begin
+      //if (ZQuery_wio.FieldByName('wiodate').AsString<>'') then
+        PayClear();
+      end
+    else if (Key=67) then // Press C
+      begin
+      ClearPlace();
+      end
+    else if Key=89 then //Press Y
+      begin
+      setpflag();
+      end;
     end;
 end;
 
