@@ -1,7 +1,7 @@
 object PreviewForm: TPreviewForm
   Left = 192
   Top = 127
-  Width = 870
+  Width = 1062
   Height = 500
   Align = alClient
   BorderIcons = [biSystemMenu]
@@ -20,8 +20,8 @@ object PreviewForm: TPreviewForm
   object frxPreview1: TfrxPreview
     Left = 0
     Top = 29
-    Width = 854
-    Height = 433
+    Width = 1046
+    Height = 432
     Cursor = crDrag
     Align = alClient
     FrameColor = clWhite
@@ -33,7 +33,7 @@ object PreviewForm: TPreviewForm
   object RzToolbar1: TRzToolbar
     Left = 0
     Top = 0
-    Width = 854
+    Width = 1046
     Height = 29
     BorderInner = fsNone
     BorderOuter = fsGroove
@@ -53,8 +53,9 @@ object PreviewForm: TPreviewForm
       RzToolbarButtonPgDn
       RzToolbarButtonEnd
       RzComboBox1
+      RzToolbarButtonF8
       RzToolbarButtonF9
-      RzToolbarButton1
+      RzToolbarButtonF10
       RzToolbarButtonEsc)
     object RzToolbarButtonPdUp: TRzToolbarButton
       Left = 114
@@ -94,7 +95,7 @@ object PreviewForm: TPreviewForm
       HotNumGlyphs = 0
     end
     object RzToolbarButtonF9: TRzToolbarButton
-      Left = 553
+      Left = 643
       Top = 3
       Width = 90
       Height = 22
@@ -103,7 +104,7 @@ object PreviewForm: TPreviewForm
       HotNumGlyphs = 0
     end
     object RzToolbarButtonEsc: TRzToolbarButton
-      Left = 753
+      Left = 843
       Top = 3
       Width = 90
       Height = 22
@@ -111,13 +112,23 @@ object PreviewForm: TPreviewForm
       Caption = 'Esc.離開'
       HotNumGlyphs = 0
     end
-    object RzToolbarButton1: TRzToolbarButton
-      Left = 643
+    object RzToolbarButtonF10: TRzToolbarButton
+      Left = 733
       Top = 3
       Width = 110
       Height = 22
       Action = ActionF10
       Caption = 'F10.停止處理'
+      HotNumGlyphs = 0
+    end
+    object RzToolbarButtonF8: TRzToolbarButton
+      Left = 553
+      Top = 3
+      Width = 90
+      Height = 22
+      Action = ActionF8
+      Caption = 'F8.匯出'
+      Visible = False
       HotNumGlyphs = 0
     end
     object RzEditPage: TRzEdit
@@ -197,5 +208,25 @@ object PreviewForm: TPreviewForm
       ShortCut = 121
       OnExecute = ActionF10Execute
     end
+    object ActionF8: TAction
+      Caption = 'F8.匯出'
+      ShortCut = 119
+      OnExecute = ActionF8Execute
+    end
+  end
+  object frxXLSExport1: TfrxXLSExport
+    ExportNotPrintable = True
+    UseFileCache = True
+    ShowProgress = True
+    ExportPictures = False
+    Wysiwyg = False
+    AsText = True
+    Background = False
+    FastExport = False
+    PageBreaks = True
+    EmptyLines = True
+    SuppressPageHeadersFooters = False
+    Left = 344
+    Top = 56
   end
 end
