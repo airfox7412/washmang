@@ -96,6 +96,7 @@ uses WDModule, LCUtils;
 procedure TChangelogForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;

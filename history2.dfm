@@ -199,7 +199,7 @@ object History2Form: THistory2Form
     Left = 264
     Top = 144
     Width = 244
-    Height = 134
+    Height = 177
     BevelWidth = 5
     Color = clFuchsia
     Font.Charset = ANSI_CHARSET
@@ -276,6 +276,15 @@ object History2Form: THistory2Form
       Text = '   /  /  '
       OnKeyDown = MaskEditDate2KeyDown
     end
+    object PrintButton: TButton
+      Left = 72
+      Top = 133
+      Width = 97
+      Height = 33
+      Caption = '¦C¦L'
+      TabOrder = 2
+      OnClick = PrintButtonClick
+    end
   end
   object ZConnection1: TZConnection
     Protocol = 'mysql-5'
@@ -291,10 +300,6 @@ object History2Form: THistory2Form
   object ZQuery_wo: TZQuery
     Connection = ZConnection1
     OnCalcFields = ZQuery_woCalcFields
-    SQL.Strings = (
-      'SELECT * FROM wo'
-      'WHERE crcode='#39'00001'#39
-      'ORDER BY widate DESC')
     Params = <>
     Left = 624
     Top = 240

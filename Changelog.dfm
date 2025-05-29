@@ -256,7 +256,6 @@ object ChangelogForm: TChangelogForm
     User = 'root'
     Password = 'root'
     Catalog = 'washshop'
-    Connected = True
     DesignConnection = True
     SQLHourGlass = True
     Left = 421

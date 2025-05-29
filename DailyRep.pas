@@ -278,6 +278,8 @@ type
     RzToolbarButtonF12: TRzToolbarButton;
     frxReportF12: TfrxReport;
     frxDBDS_DailyM: TfrxDBDataset;
+    ZQueryF5paytype: TStringField;
+    ZQueryF5KindType: TStringField;
     procedure ActionESCExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionF1Execute(Sender: TObject);
@@ -336,12 +338,13 @@ type
     procedure PrintF11();
     procedure PrintF12();
     procedure QueryGrid();
+    procedure PrintLabel();
   end;
 
 var
   DailyRepForm: TDailyRepForm;
   fkey: String;
-  t1,t2,t3,t4,t5,t6,t7,t8,t9,t10: Real;
+  t1,t2,t3,t4,t5,t6,t7,t8,t9,t10, t11, t12, t13, t14, t15, t16, t17: Real;
   wisnod: Integer;
   uflag: Boolean;
 
@@ -350,6 +353,211 @@ implementation
 uses WDModule, lcutils, PPreview;
 
 {$R *.DFM}
+
+var dpCrLf : AnsiString = chr(13)+chr(10);
+    var sznop1     : AnsiString = 'nop_front' + Chr(13) + chr(10);
+    var sznop2     : AnsiString = 'nop_middle' + Chr(13) + chr(10);
+    function  A_Bar2d_Maxi(x:integer; y:integer; primary:integer; secondary:integer; country:integer;
+              service:integer; mode:char; numeric:integer; data:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Bar2d_Maxi_Ori(x:integer; y:integer; ori:integer; primary:integer; secondary:integer;
+              country:integer; service:integer; mode:char; numeric:integer; data:AnsiString):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Bar2d_PDF417(x:integer; y:integer; narrow:integer; width:integer; normal:char;
+              security:integer; aspect:integer; row:integer; column:integer; mode:char;
+              numeric:integer; data:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Bar2d_PDF417_Ori(x:integer; y:integer; ori:integer; narrow:integer; width:integer;
+              normal:char; security:integer; aspect:integer; row:integer; column:integer; mode:char;
+              numeric:integer; data:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Bar2d_DataMatrix(x:integer; y:integer; rotation:integer; hor_mul:integer;
+              ver_mul:integer; ECC:integer; data_format:integer; num_rows:integer; num_col:integer;
+              mode:char; numeric:integer; data:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    Procedure A_Clear_Memory();stdcall;external 'WINPPLA.DLL';
+    Procedure A_ClosePrn();stdcall;external 'WINPPLA.DLL';
+    function  A_CreatePrn(selection:integer; filename:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Del_Graphic(mem_mode:integer; graphic:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Draw_Box(mode:char; x:integer; y:integer; width:integer; height:integer; top:integer;
+              side:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Draw_Line(mode:char; x:integer; y:integer; width:integer; height:integer):integer;
+              stdcall;external 'WINPPLA.DLL';
+    Procedure A_Feed_Label();stdcall;external 'WINPPLA.DLL';
+    function  A_Get_DLL_Version(nShowMessage:integer):PAnsiChar;stdcall;external 'WINPPLA.DLL';
+    function  A_Get_DLL_VersionA(nShowMessage:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Get_Graphic(x:integer; y:integer; mem_mode:integer; format:char; filename:AnsiString):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Get_Graphic_ColorBMP(x:integer; y:integer; mem_mode:integer; format:char;
+              filename:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Get_Graphic_ColorBMPEx(x:integer; y:integer; nWidth:integer; nHeight:integer;
+              rotate:integer; mem_mode:integer; format:char; id_name:AnsiString; filename:AnsiString):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Get_Graphic_ColorBMP_HBitmap(x:integer; y:integer; nWidth:integer; nHeight:integer;
+              rotate:integer; mem_mode:integer; format:char; id_name:AnsiString; hbm:HBITMAP):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Initial_Setting(Type_Renamed:integer; Source:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_WriteData(IsImmediate:integer; pbuf:AnsiString; length:integer):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_ReadData(pbuf:PAnsiChar; length:integer; dwTimeoutms:integer):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Load_Graphic(x:integer; y:integer; graphic_name:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Open_ChineseFont(path:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Print_Form(width:integer; height:integer; copies:integer; amount:integer;
+              form_name:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Print_Out(width:integer; height:integer; copies:integer; amount:integer):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Barcode(x:integer; y:integer; ori:integer; type_Renamed:char; narrow:integer;
+              width:integer; height:integer; mode:char; numeric:integer; data:AnsiString):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Text(x:integer; y:integer; ori:integer; font:integer; type_Renamed:integer;
+              hor_factor:integer; ver_factor:integer; mode:char; numeric:integer; data:AnsiString):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Text_Chinese(x:integer; y:integer; fonttype:integer; id_name:AnsiString; data:AnsiString;
+              mem_mode:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Text_TrueType(x:integer; y:integer; FSize:integer; FType:AnsiString; Fspin:integer;
+              FWeight:integer; FItalic:integer; FUnline:integer; FStrikeOut:integer; id_name:AnsiString;
+              data:AnsiString; mem_mode:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Text_TrueType_W(x:integer; y:integer; FHeight:integer; FWidth:integer;
+              FType:AnsiString; Fspin:integer; FWeight:integer; FItalic:integer; FUnline:integer;
+              FStrikeOut:integer; id_name:AnsiString; data:AnsiString; mem_mode:integer):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Backfeed(back:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_BMPSave(nSave:integer; pstrBMPFName:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Set_Cutting(cutting:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Darkness(heat:UINT):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_DebugDialog(nEnable:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Feed(rate:char):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Form(formfile:AnsiString; form_name:AnsiString; mem_mode:integer):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Set_Margin(position:integer; margin:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Prncomport(baud:integer; parity:integer; data:integer; stop:integer):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Prncomport_PC(nBaudRate:integer; nByteSize:integer; nParity:integer;
+              nStopBits:integer; nDsr:integer; nCts:integer; nXonXoff:integer):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Set_Sensor_Mode(type_Renamed:char; continuous:integer):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Set_Speed(speed:char):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Syssetting(transfer:integer; cut_peel:integer; length:integer; zero:integer;
+              pause:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Unit(unit_Renamed:char):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Gap(gap:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_Logic(logic:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_ProcessDlg(nShow:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_ErrorDlg(nShow:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_LabelVer(centiInch:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_GetUSBBufferLen():integer;stdcall;external 'WINPPLA.DLL';
+    function  A_EnumUSB(buf:PAnsiChar):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_CreateUSBPort(nPort:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_CreatePort(nPortType:integer; nPort:integer; filename:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Clear_MemoryEx(nMode:integer):integer;stdcall;external 'WINPPLA.DLL';
+    Procedure A_Set_Mirror();stdcall;external 'WINPPLA.DLL';
+    function  A_Bar2d_RSS(x:integer; y:integer; ori:integer; ratio:integer; height:integer;
+              rtype:char; mult:integer; seg:integer; data1:AnsiString; data2:AnsiString):integer;stdcall;
+              external 'WINPPLA.DLL';
+    function  A_Bar2d_QR_M(x:integer; y:integer; ori:integer; mult:char; value:integer; model:integer;
+              error:char; mask:integer; dinput:char; mode:char; numeric:integer; data:AnsiString):integer;
+              stdcall;external 'WINPPLA.DLL';
+    function  A_Bar2d_QR_A(x:integer; y:integer; ori:integer; mult:char; value:integer; mode:char;
+              numeric:integer; data:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_GetNetPrinterBufferLen():integer;stdcall;external 'WINPPLA.DLL';
+    function  A_EnumNetPrinter(buf:PAnsiChar):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_CreateNetPort(nPort:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Text_TrueType_Uni(x:integer; y:integer; FSize:integer; FType:AnsiString; Fspin:integer;
+              FWeight:integer; FItalic:integer; FUnline:integer; FStrikeOut:integer; id_name:AnsiString;
+              data:PWideChar; format:integer; mem_mode:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Prn_Text_TrueType_UniB(x:integer; y:integer; FSize:integer; FType:AnsiString; Fspin:integer;
+              FWeight:integer; FItalic:integer; FUnline:integer; FStrikeOut:integer; id_name:AnsiString;
+              data:PWideChar; format:integer ; mem_mode:integer):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_GetUSBDeviceInfo(nPort:integer; pDeviceName:PAnsiChar; pDeviceNameLen:PInteger;
+              pDevicePath:PAnsiChar; pDevicePathLen:PInteger):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Set_EncryptionKey(encryptionKey:AnsiString):integer;stdcall;external 'WINPPLA.DLL';
+    function  A_Check_EncryptionKey(decodeKey:AnsiString; encryptionKey:AnsiString;
+              dwTimeoutms:integer):integer;stdcall;external 'WINPPLA.DLL';
+
+procedure TDailyRepForm.PrintLabel();
+var
+  ret,nLen,sw : integer;
+  pbuf : array[0..256] of AnsiChar;
+  ver : PAnsiChar;
+  strmsg: String;
+  len1,len2,x_axis,y_axis : integer;
+  buf1,buf2 : AnsiString;
+  buff1 : array[0..256] of WideChar;
+  wiquty, wiacc, crname, winame: String;
+begin
+  ver := A_Get_DLL_Version(0);
+  if WDM.lkind.Value='' then
+    begin
+    exit;
+    end
+  else if WDM.lkind.Value='lpt' then
+    begin
+    ret := A_CreatePrn(1, ''); // open 1,2,3=LPT 12=usb.if 0 < ret then
+    If 0 < ret then
+      begin
+      ShowMessage('印表機開啟失敗！');
+      exit;
+      end;
+    end
+  else if pos('USB',WDM.lkind.Value)>0 then
+    begin
+    nLen := A_GetUSBBufferLen() + 1;
+    A_EnumUSB(pbuf);
+    A_GetUSBDeviceInfo(1, PAnsiChar(buf1), @len1, PAnsiChar(buf2), @len2);
+    ret := A_CreatePrn(11, PAnsiChar(WDM.lkind.Value)); // open 1,2,3=LPT 12=USBXXX.
+    if 0 < ret then
+      begin
+      ShowMessage('USB未開啟，標籤無法列印！');
+      exit;
+      end;
+    end;
+  //A_Set_DebugDialog(1);  //設定除錯環境
+  A_Set_Unit('m'); //設定度量單位為公厘
+  A_Set_Syssetting(2, 0, 0, 0, 0); //設定轉印模式
+  A_Set_Darkness(8);  // 設定熱感頭列印熱度 0~20
+  A_Set_Speed('A'); //設定列印速度 A~E
+  A_Clear_Memory();   // clear memory.
+  A_WriteData(0, sznop2, StrLen(PAnsiChar(sznop2)));
+  A_WriteData(1, sznop1, StrLen(PAnsiChar(sznop1)));
+
+  ZQueryWio.First;
+  While not ZQueryWio.Eof do
+    begin
+    wiquty:='件數：'+IntToStr(ZQueryWio.FieldByName('wiquty').AsInteger);
+    if Length(ZQueryWio.FieldByName('crname').AsString)=0 then
+      crname:=' '
+    else
+      crname:=ZQueryWio.FieldByName('crname').AsString;
+    if Length(ZQueryWio.FieldByName('wiacc').AsString)=0 then
+      wiacc:=' '
+    else
+      wiacc:=ZQueryWio.FieldByName('wiacc').AsString;
+    if Length(ZQueryWio.FieldByName('winame').AsString)=0 then
+      winame:=' '
+    else
+      winame:=ZQueryWio.FieldByName('winame').AsString+' ';
+    x_axis:=50;
+    y_axis:=0;
+    A_Prn_Text_TrueType(x_axis, y_axis+320, 60, 'Arial', 1, 400, 0, 0, 0, 'A1', ZQueryWio.FieldByName('crcode').AsString, 1);
+    A_Prn_Text_TrueType_W(x_axis, y_axis+225, 80, 20, '標楷體', 1, 400, 0, 0, 0, 'A2', crname, 1);
+    A_Prn_Barcode(x_axis+240, y_axis+250, 1, 'A', 0, 0, 100, 'N', 99, ZQueryWio.FieldByName('wisno').AsString);
+
+    A_Prn_Text_TrueType(x_axis, y_axis+150, 60, 'Arial', 1, 400, 0, 0, 0, 'A3', ZQueryWio.FieldByName('wicode').AsString, 1);
+    A_Prn_Text_TrueType(x_axis+270, y_axis+145, 80, 'Arial', 1, 400, 0, 0, 0, 'A4', ZQueryWio.FieldByName('wisno').AsString, 1);
+    A_Prn_Text_TrueType(x_axis, y_axis+90, 40, 'Arial', 1, 400, 0, 0, 0, 'A5', ZQueryWio.FieldByName('indate').AsString, 1);
+    A_Prn_Text_TrueType_W(x_axis+240, y_axis+90, 50, 20, '標楷體', 1, 400, 0, 0, 0, 'A6', winame, 1);
+    A_Prn_Text_TrueType_W(x_axis, y_axis+15, 50, 20, '標楷體', 1, 400, 0, 0, 0, 'A7', wiquty, 1);
+    A_Prn_Text_TrueType_W(x_axis+240, y_axis+15, 50, 20, '標楷體', 1, 400, 0, 0, 0, 'A8', wiacc, 1);
+    A_Set_Backfeed(830); //退出標籤830
+    A_Print_Out(1, 1, 1, 1);
+    ZQueryWio.Next;
+    end;
+  A_ClosePrn();  //close port.
+end;
 
 function CheckUersRight(): Boolean;
 var
@@ -536,6 +744,7 @@ begin
     ZQuery_wo.SQL.Clear;
     ZQuery_wo.SQL.Add('SELECT sum(worealmo)as trealmo FROM wo');
     ZQuery_wo.SQL.Add('WHERE binary fritem in (''V'',''W'',''X'')');
+    ZQuery_wo.SQL.Add('AND paytype=''0''');
     ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
     ZQuery_wo.Open;
     t1:=ZQuery_wo.FieldByName('trealmo').AsFloat;
@@ -543,22 +752,20 @@ begin
     ZQuery_wo.Close;
     ZQuery_wo.SQL.Clear;
     ZQuery_wo.SQL.Add('SELECT sum(worealmo)as trealmo,sum(wocntmo)as tcntmo FROM wo');
-    ZQuery_wo.SQL.Add('WHERE binary fritem in (''I'',''E'',''Q'',''O'',''x'')');
+    ZQuery_wo.SQL.Add('WHERE binary fritem in (''I'',''E'',''Q'',''O'',''x'')'); 
+    ZQuery_wo.SQL.Add('AND paytype=''0''');
     ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
     ZQuery_wo.Open;
     t2:=ZQuery_wo.FieldByName('trealmo').AsFloat;
     t3:=ZQuery_wo.FieldByName('tcntmo').AsFloat;
-    t4:=t1+t2;
 
-    ZQuery_wo.Close;
-    ZQuery_wo.SQL.Clear;
-    ZQuery_wo.SQL.Add('SELECT sum(frgetmo)as tgetmo FROM wo');
-    ZQuery_wo.SQL.Add('WHERE binary fritem in (''P'',''G'')');
-    ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
-    ZQuery_wo.Open;
-    t5:=ZQuery_wo.FieldByName('tgetmo').AsFloat;
-    (frxReportF5.FindObject('Memo17')as TfrxMemoView).Text:=FormatFloat('#,##0',t3);
-
+    ZQuery_wio5.Close;
+    ZQuery_wio5.SQL.Clear;
+    ZQuery_wio5.SQL.Add('SELECT sum(wiexmo)as tgetmo FROM wio');
+    ZQuery_wio5.SQL.Add('WHERE widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
+    ZQuery_wio5.Open;
+    t5:=ZQuery_wio5.FieldByName('tgetmo').AsFloat;
+    
     ZQuery_wio5.Close;
     ZQuery_wio5.SQL.Clear;
     ZQuery_wio5.SQL.Add('SELECT sum(wisum)as tsum FROM wio');
@@ -573,9 +780,51 @@ begin
     ZQuery_wio5.Open;
     t7:=ZQuery_wio5.FieldByName('twamo').AsFloat;
     t8:=ZQuery_wio5.FieldByName('tsum').AsFloat-ZQuery_wio5.FieldByName('texmo').AsFloat;
-    //t9:=t1-t2+t3;
+
     t9:=t7-t8;
     t10:=ZQuery_wio5.FieldByName('tquty').AsFloat;
+
+    ZQuery_wo.Close;
+    ZQuery_wo.SQL.Clear;
+    ZQuery_wo.SQL.Add('SELECT sum(worealmo)as line FROM wo');
+    ZQuery_wo.SQL.Add('WHERE paytype=''1''');
+    ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
+    ZQuery_wo.Open;
+    t11:=ZQuery_wo.FieldByName('line').AsFloat;
+
+    ZQuery_wo.Close;
+    ZQuery_wo.SQL.Clear;
+    ZQuery_wo.SQL.Add('SELECT sum(worealmo)as taiwan FROM wo');
+    ZQuery_wo.SQL.Add('WHERE paytype=''2''');
+    ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
+    ZQuery_wo.Open;
+    t12:=ZQuery_wo.FieldByName('taiwan').AsFloat;
+
+    ZQuery_wo.Close;
+    ZQuery_wo.SQL.Clear;
+    ZQuery_wo.SQL.Add('SELECT sum(worealmo)as card FROM wo');
+    ZQuery_wo.SQL.Add('WHERE paytype=''3''');
+    ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
+    ZQuery_wo.Open;
+    t13:=ZQuery_wo.FieldByName('card').AsFloat;
+
+    ZQuery_wo.Close;
+    ZQuery_wo.SQL.Clear;
+    ZQuery_wo.SQL.Add('SELECT sum(worealmo)as account FROM wo');
+    ZQuery_wo.SQL.Add('WHERE paytype=''4''');
+    ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
+    ZQuery_wo.Open;
+    t16:=ZQuery_wo.FieldByName('account').AsFloat;
+
+    ZQuery_wo.Close;
+    ZQuery_wo.SQL.Clear;
+    ZQuery_wo.SQL.Add('SELECT sum(worealmo)as stree FROM wo');
+    ZQuery_wo.SQL.Add('WHERE paytype=''5''');
+    ZQuery_wo.SQL.Add('AND widate between '''+lbDate1.Caption+''' AND '''+lbDate2.Caption+'''');
+    ZQuery_wo.Open;
+    t17:=ZQuery_wo.FieldByName('stree').AsFloat;
+
+    //t2:=t2-t11-t12-t13;
     ZQuery_wio5.Close;
   except
     on E: Exception do
@@ -589,18 +838,31 @@ begin
   try
     frxReportF5.LoadFromFile(WDM.WPath+'Report\DailyRepAll5.rep');
     ProcessF5();
-    (frxReportF5.FindObject('Memo12')as TfrxMemoView).Text:=FormatFloat('#,##0',t1);
-    (frxReportF5.FindObject('Memo13')as TfrxMemoView).Text:=FormatFloat('#,##0',t2);
-    (frxReportF5.FindObject('Memo14')as TfrxMemoView).Text:=FormatFloat('#,##0',t3); //現金折讓
-    (frxReportF5.FindObject('Memo11')as TfrxMemoView).Text:=FormatFloat('#,##0',t4);
-    (frxReportF5.FindObject('Memo17')as TfrxMemoView).Text:=FormatFloat('#,##0',t5);
+    (frxReportF5.FindObject('Memo_Widate')as TfrxMemoView).Text:=lbDate1.Caption+'～'+lbDate2.Caption;
+    (frxReportF5.FindObject('MemoVip')as TfrxMemoView).Text:=FormatFloat('#,##0',t1);
+    (frxReportF5.FindObject('MemoCashMoney')as TfrxMemoView).Text:=FormatFloat('#,##0',t2);
+    (frxReportF5.FindObject('MemoCashDiscount')as TfrxMemoView).Text:=FormatFloat('#,##0',t3); //現金折讓
+    (frxReportF5.FindObject('Memo17')as TfrxMemoView).Text:=FormatFloat('#,##0',t5); //加工
     (frxReportF5.FindObject('Memo16')as TfrxMemoView).Text:=FormatFloat('#,##0',t6);
     (frxReportF5.FindObject('Memo18')as TfrxMemoView).Text:=FormatFloat('#,##0',t7);
     (frxReportF5.FindObject('Memo19')as TfrxMemoView).Text:=FormatFloat('#,##0',t8);
     (frxReportF5.FindObject('Memo15')as TfrxMemoView).Text:=FormatFloat('#,##0',t9);
     (frxReportF5.FindObject('Memo20')as TfrxMemoView).Text:=FormatFloat('#,##0',t10);
-    //(frxReportF5.FindObject('MemoDate')as TfrxMemoView).Text:=lbDate1.Caption+'～'+lbDate2.Caption;
-    (frxReportF5.FindObject('Memo_Widate')as TfrxMemoView).Text:=lbDate1.Caption+'～'+lbDate2.Caption;
+    if t8>0 then
+    (frxReportF5.FindObject('Memo35')as TfrxMemoView).Text:=FormatFloat('#,##0',t8/t10);
+
+    (frxReportF5.FindObject('MemoLinePay')as TfrxMemoView).Text:=FormatFloat('#,##0',t11);
+    (frxReportF5.FindObject('MemoTaiwanPay')as TfrxMemoView).Text:=FormatFloat('#,##0',t12);
+    (frxReportF5.FindObject('MemoCard')as TfrxMemoView).Text:=FormatFloat('#,##0',t13);
+    t14:=t1+t2;
+    t15:=t11+t12+t13+t16+t17;
+    t4:=t14+t15;
+    (frxReportF5.FindObject('MemoTotal')as TfrxMemoView).Text:=FormatFloat('#,##0',t4);
+    (frxReportF5.FindObject('MemoCash')as TfrxMemoView).Text:=FormatFloat('#,##0',t14);
+    (frxReportF5.FindObject('MemoEpay')as TfrxMemoView).Text:=FormatFloat('#,##0',t15);
+    (frxReportF5.FindObject('MemoAccount')as TfrxMemoView).Text:=FormatFloat('#,##0',t16);
+    (frxReportF5.FindObject('MemoStree')as TfrxMemoView).Text:=FormatFloat('#,##0',t17);
+
     PreviewForm:=TPreviewForm.Create(Application);
     frxReportF5.preview:=PreviewForm.frxPreview1;
     frxReportF5.ShowReport; //螢幕預覽
@@ -624,7 +886,7 @@ begin
     ZQuery_wio.SQL.Clear;
     ZQuery_wio.SQL.Add('SELECT * FROM wio');
     ZQuery_wio.SQL.Add('WHERE wicode>='''+sicode+''' AND wicode<='''+eicode+'''');
-    ZQuery_wio.SQL.Add('ORDER BY wicode');
+    ZQuery_wio.SQL.Add('ORDER BY wicode, wisno');
     ZQuery_wio.Open;
     PreviewForm := TPreviewForm.Create(Application);
     frxReportF7.LoadFromFile(WDM.WPath+'Report\DailyRepAll7.rep');
@@ -860,6 +1122,8 @@ begin
     (frxReportF10.FindObject('Memo109')as TfrxMemoView).Text:=FormatFloat('#,##0',t8);
     (frxReportF10.FindObject('Memo105')as TfrxMemoView).Text:=FormatFloat('#,##0',t9);
     (frxReportF10.FindObject('Memo110')as TfrxMemoView).Text:=FormatFloat('#,##0',t10);
+    if t8>0 then
+        (frxReportF10.FindObject('Memo167')as TfrxMemoView).Text:=FormatFloat('#,##0',t8/t10);
 
     ZQueryWioExkind.Close; //加工明細
     ZQueryWioExkind.SQL.Clear;
@@ -1014,6 +1278,7 @@ end;
 procedure TDailyRepForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -1093,7 +1358,7 @@ begin
         PreviewForm.ShowModal;
         FreeAndNil(PreviewForm);
         end
-      else
+      else if (ListBox1.ItemIndex=2) then
         begin
         frxReportLabel.LoadFromFile(WDM.WPath+'Report\DailyLabel23.rep');
         frxReportLabel.preview:=PreviewForm.frxPreview1;
@@ -1101,6 +1366,10 @@ begin
         PreviewForm.ShowModal;
         FreeAndNil(PreviewForm);
         end
+      else
+        begin
+        PrintLabel();
+        end;
     except
       on E: Exception do
         MessageDlg ('錯誤: '+E.Message, mtError,[mbOK], 0);
@@ -1182,7 +1451,7 @@ begin
       PreviewForm.ShowModal;
       FreeAndNil(PreviewForm);
       end
-    else
+    else if (ListBox1.ItemIndex=2) then
       begin
       frxReportLabel.LoadFromFile(WDM.WPath+'Report\DailyLabel23.rep');
       frxReportLabel.preview:=PreviewForm.frxPreview1;
@@ -1190,6 +1459,10 @@ begin
       PreviewForm.ShowModal;
       FreeAndNil(PreviewForm);
       end
+    else
+      begin
+      PrintLabel();
+      end;
   except
     on E: Exception do
       MessageDlg ('錯誤: '+E.Message, mtError,[mbOK], 0);
@@ -1432,7 +1705,28 @@ begin
   else if ZQueryF5.FieldByName('fritem').AsString='x' then
     ZQueryF5.FieldByName('Kind').AsString:='收件放棄'
   else
-    ZQueryF5.FieldByName('Kind').AsString:='無類別'
+    ZQueryF5.FieldByName('Kind').AsString:='無類別';
+
+  if ZQueryF5.FieldByName('paytype').AsString<>'0' then
+    begin
+    if ZQueryF5.FieldByName('fritem').AsString='x' then
+      ZQueryF5.FieldByName('Kind').AsString:='收件放棄'
+    else
+      ZQueryF5.FieldByName('Kind').AsString:='電子支付';
+      
+    if ZQueryF5.FieldByName('paytype').AsString='1' then
+      ZQueryF5.FieldByName('KindType').AsString:='LinePay'
+    else if ZQueryF5.FieldByName('paytype').AsString='2' then
+      ZQueryF5.FieldByName('KindType').AsString:='台灣Pay'
+    else if ZQueryF5.FieldByName('paytype').AsString='3' then
+      ZQueryF5.FieldByName('KindType').AsString:='刷卡'
+    else if ZQueryF5.FieldByName('paytype').AsString='4' then
+      ZQueryF5.FieldByName('KindType').AsString:='轉帳'
+    else if ZQueryF5.FieldByName('paytype').AsString='5' then
+      ZQueryF5.FieldByName('KindType').AsString:='街口';
+    end
+  else
+    ZQueryF5.FieldByName('KindType').AsString:='現金';
 end;
 
 procedure TDailyRepForm.CtrlAlt1Execute(Sender: TObject);

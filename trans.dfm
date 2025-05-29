@@ -28,7 +28,7 @@ object TransForm: TTransForm
   end
   object RzStatusBar1: TRzStatusBar
     Left = 0
-    Top = 443
+    Top = 442
     Width = 854
     Height = 19
     BorderInner = fsNone
@@ -173,7 +173,7 @@ object TransForm: TTransForm
   end
   object RzToolbar1: TRzToolbar
     Left = 0
-    Top = 414
+    Top = 413
     Width = 854
     Height = 29
     Align = alBottom

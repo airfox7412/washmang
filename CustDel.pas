@@ -41,20 +41,15 @@ type
     ZQuery_crcrmark: TStringField;
     ZQuery_crcrallquty: TIntegerField;
     Action_F3: TAction;
-    RzToolbarButtonF3: TRzToolbarButton;
-    RzToolbarButtonF4: TRzToolbarButton;
     Action_F4: TAction;
     ZQuery_crcrwidate: TStringField;
     Action_F2: TAction;
-    RzToolbarButtonF2: TRzToolbarButton;
     Action_Esc: TAction;
     ZQuery_crcrwiday: TIntegerField;
     Action_F1: TAction;
     RzToolbarButtonF1: TRzToolbarButton;
     Panel_F1: TPanel;
     Label19: TLabel;
-    CheckBox2: TCheckBox;
-    CheckBox3: TCheckBox;
     Button1: TButton;
     Edit_sday: TEdit;
     ZQueryCrdelete: TZQuery;
@@ -68,6 +63,15 @@ type
     ZQueryCrdeletecrname: TStringField;
     ZQueryCrdeletecrmoney: TFloatField;
     Label1: TLabel;
+    EditMoney1: TEdit;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    Label2: TLabel;
+    Button2: TButton;
+    Label3: TLabel;
+    EditMoney2: TEdit;
+    Label4: TLabel;
+    ZQueryCrdeletecrtelb: TStringField;
     procedure Action_CtrlDelExecute(Sender: TObject);
     procedure wwDBGrid1CalcCellColors(Sender: TObject; Field: TField;
       State: TGridDrawState; Highlight: Boolean; AFont: TFont;
@@ -80,6 +84,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -101,27 +106,6 @@ procedure TCustDelForm.CloseAllPanel();
 begin
   Panel_F1.SendToBack;
   PanelPBar.SendToBack;
-end;
-
-procedure TCustDelForm.Action_CtrlDelExecute(Sender: TObject);
-var
-  crcode: string;
-begin
-  {ZQuery_cr.First;
-  while not WDM.ZQuery_cr.Eof do
-    begin
-    crcode:=ZQuery_cr.FieldByName('crcode').AsString;
-    ZQuery1.Close;
-    ZQuery1.SQL.Clear;
-    ZQuery1.SQL.Add('SELECT sum(wiquty)as s_quty,wiodate FROM wio');
-    ZQuery1.SQL.Add('WHERE crcode='''+crcode+''' AND wiodate=''''');
-    ZQuery1.Open;
-    if ZQuery1.FieldByName('s_quty').AsInteger=0 then
-      begin
-
-      end;
-    ZQuery_cr.Next;
-    end;}
 end;
 
 procedure TCustDelForm.wwDBGrid1CalcCellColors(Sender: TObject;
@@ -192,6 +176,26 @@ begin
   wwDBGrid1.Enabled:=False;
 end;
 
+procedure TCustDelForm.FormActivate(Sender: TObject);
+begin
+  Panel_F1.Left:=Trunc((Width-Panel_F1.Width)/2);
+  Panel_F1.Top:=Trunc((Height-Panel_F1.Height)/2);
+  PanelPBar.Left:=Trunc((Width-PanelPBar.Width)/2);
+  PanelPBar.Top:=Trunc((Height-PanelPBar.Height)/2);
+  CloseAllPanel();
+end;
+
+procedure TCustDelForm.FormShow(Sender: TObject);
+begin
+  Action_F1Execute(Self);
+end;
+
+procedure TCustDelForm.Button2Click(Sender: TObject);
+begin
+  CloseAllPanel();
+  fkey:='';
+end;
+
 procedure TCustDelForm.Button1Click(Sender: TObject);
 var
   t1, t2: TDate;
@@ -206,14 +210,16 @@ begin
   ZQueryCrdelete.Close;
   ZQueryCrdelete.SQL.Clear;
   ZQueryCrdelete.SQL.Add('DELETE FROM crdelete');
+  //ZQueryCrdelete.SQL.Add('DELETE FROM crdelwio');
   ZQueryCrdelete.ExecSQL;
 
   ZQuery_cr.Close;
   ZQuery_cr.SQL.Clear;
   ZQuery_cr.SQL.Add('SELECT * FROM cr');
   ZQuery_cr.SQL.Add('WHERE crmark=''Y''');
-  if CheckBox2.Checked then
-    ZQuery_cr.SQL.Add('AND crmoney=0');
+  ZQuery_cr.SQL.Add('AND crname<>''''');
+  ZQuery_cr.SQL.Add('AND crmoney<='+EditMoney1.Text);
+  ZQuery_cr.SQL.Add('AND crmoney>='+EditMoney2.Text);
   ZQuery_cr.Open;
 
   PanelPBar.BringToFront;
@@ -224,26 +230,28 @@ begin
     Application.ProcessMessages;
     crcode:=ZQuery_cr.FieldByName('crcode').AsString;
     crmoney:=ZQuery_cr.FieldByName('crmoney').AsFloat;
+
     ZQuery_wio.Close;
     ZQuery_wio.SQL.Clear;
     ZQuery_wio.SQL.Add('SELECT sum(wiquty)as s_quty,wiodate FROM wio');
     ZQuery_wio.SQL.Add('WHERE crcode='''+crcode+'''');
     ZQuery_wio.SQL.Add('AND wiodate=''''');
     ZQuery_wio.Open;
+    storage:=0;
     if not ZQuery_wio.eof then
-      storage:=ZQuery_wio.FieldByName('s_quty').AsInteger
-    else
-      storage:=0;
+      storage:=ZQuery_wio.FieldByName('s_quty').AsInteger;
     ZQuery_wio.Close;
 
-    if (CheckBox3.Checked)and(storage>0) then
+    if not RadioButton2.Checked then
       begin
-      rno:=rno+1;
-      RzProgressBar1.Percent:=Trunc((rno/rcnt)*100);
-      ZQuery_cr.Next;
-      Continue;
+      if (RadioButton1.Checked AND (storage<>0)) then
+        begin
+        rno:=rno+1;
+        RzProgressBar1.Percent:=Trunc((rno/rcnt)*100);
+        ZQuery_cr.Next;
+        Continue;
+        end;
       end;
-
     ZQuery_wio.SQL.Clear;
     ZQuery_wio.SQL.Add('SELECT crcode, MAX(widate)as wiodate FROM wio');
     ZQuery_wio.SQL.Add('WHERE crcode='''+crcode+'''');
@@ -273,39 +281,59 @@ begin
     ZQueryCrdelete.SQL.Add('('''+crcode+''','+FloatToStr(crmoney)+','+IntToStr(storage)+',');
     ZQueryCrdelete.SQL.Add(''''+sdate+''','+IntToStr(sday)+')');
     ZQueryCrdelete.ExecSQL;
+
     rno:=rno+1;
     RzProgressBar1.Percent:=Trunc((rno/rcnt)*100);
     ZQuery_cr.Next;
     end;
 
   CloseAllPanel();
+
+  ZQueryCrdelete.Close;
+  ZQueryCrdelete.SQL.Clear;
+  ZQueryCrdelete.SQL.Add('DELETE FROM crdelete');
+  ZQueryCrdelete.SQL.Add('WHERE sday<'+Edit_sday.Text);
+  ZQueryCrdelete.ExecSQL;
+
   ZQueryCrdelete.Close;
   ZQueryCrdelete.SQL.Clear;
   ZQueryCrdelete.SQL.Add('SELECT * FROM crdelete');
   ZQueryCrdelete.SQL.Add('WHERE sday>='+Edit_sday.Text);
-  if not CheckBox2.Checked then
-    ZQueryCrdelete.SQL.Add('ORDER BY crmoney DESC')
-  else if not CheckBox3.Checked then
-    ZQueryCrdelete.SQL.Add('ORDER BY storage DESC')
-  else
-    ZQueryCrdelete.SQL.Add('ORDER BY sday DESC');
+  ZQueryCrdelete.SQL.Add('ORDER BY sday DESC');
   ZQueryCrdelete.Open;
   fkey:='';
   wwDBGrid1.Enabled:=True;
 end;
 
-procedure TCustDelForm.FormActivate(Sender: TObject);
+procedure TCustDelForm.Action_CtrlDelExecute(Sender: TObject);
+var
+  cnt: integer;
+  crcode, msg: string;
 begin
-  Panel_F1.Left:=Trunc((Width-Panel_F1.Width)/2);
-  Panel_F1.Top:=Trunc((Height-Panel_F1.Height)/2);
-  PanelPBar.Left:=Trunc((Width-PanelPBar.Width)/2);
-  PanelPBar.Top:=Trunc((Height-PanelPBar.Height)/2);
-  CloseAllPanel();
-end;
-
-procedure TCustDelForm.FormShow(Sender: TObject);
-begin
-  Action_F1Execute(Self);
+  cnt:=3;
+  msg:='確定刪除客戶資料？';
+  while cnt>0 do
+    begin
+    if IDNO=MessageBox(handle,PChar(msg),'刪除',MB_ICONQUESTION+MB_YESNO +MB_DEFBUTTON2) then
+      break;
+    cnt:=cnt-1;
+    end;
+  if cnt=0 then
+    begin
+    ZQueryCrdelete.Close;
+    ZQueryCrdelete.SQL.Clear;
+    ZQueryCrdelete.SQL.Add('SELECT * FROM crdelete');
+    ZQueryCrdelete.Open;
+    While not ZQueryCrdelete.Eof do
+      begin
+      ZQuery_wio.Close;
+      ZQuery_wio.SQL.Clear;
+      ZQuery_wio.SQL.Add('DELETE FROM wio');
+      ZQuery_wio.SQL.Add('WHERE crcode='''+ZQueryCrdelete.FieldByName('crcode').AsString+'''');
+      ZQuery_wio.ExecSQL;
+      ZQueryCrdelete.Next;
+      end;
+    end;
 end;
 
 end.

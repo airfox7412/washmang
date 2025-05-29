@@ -38,13 +38,10 @@ object CustDelForm: TCustDelForm
     TabOrder = 0
     ToolbarControls = (
       RzToolbarButtonF1
-      RzToolbarButtonF2
-      RzToolbarButtonF3
-      RzToolbarButtonF4
       RzToolbarButtonCtrlDel
       RzToolbarButton_Esc)
     object RzToolbarButtonCtrlDel: TRzToolbarButton
-      Left = 404
+      Left = 104
       Top = 3
       Width = 125
       Height = 22
@@ -53,39 +50,12 @@ object CustDelForm: TCustDelForm
       HotNumGlyphs = 0
     end
     object RzToolbarButton_Esc: TRzToolbarButton
-      Left = 529
+      Left = 229
       Top = 3
       Width = 100
       Height = 22
       Action = Action_Esc
       Caption = 'Esc.離開'
-      HotNumGlyphs = 0
-    end
-    object RzToolbarButtonF3: TRzToolbarButton
-      Left = 204
-      Top = 3
-      Width = 100
-      Height = 22
-      Action = Action_F3
-      Caption = 'F3.欠款'
-      HotNumGlyphs = 0
-    end
-    object RzToolbarButtonF4: TRzToolbarButton
-      Left = 304
-      Top = 3
-      Width = 100
-      Height = 22
-      Action = Action_F4
-      Caption = 'F4.久未交易'
-      HotNumGlyphs = 0
-    end
-    object RzToolbarButtonF2: TRzToolbarButton
-      Left = 104
-      Top = 3
-      Width = 100
-      Height = 22
-      Action = Action_F2
-      Caption = 'F2.全部'
       HotNumGlyphs = 0
     end
     object RzToolbarButtonF1: TRzToolbarButton
@@ -106,6 +76,7 @@ object CustDelForm: TCustDelForm
     Selected.Strings = (
       'crcode'#9'5'#9'客戶編號'#9#9
       'crname'#9'10'#9'姓名'#9#9
+      'crtelb'#9'10'#9'電腦編號'#9'F'#9
       'crmoney'#9'10'#9'餘額'#9'F'#9
       'storage'#9'10'#9'未取'#9#9
       'sdate'#9'9'#9'最近交易'#9#9
@@ -142,8 +113,8 @@ object CustDelForm: TCustDelForm
   object Panel_F1: TPanel
     Left = 301
     Top = 128
-    Width = 276
-    Height = 169
+    Width = 340
+    Height = 225
     BevelWidth = 5
     Color = clHighlight
     Font.Charset = ANSI_CHARSET
@@ -156,7 +127,7 @@ object CustDelForm: TCustDelForm
     object Label19: TLabel
       Left = 5
       Top = 5
-      Width = 266
+      Width = 330
       Height = 32
       Align = alTop
       Alignment = taCenter
@@ -171,57 +142,62 @@ object CustDelForm: TCustDelForm
       ParentFont = False
     end
     object Label1: TLabel
-      Left = 16
-      Top = 48
+      Left = 123
+      Top = 51
       Width = 100
       Height = 19
-      Caption = '幾天未交易'
+      Caption = '天未交易者'
     end
-    object CheckBox2: TCheckBox
-      Left = 16
-      Top = 74
-      Width = 100
-      Height = 17
-      Caption = '餘額為0'
-      Checked = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -19
-      Font.Name = '細明體'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 0
+    object Label2: TLabel
+      Left = 292
+      Top = 86
+      Width = 20
+      Height = 19
+      Caption = '元'
     end
-    object CheckBox3: TCheckBox
-      Left = 16
-      Top = 98
-      Width = 137
-      Height = 17
-      Caption = '未取衣物為0'
-      Checked = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -19
-      Font.Name = '細明體'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 1
+    object Label3: TLabel
+      Left = 55
+      Top = 85
+      Width = 80
+      Height = 19
+      Caption = '餘額低於'
+    end
+    object Label4: TLabel
+      Left = 204
+      Top = 86
+      Width = 20
+      Height = 19
+      Caption = '～'
     end
     object Button1: TButton
-      Left = 104
-      Top = 128
+      Left = 81
+      Top = 185
       Width = 75
       Height = 25
       Caption = '確定'
-      TabOrder = 3
+      TabOrder = 1
       OnClick = Button1Click
     end
     object Edit_sday: TEdit
-      Left = 120
-      Top = 44
-      Width = 137
+      Left = 61
+      Top = 46
+      Width = 54
+      Height = 27
+      Color = clWhite
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlue
+      Font.Height = -19
+      Font.Name = '細明體'
+      Font.Style = []
+      ImeMode = imSAlpha
+      ParentFont = False
+      TabOrder = 0
+      Text = '365'
+    end
+    object EditMoney1: TEdit
+      Left = 143
+      Top = 80
+      Width = 60
       Height = 27
       Color = clWhite
       Font.Charset = ANSI_CHARSET
@@ -232,13 +208,56 @@ object CustDelForm: TCustDelForm
       ImeMode = imSAlpha
       ParentFont = False
       TabOrder = 2
-      Text = '365'
+      Text = '0'
+    end
+    object RadioButton1: TRadioButton
+      Left = 35
+      Top = 121
+      Width = 129
+      Height = 17
+      Caption = '無未取衣物'
+      Checked = True
+      TabOrder = 3
+      TabStop = True
+    end
+    object RadioButton2: TRadioButton
+      Left = 35
+      Top = 153
+      Width = 129
+      Height = 17
+      Caption = '含未取衣物'
+      TabOrder = 4
+    end
+    object Button2: TButton
+      Left = 201
+      Top = 185
+      Width = 75
+      Height = 25
+      Caption = '放棄'
+      TabOrder = 5
+      OnClick = Button2Click
+    end
+    object EditMoney2: TEdit
+      Left = 227
+      Top = 80
+      Width = 60
+      Height = 27
+      Color = clWhite
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlue
+      Font.Height = -19
+      Font.Name = '細明體'
+      Font.Style = []
+      ImeMode = imSAlpha
+      ParentFont = False
+      TabOrder = 6
+      Text = '0'
     end
   end
   object PanelPBar: TPanel
     Left = 280
     Top = 16
-    Width = 313
+    Width = 377
     Height = 63
     BevelWidth = 3
     Color = clFuchsia
@@ -246,10 +265,10 @@ object CustDelForm: TCustDelForm
     object LabelWait: TLabel
       Left = 3
       Top = 3
-      Width = 307
+      Width = 371
       Height = 27
       Align = alTop
-      Caption = '資料處理中，請稍候...'
+      Caption = '資料處理中，請耐心等候...'
       Color = clBlack
       Font.Charset = ANSI_CHARSET
       Font.Color = clYellow
@@ -262,7 +281,7 @@ object CustDelForm: TCustDelForm
     object RzProgressBar1: TRzProgressBar
       Left = 3
       Top = 30
-      Width = 307
+      Width = 371
       Height = 30
       Align = alClient
       BarStyle = bsGradient
@@ -322,7 +341,6 @@ object CustDelForm: TCustDelForm
   end
   object ZQuery_cr: TZQuery
     Connection = WDM.ZConnection1
-    Active = True
     SQL.Strings = (
       'select * from cr'
       'where crmark='#39'Y'#39' AND crmoney=0')
@@ -490,6 +508,18 @@ object CustDelForm: TCustDelForm
       LookupDataSet = ZQuery_cr
       LookupKeyFields = 'crcode'
       LookupResultField = 'crname'
+      KeyFields = 'crcode'
+      Size = 10
+      Lookup = True
+    end
+    object ZQueryCrdeletecrtelb: TStringField
+      DisplayLabel = '電腦編號'
+      DisplayWidth = 10
+      FieldKind = fkLookup
+      FieldName = 'crtelb'
+      LookupDataSet = ZQuery_cr
+      LookupKeyFields = 'crcode'
+      LookupResultField = 'crtelb'
       KeyFields = 'crcode'
       Size = 10
       Lookup = True

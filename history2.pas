@@ -59,6 +59,7 @@ type
     ZQuery_wocrtelb: TStringField;
     CtrlAltF9: TAction;
     ZQuery_wocradr: TStringField;
+    PrintButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Action_EscExecute(Sender: TObject);
     procedure ZQuery_woCalcFields(DataSet: TDataSet);
@@ -73,6 +74,7 @@ type
     procedure Action_F1Execute(Sender: TObject);
     procedure Action_F9Execute(Sender: TObject);
     procedure CtrlAltF9Execute(Sender: TObject);
+    procedure PrintButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -94,6 +96,7 @@ uses WDModule, lcutils, PPreview;
 procedure THistory2Form.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -117,6 +120,13 @@ begin
   wwDBGrid1.IniAttributes.FileName:=ExtractFilePath(Application.ExeName)+'Clothes.ini';
   wwDBGrid1.IniAttributes.SectionName:='History2'+IntToStr(wisnod);
   wwDBGrid1.LoadFromIniFile;
+end;
+
+procedure THistory2Form.FormActivate(Sender: TObject);
+begin
+  WDM.FormColorSet(History2Form);  
+  PanelDateSet.Left:=Trunc((Width-PanelDateSet.Width)/2);
+  PanelDateSet.Top:=Trunc((Height-PanelDateSet.Height)/2);
 end;
 
 procedure THistory2Form.Action_EscExecute(Sender: TObject);
@@ -210,14 +220,6 @@ begin
      end;
 end;
 
-procedure THistory2Form.FormActivate(Sender: TObject);
-begin
-  WDM.FormColorSet(History2Form);
-  
-  PanelDateSet.Left:=Trunc((Width-PanelDateSet.Width)/2);
-  PanelDateSet.Top:=Trunc((Height-PanelDateSet.Height)/2);
-end;
-
 procedure THistory2Form.MaskEditDate2KeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
@@ -234,6 +236,11 @@ begin
     PanelDateSet.SendToBack;
     wwDBGrid1.SetFocus;
     fkey:='';
+    end;
+  if (fkey='F9')AND(Key=VK_Return) then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
     end;
 end;
 
@@ -254,6 +261,8 @@ begin
     fkey:='F1';
     MaskEditDate1.SetFocus;
     PanelDateSet.BringToFront;
+    PrintButton.Visible:=false;
+    PanelDateSet.Height:=129;
     end;
 end;
 
@@ -261,30 +270,11 @@ procedure THistory2Form.Action_F9Execute(Sender: TObject);
 begin
   if fkey='' then
     begin
-    fkey:='F9';     
-    ZQuery_wo.Close;
-    ZQuery_wo.SQL.Clear;
-    ZQuery_wo.SQL.Add('SELECT * FROM wo');
-    ZQuery_wo.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
-    ZQuery_wo.SQL.Add('AND widate BETWEEN '''+MaskEditDate1.Text+''' AND '''+MaskEditDate2.Text+'''');
-    ZQuery_wo.SQL.Add('AND fritem IN (''I'',''O'',''Q'',''R'',''V'',''W'')');
-    ZQuery_wo.SQL.Add('ORDER BY widate DESC, witime DESC');
-    ZQuery_wo.Open;
-    wwDBGrid1.DataSource.DataSet.DisableControls;
-    try
-      PreviewForm := TPreviewForm.Create(Application);
-      frxReportF9.LoadFromFile(WDM.WPath+'Report\History2.rep');
-      (frxReportF9.FindObject('MemoDate')as TfrxMemoView).Text:=MaskEditDate1.Text+'¡ã'+MaskEditDate2.Text;
-      frxReportF9.preview:=PreviewForm.frxPreview1;
-      frxReportF9.ShowReport; //¿Ã¹õ¹wÄý
-      PreviewForm.ShowModal; //¦Û­q¹wÄýµøµ¡
-      FreeAndNil(PreviewForm);
-    except
-      on E: Exception do
-        MessageDlg ('¿ù»~: '+E.Message, mtError,[mbOK], 0);
-    end;
-    wwDBGrid1.DataSource.DataSet.EnableControls;
-    fkey:='';
+    fkey:='F9';
+    MaskEditDate1.SetFocus;
+    PanelDateSet.BringToFront;
+    PrintButton.Visible:=true; 
+    PanelDateSet.Height:=177;
     end;
 end;
 
@@ -292,6 +282,41 @@ procedure THistory2Form.CtrlAltF9Execute(Sender: TObject);
 begin
   frxReportF9.LoadFromFile(WDM.WPath+'Report\History2.rep');
   frxReportF9.DesignReport;
+end;
+
+procedure THistory2Form.PrintButtonClick(Sender: TObject);
+begin
+  //fkey:='F9';
+  PanelDateSet.SendToBack;
+  ZQuery_wo.Close;
+  ZQuery_wo.SQL.Clear;
+  ZQuery_wo.SQL.Add('SELECT * FROM wo');
+  ZQuery_wo.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
+  ZQuery_wo.SQL.Add('AND widate BETWEEN '''+MaskEditDate1.Text+''' AND '''+MaskEditDate2.Text+'''');
+  ZQuery_wo.SQL.Add('AND fritem IN (''I'',''O'',''Q'',''R'',''V'',''W'')');
+  ZQuery_wo.SQL.Add('ORDER BY widate DESC, witime DESC');
+  ZQuery_wo.Open;
+  wwDBGrid1.DataSource.DataSet.DisableControls;
+  try
+    PreviewForm := TPreviewForm.Create(Application);
+    frxReportF9.LoadFromFile(WDM.WPath+'Report\History2.rep');
+    (frxReportF9.FindObject('MemoDate')as TfrxMemoView).Text:=MaskEditDate1.Text+'¡ã'+MaskEditDate2.Text;
+    frxReportF9.preview:=PreviewForm.frxPreview1;
+    frxReportF9.ShowReport; //¿Ã¹õ¹wÄý
+    PreviewForm.ShowModal; //¦Û­q¹wÄýµøµ¡
+    FreeAndNil(PreviewForm);
+  except
+    on E: Exception do
+      MessageDlg ('¿ù»~: '+E.Message, mtError,[mbOK], 0);
+  end;
+  ZQuery_wo.Close;
+  ZQuery_wo.SQL.Clear;
+  ZQuery_wo.SQL.Add('SELECT * FROM wo');
+  ZQuery_wo.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
+  ZQuery_wo.SQL.Add('ORDER BY widate DESC, witime DESC');
+  ZQuery_wo.Open;
+  wwDBGrid1.DataSource.DataSet.EnableControls;
+  fkey:='';
 end;
 
 end.

@@ -286,7 +286,6 @@ object VipRepForm: TVipRepForm
     User = 'root'
     Password = 'root'
     Catalog = 'washshop'
-    Connected = True
     DesignConnection = True
     SQLHourGlass = True
     Left = 312

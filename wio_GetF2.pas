@@ -69,7 +69,6 @@ type
     Label10: TLabel;
     RadioButton1: TRadioButton;
     RadioButton2: TRadioButton;
-    Label3: TLabel;
     RzToolbarButtonCP: TRzToolbarButton;
     Action_CtrlF5: TAction;
     RzToolbarButtonCF5: TRzToolbarButton;
@@ -211,6 +210,12 @@ type
     ZQueryF9crvip: TStringField;
     ZQueryVip: TZQuery;
     GetKey: TProfileString;
+    Label30: TLabel;
+    RadioButtonCash: TRadioButton;
+    RadioButtonEpay: TRadioButton;
+    Label3: TLabel;
+    RadioGroup1: TRadioGroup;
+    RzToolbarButtonCF8: TRzToolbarButton;
     procedure Button3Click(Sender: TObject);
     procedure Action_F5Execute(Sender: TObject);
     procedure Action_F6Execute(Sender: TObject);
@@ -293,6 +298,9 @@ type
       Shift: TShiftState);
     procedure Edit_GetcntKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure RadioButtonCashClick(Sender: TObject);
+    procedure RadioButtonEpayClick(Sender: TObject);
+    procedure RzToolbarButtonCF8Click(Sender: TObject);
 
   private
     { private declarations }
@@ -318,7 +326,8 @@ type
     procedure PrintF9(index: Integer);
     Function Setpflag():Boolean;
     procedure SP300(flag: Boolean);
-    procedure TT027_50(flag: Boolean);
+    procedure TT027_501(flag: Boolean);
+    procedure TT027_502(flag: Boolean);
   end;
 
 var
@@ -634,11 +643,6 @@ begin
     frxReport1.PrintOptions.ShowDialog := False; //不顯示對話框
     //frxReport1.PrintOptions.Printer := PrinterName; //指定印表機
     frxReport1.Print; //列印
-
-    if (index=3)AND(WDM.ZTableCompy.FieldByName('SP300').AsString='是') then
-      SP300(True)
-    else
-      SP300(False);
     fkey:='';
     wwDBGrid1.SetFocus;
 end;
@@ -647,6 +651,9 @@ procedure TWioGetF2Form.SP300(flag: Boolean);
 var
   F: TextFile;
   i, j, k, rno: Integer;
+  aname: TStringList;
+  winame: String;
+  qty: Integer;
 begin
   if flag then
     begin
@@ -654,47 +661,35 @@ begin
     Rewrite(F);
     Write(F, #14); // 字型擴展
     Write(F, #27+'0'); // Set 1/8-inch line feed
-    ZQueryF9.Close;
-    ZQueryF9.SQL.Clear;
-    ZQueryF9.SQL.Add('SELECT * FROM wio');
-    ZQueryF9.SQL.Add('WHERE wicode='''+ZQuery_wio.FieldByName('wicode').AsString+'''');
-    ZQueryF9.SQL.Add('ORDER BY wicode,wisno');
     ZQueryF9.Open;
-    ZQueryF9.First;
     i:=0;
     rno:=0;
     while not ZQueryF9.Eof do
       begin
-      rno:=rno+ZQueryF9.FieldByName('wiquty').AsInteger;
+      qty:=ZQueryF9.FieldByName('wiquty').AsInteger;
+      rno:=rno+qty;
       ZQueryF9.Next;
       end;
     ZQueryF9.First;
     while not ZQueryF9.Eof do
       begin
-      for j:=1 to ZQueryF9.FieldByName('wiquty').AsInteger do
+      qty:=ZQueryF9.FieldByName('wiquty').AsInteger;
+      winame:=ZQueryF9.FieldByName('winame').AsString;
+      if POS('-',winame)<>0 then
+        begin
+        aname:=TokenStr('-', winame);
+        winame:=aname[0];
+        qty:=qty*StrToInt(aname[1]);
+        end;
+      for j:=1 to qty do
         begin
         i:=i+1;
         Writeln(F, ZQueryF9.FieldByName('wicode').AsString+'-'+IntToStr(i)+'-'+ZQueryF9.FieldByName('widate').AsString);
-        Writeln(F, Copy(ZQueryF9.FieldByName('wiwash').AsString,1,2)+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+ZQueryF9.FieldByName('winame').AsString);//+' '+ZQueryF9.FieldByName('wiitem').AsString);
+        Writeln(F, Copy(ZQueryF9.FieldByName('wiwash').AsString,1,2)+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+winame);//+' '+ZQueryF9.FieldByName('wiitem').AsString);
         Write(F, #27+'a'+chr(5));
         Write(F, #27+'d0'); //切刀
         Write(F, #27+'j'+chr(52)); //Feed paper n lines n/72 inch.
         end;
-      k:=1;
-      if Pos('2',ZQueryF9.FieldByName('winame').AsString)<>0 then
-        k:=2;
-      if Pos('3',ZQueryF9.FieldByName('winame').AsString)<>0 then
-        k:=3;
-      if k<>1 then
-        for j:=2 to k do
-          begin
-          i:=i+1;
-          Writeln(F, ZQueryF9.FieldByName('wicode').AsString+'-'+IntToStr(i)+'-'+ZQueryF9.FieldByName('widate').AsString);
-          Writeln(F, Copy(ZQueryF9.FieldByName('wiwash').AsString,1,2)+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+ZQueryF9.FieldByName('winame').AsString);//+' '+ZQueryF9.FieldByName('wiitem').AsString);
-          Write(F, #27+'a'+chr(5));
-          Write(F, #27+'d0'); //切刀
-          Write(F, #27+'j'+chr(52)); //Feed paper n lines n/72 inch.
-          end;
       ZQueryF9.Next;
       end;
     ZQueryF9.Close;
@@ -702,9 +697,9 @@ begin
   end;
 end;
 
-procedure TWioGetF2Form.TT027_50(flag: Boolean);
+procedure TWioGetF2Form.TT027_501(flag: Boolean);
 var
-  i, j, k, rno: Integer;
+  i, j, k, c, rno, qty: Integer;
   ret,nLen,sw : integer;
   pbuf : array[0..127] of AnsiChar;
 
@@ -714,11 +709,18 @@ var
   buf1,buf2 : AnsiString;
   buff1 : array[0..127] of WideChar;
   himage : HBITMAP;
+  line1, line2, line3, line3_x, line3_y, line3_h : string;
+  str0, str1, str2, str3, str4, str5: TStringList;
+  aname: TStringList;
+  winame: String;
 begin
   if flag then
     begin
     openport('USB');
-    setup('100', '12', '2.0', '3', '0', '0', '0');
+    str0:=TStringList.Create;
+    str0:=TokenStr(',',WDM.POS.Value);
+    //寬度,高度,速度,濃度,感應類型,垂直間距,偏移距離
+    setup('100', PChar(str0[6]), '2.0', '3', '0', '0', '0');
     sendcommand('DIRECTION 1');
     ZQueryF9.Open;
     i:=0;
@@ -731,33 +733,197 @@ begin
     ZQueryF9.First;
     while not ZQueryF9.Eof do
       begin
-      for j:=1 to ZQueryF9.FieldByName('wiquty').AsInteger do
+      if WDM.LINE3.Value<>'' then
+        begin
+        str3:=TStringList.Create;
+        str3:=TokenStr('/',WDM.LINE3.Value);
+        line3_x:=str3[0];
+        line3_y:=str3[1];
+        line3_h:=str3[2];
+        line3:=str3[3]+ZQueryF9.FieldByName(str3[4]).AsString;
+        end;
+      if WDM.LINE4.Value<>'' then
+        begin
+        str4:=TStringList.Create;
+        str4:=TokenStr(',',WDM.LINE4.Value);
+        end;
+      if WDM.LINE5.Value<>'' then
+        begin
+        str5:=TStringList.Create;
+        str5:=TokenStr(',',WDM.LINE5.Value);
+        end;
+      str1:=TStringList.Create;
+      str1:=TokenStr('/',WDM.LINE1.Value);
+      for c:=0 to str1.Count-1 do
+        begin
+        if (c=0) then
+          line1:=ZQueryF9.FieldByName(str1[c]).AsString
+        else if (str1[c]='count') then
+          line1:=line1+'-'+IntToStr(i)
+        else
+          line1:=line1+'-'+ZQueryF9.FieldByName(str1[c]).AsString;
+        end;
+
+      str2:=TokenStr('/',WDM.LINE2.Value);
+      for c:=0 to str2.Count-1 do
+        begin
+        if (c=0) then
+          line2:=ZQueryF9.FieldByName(str2[c]).AsString
+        else if (str2[c]='amount') then
+          line2:=line2+' '+IntToStr(i)
+        else
+          line2:=line2+' '+ZQueryF9.FieldByName(str2[c]).AsString;
+        end;
+
+      qty:=ZQueryF9.FieldByName('wiquty').AsInteger;
+      winame:=ZQueryF9.FieldByName('winame').AsString;
+      if POS('-',winame)<>0 then
+        begin
+        aname:=TokenStr('-', winame);
+        winame:=aname[0];
+        qty:=qty*StrToInt(aname[1]);
+        end;
+      for j:=1 to qty do
         begin
         i:=i+1;
         clearbuffer;
-        windowsfont(50, 1, 46, 0, 2, 0, 'Arial', pchar(ZQueryF9.FieldByName('wicode').AsString+'-'+IntToStr(i)+'-'+ZQueryF9.FieldByName('widate').AsString));
-        windowsfont(50, 46, 46, 0, 2, 0, '標楷體', pchar(ZQueryF9.FieldByName('wiwash').AsString+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+ZQueryF9.FieldByName('winame').AsString));
+        //X,Y,高度,旋轉,粗體,無底線,字體,文字內容
+        windowsfont(strtoint(str0[0]), strtoint(str0[1]), strtoint(str0[2]), 0, 2, 0, 'Arial', pchar(line1+' '+IntToStr(qty)+'-'+IntToStr(j)));
+        windowsfont(strtoint(str0[3]), strtoint(str0[4]), strtoint(str0[5]), 0, 2, 0, '標楷體', pchar(line2));
+        //barcode('10','0','EAN13','80','1','0',"2",'4','123456789012');
+        if str3.count=5 then
+          barcode(pchar(line3_x), pchar(line3_y), '39', pchar(line3_h), '0', '0', '2', '4', pchar(WDM.LINE6.Value+line3));
+        if str4.count=4 then
+          windowsfont(strtoint(str4[0]), strtoint(str4[1]), strtoint(str4[2]), 0, 2, 0, 'Arial', pchar(ZQueryF9.FieldByName(str4[3]).AsString));
+        if str5.count=4 then
+          windowsfont(strtoint(str5[0]), strtoint(str5[1]), strtoint(str5[2]), 0, 2, 0, 'Arial', pchar(str5[3]));
         printlabel('1', '1'); //開始印
         end;
-      k:=1;
-      if Pos('2',ZQueryF9.FieldByName('winame').AsString)<>0 then
-        k:=2;
-      if Pos('3',ZQueryF9.FieldByName('winame').AsString)<>0 then
-        k:=3;
-      if k<>1 then
-        for j:=2 to k do
-          begin
-          i:=i+1;
-          clearbuffer;
-          windowsfont(50, 1, 46, 0, 2, 0, 'Arial', pchar(ZQueryF9.FieldByName('wicode').AsString+'-'+IntToStr(i)+'-'+ZQueryF9.FieldByName('widate').AsString));
-          windowsfont(50, 46, 46, 0, 2, 0, '標楷體', pchar(ZQueryF9.FieldByName('wiwash').AsString+' '+IntToStr(rno)+ZQueryF9.FieldByName('crname').AsString+' '+ZQueryF9.FieldByName('winame').AsString));
-          printlabel('1', '1'); //開始印
-          end;
       ZQueryF9.Next;
       end;
     ZQueryF9.Close;
     closeport;
   end;
+end;
+
+procedure TWioGetF2Form.TT027_502(flag: Boolean);
+var
+  i, j, k, c, rno, qty: Integer;
+  ret,nLen,sw : integer;
+  pbuf : array[0..127] of AnsiChar;
+
+  ver : PAnsiChar;
+  strmsg : string;
+  len1,len2 : integer;
+  buf1,buf2 : AnsiString;
+  buff1 : array[0..127] of WideChar;
+  himage : HBITMAP;
+  line1, line2, line3, line3_x, line3_y : string;
+  str0, str1, str2, str3, str4, str5: TStringList;
+begin
+  if flag then
+    begin
+    openport('USB');
+    str0:=TStringList.Create;
+    str0:=TokenStr(',',WDM.POS.Value);
+    //寬度,高度,速度,濃度,感應類型,垂直間距,偏移距離
+    setup('100', PChar(str0[6]), '2.0', '3', '0', '0', '0');
+    sendcommand('DIRECTION 1');
+    ZQueryF9.Open;
+    i:=0;
+    rno:=0;
+    while not ZQueryF9.Eof do
+      begin
+      rno:=rno+ZQueryF9.FieldByName('wiquty').AsInteger;
+      ZQueryF9.Next;
+      end;
+    ZQueryF9.First;
+    while not ZQueryF9.Eof do
+      begin
+      if WDM.LINE3.Value<>'' then
+        begin
+        str3:=TStringList.Create;
+        str3:=TokenStr('/',WDM.LINE3.Value);
+        line3_x:=str3[0];
+        line3_y:=str3[1];
+        line3:=str3[2]+ZQueryF9.FieldByName(str3[3]).AsString;
+        end;
+      if WDM.LINE4.Value<>'' then
+        begin
+        str4:=TStringList.Create;
+        str4:=TokenStr(',',WDM.LINE4.Value);
+        end;
+      if WDM.LINE5.Value<>'' then
+        begin
+        str5:=TStringList.Create;
+        str5:=TokenStr(',',WDM.LINE5.Value);
+        end;
+
+      str1:=TStringList.Create;
+      str1:=TokenStr('/',WDM.LINE1.Value);
+      for c:=0 to str1.Count-1 do
+        begin
+        if (c=0) then
+          line1:=ZQueryF9.FieldByName(str1[c]).AsString
+        else if (str1[c]='count') then
+          line1:=line1+'-'+IntToStr(i)
+        else
+          line1:=line1+'-'+ZQueryF9.FieldByName(str1[c]).AsString;
+        end;
+
+      str2:=TokenStr('/',WDM.LINE2.Value);
+      for c:=0 to str2.Count-1 do
+        begin
+        if (c=0) then
+          line2:=ZQueryF9.FieldByName(str2[c]).AsString
+        else if (str2[c]='amount') then
+          line2:=line2+' '+IntToStr(i)
+        else
+          line2:=line2+' '+ZQueryF9.FieldByName(str2[c]).AsString;
+        end;
+
+      i:=i+1;
+      clearbuffer;
+      //X,Y,高度,旋轉,粗體,無底線,字體,文字內容
+      windowsfont(strtoint(str0[0]), strtoint(str0[1]), strtoint(str0[2]), 0, 2, 0, 'Arial', pchar(line1+' '+IntToStr(rno)+'-'+IntToStr(i)));
+      windowsfont(strtoint(str0[3]), strtoint(str0[4]), strtoint(str0[5]), 0, 2, 0, '標楷體', pchar(line2));
+      //barcode('10','0','EAN13','80','1','0',"2",'4','123456789012');
+      if str3.count=4 then
+        barcode(pchar(line3_x), pchar(line3_y), '39', '92', '0', '0', '2', '4', pchar(WDM.LINE6.Value+line3));
+      if str4.count=4 then
+        windowsfont(strtoint(str4[0]), strtoint(str4[1]), strtoint(str4[2]), 0, 2, 0, 'Arial', pchar(ZQueryF9.FieldByName(str4[3]).AsString));
+      if str5.count=4 then
+        windowsfont(strtoint(str5[0]), strtoint(str5[1]), strtoint(str5[2]), 0, 2, 0, 'Arial', pchar(str5[3]));
+      printlabel('1', '1'); //開始印
+      ZQueryF9.Next;
+      end;
+    ZQueryF9.Close;
+    closeport;
+  end;
+end;
+
+procedure TWioGetF2Form.Action_CF9Execute(Sender: TObject);
+begin
+  ZQueryF9.Close;
+  ZQueryF9.SQL.Clear;
+  ZQueryF9.SQL.Add('SELECT * FROM wio');
+  ZQueryF9.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
+  ZQueryF9.SQL.Add('AND wicode='''+ZQuery_wio.FieldByName('wicode').AsString+'''');
+  ZQueryF9.SQL.Add('ORDER BY wisno');
+  ZQueryF9.Open;
+  //選擇標籤機機種
+  if WDM.pkind.Value='SP300' then
+    begin
+    SP300(True);
+    end
+  else if WDM.pkind.Value='TT027_501' then
+    begin
+    TT027_501(True);
+    end
+  else if WDM.pkind.Value='TT027_502' then
+    begin
+    TT027_502(True);
+    end
 end;
 
 Function TWioGetF2Form.ShowExKind(): Boolean;
@@ -790,7 +956,6 @@ begin
     Try
       ZQuery_wo.Insert;
       ZQuery_wo.FieldByName('crcode').AsString:=WDM.crcode;
-      //ZQuery_wo.FieldByName('wicode').Value:='000000';
       ZQuery_wo.FieldByName('wototal').AsFloat:=StrToFloat(lbNowMoney.Caption);
       ZQuery_wo.FieldByName('woptotal').AsFloat:=WDM.ZQuery_cr.FieldByName('crmoney').AsFloat;
       crpsen:=StrToFloat(copy(Hlbcrpsen.Caption,1,length(Hlbcrpsen.Caption)-1));
@@ -806,6 +971,8 @@ begin
       ZQuery_wo.FieldByName('witime').AsString:=FormatDateTime('hh:mm:ss',Time);
       ZQuery_wo.FieldByName('fritem').AsString:=fritem;
       ZQuery_wo.FieldByName('sfname').AsString:=WDM.loginid;
+      if RadioButtonEpay.Checked then
+         ZQuery_wo.FieldByName('paytype').AsInteger:=RadioGroup1.ItemIndex+1;
       ZQuery_wo.Post;
     Except
       ShowMessage('WO資料庫建立錯誤！');
@@ -1201,16 +1368,20 @@ begin
   if fkey='' then
     begin
     fkey:='F12';
-    lack:=StrToFloat(lbNowMoney.Caption);
+    //lack:=StrToFloat(lbNowMoney.Caption);
+    lack:=WDM.ZQuery_cr.FieldByName('crmoney').AsFloat;
     if lack<0 then
       LabelP1.Font.Color:=ClRed
     else
       LabelP1.Font.Color:=ClWhite;
+    lbNowMoney.Caption:=FloatToStr(lack);
     LabelP1.Caption:=FloatToStr(lack);
     Edit_Pay.Text:='0';
     Edit_Discount.Text:='0';
     Edit_Pay.SetFocus;
     Panel_Pay.BringToFront;
+    RadioButtonCash.Checked:=true;
+    Panel_Pay.width:=340;
     MoneyBox(WDM.COMUSE.Value); //錢櫃
     end;
 end;
@@ -1408,6 +1579,7 @@ procedure TWioGetF2Form.FormCreate(Sender: TObject);
 begin
   ProfileFile1.FileName:=WDM.WPath+'Clothes.ini';
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -1523,7 +1695,7 @@ procedure TWioGetF2Form.Image1Click(Sender: TObject);
 begin
   try
     ShowPicForm := TShowPicForm.Create(Application);
-    ShowPicForm.PicName:=ZQuery_wio.FieldByName('picture').AsString;
+    ShowPicForm.PicName:=ZQuery_wio.FieldByName('wicode').AsString+'_'+ZQuery_wio.FieldByName('wisno').AsString+'_';
     ShowPicForm.ShowModal;
     FreeAndNil(ShowPicForm);
     wwDBGrid1.SetFocus;
@@ -1609,21 +1781,19 @@ end;
 
 procedure TWioGetF2Form.wwDBGrid1RowChanged(Sender: TObject);
 var
-  crcode,wicode,picname: String;
+  crcode, wicode, wisno, picname, picpath: String;
 begin
   //lb_widate.Caption:=ZQuery_wio.FieldByName('widate').AsString;
   crcode:=ZQuery_wio.FieldByName('crcode').AsString;
   wicode:=ZQuery_wio.FieldByName('wicode').AsString;
+  wisno:=ZQuery_wio.FieldByName('wisno').AsString;
+  picname:=WDM.WPath+'Captures\'+wicode+'_'+wisno+'_01.jpg';
   if fkey='' then
     begin
-    if ZQuery_wio.FieldByName('picture').AsString<>'' then
+    if FileExists(picname) then
       begin
-      picname:=ExtractFilePath(Application.ExeName)+'Captures\'+ZQuery_wio.FieldByName('picture').AsString;
-      if FileExists(picname) then
-        begin
-        Image1.Picture.LoadFromFile(picname);
-        Image1.Visible:=True;
-        end;
+      Image1.Picture.LoadFromFile(picname);
+      Image1.Visible:=True;
       end
     else
       Image1.Visible:=False;
@@ -1637,19 +1807,29 @@ procedure TWioGetF2Form.wwDBGrid1CalcCellColors(Sender: TObject;
   ABrush: TBrush);
 begin
   if Field.FieldName='wicode' then
-    AFont.Color:=ClYellow;
-  if Field.FieldName='wiodate' then
+    AFont.Color:=ClYellow
+  else if Field.FieldName='wicode' then
+    AFont.Color:=ClYellow
+  {else if Field.FieldName='wiodate' then
     begin
     if Field.Value=ChinaDate1(Date) then
-       AFont.Color:=clYellow;
-    end;
-  if Field.FieldName='wimemo' then
+       AFont.Color:=clRed;
+    end}
+  else if Field.FieldName='wimemo' then
     begin
     if Field.Value='未付' then
        AFont.Color:=clRed;
     if highlight then
        AFont.Color:=clWhite;
-    end;
+    end
+  else if Field.FieldName='wisno' then
+     if wwDBGrid1.DataSource.DataSet.FieldByName('wiodate').AsString='' then
+       AFont.Color:=clYellow
+     else
+       begin
+       ABrush.Color:= clYellow;
+       AFont.Color:=clRed;
+       end;
   {if (not highlight) and (Sender as TwwDBGrid).isSelected then
     begin
     ABrush.Color:= clYellow;
@@ -1883,11 +2063,11 @@ begin
     begin
     RzToolbarButton_starClick(Self);
     end;
-  if (key=107) then //+
+  {if (key=107) then //+
     begin
     rfkey:='CF1';
     Close;
-    end;
+    end;}
 end;
 
 procedure TWioGetF2Form.wwDBGrid2Enter(Sender: TObject);
@@ -1944,7 +2124,10 @@ begin
     ret:=idYes;
 
   if ret=idNo then
-    Action:=caNone
+    begin
+    fkey:='';
+    Action:=caNone;
+    end
   else
     begin
     {ZQuery1.Close;
@@ -1988,31 +2171,6 @@ begin
     Label20.Caption:='總未取';
     lbNoGet.Width:=34;
     lbNoGet.Caption:=IntToStr(ngquty);
-    end;
-end;
-
-procedure TWioGetF2Form.Action_CF9Execute(Sender: TObject);
-begin
-  ZQueryF9.Close;
-  ZQueryF9.SQL.Clear;
-  ZQueryF9.SQL.Add('SELECT * FROM wio');
-  ZQueryF9.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
-  ZQueryF9.SQL.Add('AND wicode='''+ZQuery_wio.FieldByName('wicode').AsString+'''');
-  ZQueryF9.SQL.Add('ORDER BY wisno');
-  ZQueryF9.Open;
-  //標示已列印洗衣單
-  if WDM.ZTableCompy.FieldByName('SP300').AsString='是' then
-    begin
-    if WDM.pkind.Value='SP300' then
-      begin
-      SP300(True);
-      TT027_50(False);
-      end
-    else if WDM.pkind.Value='TT027_50' then
-      begin
-      SP300(False);
-      TT027_50(True);
-      end;
     end;
 end;
 
@@ -2201,14 +2359,21 @@ end;
 
 procedure TWioGetF2Form.wwDBGrid1KeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+  getkey: Word;
 begin
-  if (fkey='')AND(Key=VK_RETURN) then
+ //VK_N=78, VK_Add=107, VK_RETURN=13
+  if GetKB='VK_Add' then
+    getkey:=107
+  else if GetKB='VK_RETURN' then
+    getkey:=13;
+  if (fkey='')AND(Key=getkey) then
     begin
     Key:=0;
     SigGet(1);
     FBCode:='';
     end
-  else if (fkey='Esc')AND((Key=78)or(Key=VK_RETURN)) then //20151009 增加
+  else if (fkey='Esc')AND((Key=78)or(Key=getkey)) then
     begin
     Key:=0;
     fkey:='';
@@ -2258,6 +2423,41 @@ begin
       fkey:='';
       end;
     end;
+end;
+
+procedure TWioGetF2Form.RadioButtonCashClick(Sender: TObject);
+begin
+  Panel_Pay.Width:=340;
+end;
+
+procedure TWioGetF2Form.RadioButtonEpayClick(Sender: TObject);
+begin
+  Panel_Pay.Width:=500;
+end;
+
+procedure TWioGetF2Form.RzToolbarButtonCF8Click(Sender: TObject);
+begin
+  ZQueryF9.Close;
+  ZQueryF9.SQL.Clear;
+  ZQueryF9.SQL.Add('SELECT * FROM wio');
+  ZQueryF9.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
+  ZQueryF9.SQL.Add('AND wicode='''+ZQuery_wio.FieldByName('wicode').AsString+'''');
+  ZQueryF9.SQL.Add('AND wisno='''+ZQuery_wio.FieldByName('wisno').AsString+'''');
+  ZQueryF9.SQL.Add('ORDER BY wisno');
+  ZQueryF9.Open;
+  //選擇標籤機機種
+  if WDM.pkind.Value='SP300' then
+    begin
+    SP300(True);
+    end
+  else if WDM.pkind.Value='TT027_501' then
+    begin
+    TT027_501(True);
+    end
+  else if WDM.pkind.Value='TT027_502' then
+    begin
+    TT027_502(True);
+    end
 end;
 
 end.

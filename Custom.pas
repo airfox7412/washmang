@@ -6,7 +6,8 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, Forms, Dialogs, DBCtrls, frxClass, frxDBSet, ZDataset, Db,
   ZAbstractRODataset, ZAbstractDataset, ZConnection, ActnList, Grids,
-  Wwdbigrd, Wwdbgrid, Buttons, RzButton, RzPanel, ExtCtrls, Mask, wwdbedit;
+  Wwdbigrd, Wwdbgrid, Buttons, RzButton, RzPanel, ExtCtrls, Mask, wwdbedit,
+  frxExportXLS, RzPrgres;
 
 type
   TCustForm = class(TForm)
@@ -48,7 +49,6 @@ type
     RzPanel1: TRzPanel;
     DBTextcrmoney: TDBText;
     DBText2: TDBText;
-    DBText3: TDBText;
     Label1: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -118,6 +118,28 @@ type
     Edit_Area: TEdit;
     PanelName: TPanel;
     LB_name: TListBox;
+    Edit0: TEdit;
+    ZReadOnlyQueryVip: TZReadOnlyQuery;
+    ZQuery_pcrvpedate: TStringField;
+    Action_CF4: TAction;
+    Label20: TLabel;
+    DBTextcrmoney1: TDBText;
+    Action_CtrlAltD: TAction;
+    Action_CtrlF9: TAction;
+    Label21: TLabel;
+    crdate2: TDBText;
+    Action_CtrlAltF7: TAction;
+    PanelDateSet: TPanel;
+    Label22: TLabel;
+    Label23: TLabel;
+    MaskEditDate1: TMaskEdit;
+    ZQuery_pcrcrmoney1: TFloatField;
+    Label24: TLabel;
+    RzProgressBar1: TRzProgressBar;
+    CrDateEdit1: TMaskEdit;
+    Label25: TLabel;
+    CrDateEdit2: TMaskEdit;
+    Label26: TLabel;
     procedure Action_F1Execute(Sender: TObject);
     procedure Action_F2Execute(Sender: TObject);
     procedure Action_CtrlDelExecute(Sender: TObject);
@@ -183,16 +205,38 @@ type
     procedure LB_nameClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure CheckBox3Click(Sender: TObject);
+    procedure Edit0KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Action_CF4Execute(Sender: TObject);
+    procedure Action_CtrlAltDExecute(Sender: TObject);
+    procedure Action_CtrlF9Execute(Sender: TObject);
+    procedure wwDBGrid1CalcCellColors(Sender: TObject; Field: TField;
+      State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+      ABrush: TBrush);
+    procedure Action_CtrlAltF7Execute(Sender: TObject);
+    procedure MaskEditDate1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CrDateEdit2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CheckBox1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CheckBox2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CheckBox3KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Edit_AreaKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { private declarations }
   public
     { public declarations }
-    procedure New_wo();
     procedure CloseAllPanel();
     procedure ShowName();
     procedure ShowAdr();
     procedure EnableEdit(act: Integer);
     procedure CheckCr();
+    procedure New_wo(fritem: String; m1,m2,m3: Real);
   end;
 
 var
@@ -201,11 +245,12 @@ var
   crmoney, newcrmoney: Real;
   ppaa, dataflag: Boolean;
   bm: TBookMark;
-  newadr: String;
+  newadr, pname: String;
+  picno: Integer;
   
 implementation
 
-uses WDModule, lcutils, PPreview, GetCam, ShowPic;
+uses WDModule, lcutils, PPreview, GetCam, ShowPic, CustDel;
 
 {$R *.DFM}
 
@@ -214,9 +259,16 @@ var
   IStr: String;
 begin
   IStr:=Edit2.Text;
-  IStr:=StringReplace(IStr, '許', '許\\',[rfReplaceAll, rfIgnoreCase]);
-  IStr:=StringReplace(IStr, '功', '功\\',[rfReplaceAll, rfIgnoreCase]);
-  IStr:=StringReplace(IStr, '蓋', '蓋\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '許', '許\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '功', '功\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '蓋', '蓋\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '餐', '餐\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '愧', '愧\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '擺', '擺\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '穀', '穀\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '淚', '淚\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '豹', '豹\\\',[rfReplaceAll, rfIgnoreCase]);
+  IStr:=StringReplace(IStr, '珮', '珮\\\',[rfReplaceAll, rfIgnoreCase]);
   ZQuery_rcr.Close;
   ZQuery_rcr.SQL.Clear;
   ZQuery_rcr.SQL.Add('SELECT crcode,crname,crtel FROM cr');
@@ -260,6 +312,7 @@ begin
     aflag:=False
   else
     aflag:=True;
+  Edit0.Enabled:=aflag;
   Edit1.Enabled:=aflag;
   Edit2.Enabled:=aflag;
   Edit3.Enabled:=aflag;
@@ -272,7 +325,7 @@ begin
   Edit10.Enabled:=aflag;
 end;
 
-procedure TCustForm.New_wo();
+procedure TCustForm.New_wo(fritem: String; m1,m2,m3: Real);
 begin
   Try
     ZQuery_wo.Close;
@@ -280,22 +333,23 @@ begin
     ZQuery_wo.SQL.Add('SELECT * FROM wo');
     ZQuery_wo.SQL.Add('WHERE crcode='''+WDM.crcode+'''');
     ZQuery_wo.Open;
+
     ZQuery_wo.Append;
     ZQuery_wo.FieldByName('crcode').Value:=WDM.crcode;
-    ZQuery_wo.FieldByName('wototal').AsFloat:=newcrmoney;
-    ZQuery_wo.FieldByName('woptotal').AsFloat:=crmoney;
+    ZQuery_wo.FieldByName('wototal').AsFloat:=m1;
+    ZQuery_wo.FieldByName('woptotal').AsFloat:=m2;
     ZQuery_wo.FieldByName('wopsen').AsFloat:=0;
-    ZQuery_wo.FieldByName('worealmo').AsFloat:=0;
+    ZQuery_wo.FieldByName('worealmo').AsFloat:=m3;
     ZQuery_wo.FieldByName('wocntmo').AsFloat:=0;
     ZQuery_wo.FieldByName('widate').Value:=ChinaDate1(Date);
     ZQuery_wo.FieldByName('witime').Value:=FormatDateTime('hh:mm:ss',Time);
-    ZQuery_wo.FieldByName('fritem').AsString:='Z'; // Z.修改客額
-    ZQuery_wo.FieldByName('sfname').AsString:='無名氏';
+    ZQuery_wo.FieldByName('fritem').AsString:=fritem;
+    ZQuery_wo.FieldByName('sfname').AsString:=WDM.loginid;
     ZQuery_wo.Post;
-    ZQuery_wo.Close;
   Except
     ShowMessage('WO建立錯誤！');
   end;
+  ZQuery_wo.Close;
 end;
 
 procedure TCustForm.ShowName();
@@ -335,15 +389,17 @@ begin
   PanelName.SendToBack;
   PanelAdrs.SendToBack;
   Panel_Print.SendToBack;
+  PanelDateSet.SendToBack;
 end;
 
 procedure TCustForm.Action_F1Execute(Sender: TObject);
 var
   lno: Integer;
 begin
-  if (fkey='')AND(ZQuery_cr.RecordCount<=100) then
+  if fkey='' then
     begin
     fkey:='F1';
+    Action_PgDn.Enabled:=True;
     dataflag:=True;
     EnableEdit(1);
     ZQuery_rcr.Close;
@@ -352,6 +408,14 @@ begin
     ZQuery_rcr.SQL.Add('WHERE crmark=''Y''');
     ZQuery_rcr.SQL.Add('ORDER BY crcode DESC');
     ZQuery_rcr.Open;
+    {if (LowerCase(ParamStr(1))='tony')and(ZQuery_rcr.RecordCount>=10000) then
+      begin
+      fkey:='';
+      showmessage('評估版客戶筆數是有限制的！');
+      exit;
+      end;
+      }
+    //取得最後編號
     if ZQuery_rcr.FieldByName('crcode').AsString='' then
       lno:=1
     else
@@ -360,10 +424,11 @@ begin
 
     ZQuery_cr.Append;
     ZQuery_cr.FieldByName('crcode').Value:=StrZero(lno,5);
-    ZQuery_cr.FieldByName('crdate').Value:=ChinaDate1(date);
+    //ZQuery_cr.FieldByName('crdate').Value:=ChinaDate1(date);
     ZQuery_cr.FieldByName('crvip').Value:='N';
     ZQuery_cr.FieldByName('crmoney').Value:=0;
     ZQuery_cr.FieldByName('crmark').Value:='Y';
+    Edit0.Text:=ChinaDate1(date);
     Edit1.Text:='';
     Edit2.Text:='';
     Edit3.Text:='';
@@ -376,14 +441,7 @@ begin
     Edit10.Text:='0';
     Edit1.SetFocus;
     wwDBGrid1.Enabled:=False;
-    end // >30筆資料
-  else
-    begin
-    ShowMessage('抱歉！此評估版本[客戶資料]筆數有限制！');
-    ZQuery_cr.Cancel;
-    wwDBGrid1.Enabled:=True;
-    wwDBGrid1.SetFocus;
-    end;
+  end;
 end;
 
 procedure TCustForm.Action_F2Execute(Sender: TObject);
@@ -391,6 +449,7 @@ begin
   if fkey='' then
     begin
     fkey:='F2';
+    Action_PgDn.Enabled:=True;
     EnableEdit(1);
     ZQuery_cr.Edit;
     wwDBGrid1.Enabled:=False;
@@ -402,13 +461,17 @@ procedure TCustForm.Action_CtrlDelExecute(Sender: TObject);
 var
   msg: String;
   bflag: Boolean;
+  m2: Real;
 begin
+  m2:=0;
   if fkey='' then
     begin
     fkey:='CD';
     msg:='確定刪除客戶('+ZQuery_cr.FieldByName('crcode').AsString+')資料？';
     if IDYES=MessageBox(handle,PChar(msg),'刪除',MB_ICONQUESTION+MB_YESNO +MB_DEFBUTTON2) then
       begin
+      m2:=ZQuery_cr.FieldByName('crmoney').AsInteger;
+      WDM.crcode:=ZQuery_cr.FieldByName('crcode').AsString;
       ZQuery_cr.Edit;
       ZQuery_cr.FieldByName('crmark').AsString:='N';
       ZQuery_cr.Post;
@@ -430,7 +493,7 @@ begin
     begin
     ZQuery_cr.Delete;
     end;
-
+  New_wo('C',0,m2,0);
 end;
 
 procedure TCustForm.Action_ExitExecute(Sender: TObject);
@@ -439,11 +502,6 @@ begin
   if (fkey='F1') or (fkey='F2') then
     begin
     Action_PgDnExecute(Self);
-    //EnableEdit(0);
-    //fkey:='';
-    //ZQuery_cr.Cancel;
-    //wwDBGrid1.Enabled:=True;
-    //wwDBGrid1.SetFocus;
     end
   else if fkey='F3' then
     begin
@@ -458,7 +516,7 @@ begin
     PanelCrMoney.SendToBack;
     wwDBGrid1.Enabled:=True;
     wwDBGrid1.SetFocus;
-    end 
+    end
   else if fkey='F9' then
     begin
     fkey:='';
@@ -466,12 +524,19 @@ begin
     wwDBGrid1.Enabled:=True;
     wwDBGrid1.SetFocus;
     end
+  else if fkey='CAF7' then
+    begin
+    fkey:='';
+    CloseAllPanel();
+    end
   else if fkey='CR' then
     begin
     fkey:='';
     RzToolbarButtonF1.Visible:=True;
     RzToolbarButtonF2.Visible:=True;
     RzToolbarButtonF3.Visible:=True;
+    RzToolbarButtonF4.Visible:=True;
+    RzToolbarButtonF5.Visible:=True;
     RzToolbarButtonF9.Visible:=True;
     RzToolbarButtonPD.Visible:=True;
     RzPanel1.Enabled:=True;
@@ -493,6 +558,7 @@ var
 begin
   if (fkey='F1')or(fkey='F2') then
     begin
+    Action_PgDn.Enabled:=False;
     CloseAllPanel();
     ret:=MessageDlg('資料完成,是否存檔?', mtWarning, [mbYes, mbNo, mbCancel], 0);
     if ret=mrYes then
@@ -515,6 +581,7 @@ begin
         end
       else //新增或修改 無重覆資料
         begin
+        ZQuery_cr.FieldByName('crdate').Value:=Edit0.Text;
         ZQuery_cr.FieldByName('curst').AsString:=Edit1.Text;
         ZQuery_cr.FieldByName('crname').AsString:=Edit2.Text;
         ZQuery_cr.FieldByName('csex').AsString:=Edit3.Text;
@@ -524,11 +591,11 @@ begin
         ZQuery_cr.FieldByName('crid').AsString:=Edit7.Text;
         ZQuery_cr.FieldByName('crarea').AsString:=Edit8.Text;
         ZQuery_cr.FieldByName('cradr').AsString:=Edit9.Text;
+        if (Edit10.Text='') or (Edit10.Text='  ') then Edit10.Text:='0';
         ZQuery_cr.FieldByName('crpsen').Value:=StrToFloat(Edit10.Text);
         ZQuery_cr.Post;
         WDM.crcode:=ZQuery_cr.FieldByName('crcode').AsString;
         fkey:='';
-        WDM.fstr:='';
         EnableEdit(0);
         wwDBGrid1.Enabled:=True;
         wwDBGrid1.SetFocus;
@@ -557,6 +624,8 @@ begin
   PanelCrmoney.Top:=Trunc((Height-PanelCrmoney.Height)/2);
   Panel_Print.Left:=Trunc((Width-Panel_Print.Width)/2);
   Panel_Print.Top:=Trunc((Height-Panel_Print.Height)/2);
+  PanelDateSet.Left:=Trunc((Width-Panel_Print.Width)/2);
+  PanelDateSet.Top:=Trunc((Height-Panel_Print.Height)/2);
   CloseAllPanel();
 end;
 
@@ -576,6 +645,7 @@ end;
 procedure TCustForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -628,9 +698,16 @@ var
   instr: String;
 begin
   instr:=SearchEdit.Text;
-  instr:=StringReplace(instr, '許', '許\\',[rfReplaceAll, rfIgnoreCase]);
-  instr:=StringReplace(instr, '功', '功\\',[rfReplaceAll, rfIgnoreCase]);
-  instr:=StringReplace(instr, '蓋', '蓋\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '許', '許\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '功', '功\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '蓋', '蓋\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '餐', '餐\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '愧', '愧\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '擺', '擺\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '穀', '穀\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '淚', '淚\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '豹', '豹\\\',[rfReplaceAll, rfIgnoreCase]);
+  instr:=StringReplace(instr, '珮', '珮\\\',[rfReplaceAll, rfIgnoreCase]);
   ZQuery_cr.Close;
   ZQuery_cr.SQL.Clear;
   ZQuery_cr.SQL.Add('SELECT * FROM cr');
@@ -660,6 +737,8 @@ begin
     RzToolbarButtonF1.Visible:=False;
     RzToolbarButtonF2.Visible:=False;
     RzToolbarButtonF3.Visible:=False;
+    RzToolbarButtonF4.Visible:=False;
+    RzToolbarButtonF5.Visible:=False;
     RzToolbarButtonF9.Visible:=False;
     //RzToolbarButtonCD.Visible:=False;
     RzToolbarButtonPD.Visible:=False;
@@ -667,15 +746,13 @@ begin
 end;
 
 procedure TCustForm.FormShow(Sender: TObject);
-var
-  fname: String;
 begin
   fkey:='';
-  fname:=ZQuery_cr.FieldByName('crcode').AsString+'.jpg';
-  if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+  pname:=WDM.WPath+'Captures\'+ZQuery_cr.FieldByName('crcode').AsString+'_01.jpg';
+  if FileExists(pname) then
     begin
-    Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
-    Image1.Visible:=True;
+    Image1.Picture.LoadFromFile(pname);
+    Image1.Visible:=true;
     end
   else
     Image1.Visible:=False;
@@ -696,7 +773,16 @@ begin
   PanelCrmoney.SendToBack;
   wwDBGrid1.SetFocus;
   if WDM.fstr='F1' then //建立新客戶
+    begin
+    WDM.fstr:='';
     Action_F1Execute(Self);
+    WDM.crcode:='';
+    end;
+  if WDM.crcode<>'' then //修改舊客戶
+    begin
+    ZQuery_cr.Locate('crcode',WDM.crcode,[loPartialKey]);
+    Action_F2Execute(self);
+    end;
 end;
 
 procedure TCustForm.Action_CtrlAExecute(Sender: TObject);
@@ -748,13 +834,12 @@ begin
 end;
 
 procedure TCustForm.wwDBGrid1RowChanged(Sender: TObject);
-var
-  fname: String;
 begin
   if ZQuery_cr.FieldByName('crmoney').AsFloat>=0 then
     DBTextcrmoney.Font.Color:=ClYellow
   else
     DBTextcrmoney.Font.Color:=ClRed;
+  Edit0.Text:=ZQuery_cr.FieldByName('crdate').AsString;
   Edit1.Text:=ZQuery_cr.FieldByName('curst').AsString;
   Edit2.Text:=ZQuery_cr.FieldByName('crname').AsString;
   Edit3.Text:=ZQuery_cr.FieldByName('csex').AsString;
@@ -765,10 +850,11 @@ begin
   Edit8.Text:=ZQuery_cr.FieldByName('crarea').AsString;
   Edit9.Text:=ZQuery_cr.FieldByName('cradr').AsString;
   Edit10.Text:=ZQuery_cr.FieldByName('crpsen').AsString;
-  fname:=ZQuery_cr.FieldByName('crcode').AsString+'.jpg';
-  if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+  picno:=1;
+  pname:=WDM.WPath+'Captures\'+ZQuery_cr.FieldByName('crcode').AsString+'_01.jpg';
+  if FileExists(pname) then
     begin
-    Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
+    Image1.Picture.LoadFromFile(pname);
     Image1.Visible:=True;
     end
   else
@@ -788,10 +874,13 @@ begin
       ZQuery_pcr.SQL.Add('AND crmoney<0');
       ZQuery_pcr.SQL.Add('ORDER BY crmoney');
       ZQuery_pcr.Open;
+      frxReportF459.LoadFromFile(WDM.WPath+'Report\CustRepF45.rep');
       (frxReportF459.FindObject('MemoTitle')as TfrxMemoView).Text:='☆☆☆客戶欠款統計報表☆☆☆';
       (frxReportF459.FindObject('MemoDate')as TfrxMemoView).Text:=ChinaDate1(Date);
       (frxReportF459.FindObject('MemoSum')as TfrxMemoView).Text:='總計餘額:';
       PreviewForm:=TPreviewForm.Create(Application);
+      PreviewForm.frxXLSExport1.FileName:='客戶欠款統計';
+      PreviewForm.RzToolbarButtonF8.Visible:=True;
       frxReportF459.preview:=PreviewForm.frxPreview1;
       frxReportF459.ShowReport; //螢幕預覽
       PreviewForm.ShowModal;
@@ -863,7 +952,7 @@ procedure TCustForm.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (fkey='F1')or(fkey='F2') then
-    if (Key=VK_UP)AND(Edit1.Focused=False) then
+    if (Key=VK_UP)AND(Edit0.Focused=False) then
         begin
         Key:=0;
         Perform(WM_NextDlgCtl, 1, 0);
@@ -1039,9 +1128,16 @@ begin
       Exit;
       end;
     instr:=Edit2.Text;
-    instr:=StringReplace(instr, '許', '許\\',[rfReplaceAll, rfIgnoreCase]);
-    instr:=StringReplace(instr, '功', '功\\',[rfReplaceAll, rfIgnoreCase]);
-    instr:=StringReplace(instr, '蓋', '蓋\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '許', '許\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '功', '功\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '蓋', '蓋\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '餐', '餐\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '愧', '愧\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '擺', '擺\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '穀', '穀\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '淚', '淚\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '豹', '豹\\\',[rfReplaceAll, rfIgnoreCase]);
+    instr:=StringReplace(instr, '珮', '珮\\\',[rfReplaceAll, rfIgnoreCase]);
     ZQuery_rcr.Close;
     ZQuery_rcr.SQL.Clear;
     ZQuery_rcr.SQL.Add('SELECT crcode,crname,crtel FROM cr');
@@ -1132,47 +1228,52 @@ end;
 
 procedure TCustForm.Action_F11Execute(Sender: TObject);
 var
-  fname, crcode: String;
+  picPath, prename: String;
 begin
   if fkey='' then
     begin
-    fkey:='F11';
-    crcode:=ZQuery_cr.FieldByName('crcode').AsString;
-    fname:=WDM.crcode+'.jpg';
+    //fkey:='F11';
+    picno:=1;
+    pname:=ZQuery_cr.FieldByName('crcode').AsString;
     try
+      picPath:=WDM.WPath+'Captures\';
+      prename:=pname+'_';
+      while FileExists(picPath+prename+StrZero(picno,2)+'.jpg') do
+        begin
+        picno:=picno+1;
+        end;
+      pname:=prename+StrZero(picno,2)+'.jpg';
       GetCamForm := TGetCamForm.Create(Application);
-      GetCamForm.Caption:=fname;
+      GetCamForm.Caption:=pname;
       GetCamForm.BitBtn2.Enabled:=True;
       GetCamForm.ShowModal;
       FreeAndNil(GetCamForm);
-      if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
-        begin
-        Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
-        Image1.Visible:=True;
-        end
-      else
-        Image1.Visible:=False;
-      fkey:='';
     except
       on E: Exception do
         MessageDlg ('錯誤: '+E.Message, mtError, [mbOK], 0);
     end;
+    if FileExists(picPath+pname) then
+      begin
+      Image1.Picture.LoadFromFile(picPath+pname);
+      Image1.Visible:=True;
+      picno:=picno+1;
+      end
+    else
+      Image1.Visible:=False;
     end;
 end;
 
 procedure TCustForm.Action_CPExecute(Sender: TObject);
-var
-  fname: String;
 begin
   if fkey='' then
     begin
     fkey:='CP';
-    fname:=ZQuery_cr.FieldByName('crcode').AsString+'.jpg';
-    if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+    pname:=ZQuery_cr.FieldByName('crcode').AsString+'_';
+    if FileExists(WDM.WPath+'Captures\'+pname+'01.jpg') then
       begin
       try
         ShowPicForm := TShowPicForm.Create(Application);
-        ShowPicForm.PicName:=fname;
+        ShowPicForm.PicName:=pname;
         ShowPicForm.ShowModal;
         FreeAndNil(ShowPicForm);
         wwDBGrid1.SetFocus;
@@ -1192,12 +1293,17 @@ procedure TCustForm.EditCrmoneyKeyDown(Sender: TObject; var Key: Word;
 begin
   if Key=VK_Return then
     begin
-    ZQuery_cr.Edit;
     newcrmoney:=StrToFloat(EditCrmoney.Text);
-    ZQuery_cr.FieldByName('crmoney').Value:=newcrmoney;
-    ZQuery_cr.Post;
-    New_wo();
+    ZQuery_rcr.Close;
+    ZQuery_rcr.SQL.Clear;
+    ZQuery_rcr.SQL.Add('UPDATE cr SET crmoney='+FloatToStr(newcrmoney)+', crmoney1='+FloatToStr(crmoney));
+    ZQuery_rcr.SQL.Add('WHERE crmark=''Y'' AND crcode='''+WDM.crcode+'''');
+    ZQuery_rcr.ExecSQL;
+    ZQuery_cr.Close;
+    ZQuery_cr.Open;
+    New_wo('Z',newcrmoney,crmoney,0);
     Key:=0;
+    ZQuery_cr.Locate('crcode',WDM.crcode,[loPartialKey]);
     Action_ExitExecute(Self);
     end;
 end;
@@ -1215,10 +1321,13 @@ begin
       ZQuery_pcr.SQL.Add('AND crmoney>0');
       ZQuery_pcr.SQL.Add('ORDER BY crmoney');
       ZQuery_pcr.Open;
+      frxReportF459.LoadFromFile(WDM.WPath+'Report\CustRepF45.rep');
       (frxReportF459.FindObject('MemoTitle')as TfrxMemoView).Text:='☆☆☆客戶餘額統計報表☆☆☆';
       (frxReportF459.FindObject('MemoDate')as TfrxMemoView).Text:=ChinaDate1(Date);
       (frxReportF459.FindObject('MemoSum')as TfrxMemoView).Text:='總計餘額:';
       PreviewForm:=TPreviewForm.Create(Application);
+      PreviewForm.frxXLSExport1.FileName:='客戶餘額統計';
+      PreviewForm.RzToolbarButtonF8.Visible:=True;
       frxReportF459.preview:=PreviewForm.frxPreview1;
       frxReportF459.ShowReport; //螢幕預覽
       PreviewForm.ShowModal;
@@ -1238,7 +1347,7 @@ begin
     begin
     fkey:='F9';
     Panel_Print.BringToFront;
-    CheckBox1.SetFocus;
+    CrDateEdit1.SetFocus;
     end;
 end;
 
@@ -1299,12 +1408,19 @@ begin
       ZQuery_pcr.SQL.Add('AND crtelb<>''''');
     if CheckBox3.Checked then
       ZQuery_pcr.SQL.Add('AND crarea like '''+Edit_Area.Text+'%''');
+    if (CrDateEdit1.Text<>'   /  /  ') then
+      ZQuery_pcr.SQL.Add('AND crdate>='''+CrDateEdit1.Text+'''');
+    if (CrDateEdit2.Text<>'   /  /  ') then
+      ZQuery_pcr.SQL.Add('AND crdate<='''+CrDateEdit2.Text+'''');
     ZQuery_pcr.SQL.Add('ORDER BY crcode');
     ZQuery_pcr.Open;
+    frxReportF459.LoadFromFile(WDM.WPath+'Report\CustRepF45.rep');
     (frxReportF459.FindObject('MemoTitle')as TfrxMemoView).Text:='☆☆☆客戶明細統計報表☆☆☆';
     (frxReportF459.FindObject('MemoDate')as TfrxMemoView).Text:=ChinaDate1(Date)+' '+Edit_Area.Text;
     (frxReportF459.FindObject('MemoSum')as TfrxMemoView).Text:='總計餘額:';
     PreviewForm:=TPreviewForm.Create(Application);
+    PreviewForm.frxXLSExport1.FileName:='客戶明細統計';
+      PreviewForm.RzToolbarButtonF8.Visible:=True;
     frxReportF459.preview:=PreviewForm.frxPreview1;
     frxReportF459.ShowReport; //螢幕預覽
     PreviewForm.ShowModal;
@@ -1324,6 +1440,224 @@ begin
     Edit_area.Enabled:=True
   else
     Edit_area.Enabled:=False
+end;
+
+procedure TCustForm.Edit0KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key=VK_Return) then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
+end;
+
+procedure TCustForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  WDM.ZQueryCust.Close;
+  WDM.ZQueryCust.Open;
+end;
+
+procedure TCustForm.Action_CF4Execute(Sender: TObject);
+begin
+  frxReportF459.LoadFromFile(WDM.WPath+'Report\CustRepF45.rep');
+  frxReportF459.DesignReport;
+end;
+
+procedure TCustForm.Action_CtrlAltDExecute(Sender: TObject);
+begin
+  //刪除客戶資料
+  try
+    CustDelForm := TCustDelForm.Create(Application);
+    CustDelForm.ShowModal;
+    FreeAndNil(CustDelForm);
+  except
+    on E: Exception do
+      MessageDlg ('開啟錯誤: '+E.Message, mtError, [mbOK], 0);
+  end
+end;
+
+procedure TCustForm.Action_CtrlF9Execute(Sender: TObject);
+var
+  daystr,day365str: String;
+begin
+  if fkey='' then
+    begin
+    wwDBGrid1.DataSource.DataSet.DisableControls;
+    daystr:=ChinaDate1(date);
+    day365str:=ChinaDate1(date-365);
+    try
+      ZQuery_pcr.Close;
+      ZQuery_pcr.SQL.Clear;
+      ZQuery_pcr.SQL.Add('select a.crcode,a.widate,b.* from wio as a inner join cr as b');
+      ZQuery_pcr.SQL.Add('where a.crcode=b.crcode and (a.widate>='''+day365str+''' and a.widate<='''+daystr+''')');
+      ZQuery_pcr.SQL.Add('group by a.crcode');
+      ZQuery_pcr.Open;
+      (frxReportF459.FindObject('MemoTitle')as TfrxMemoView).Text:='☆☆☆客戶明細統計報表☆☆☆';
+      (frxReportF459.FindObject('MemoDate')as TfrxMemoView).Text:=ChinaDate1(Date)+' '+Edit_Area.Text;
+      (frxReportF459.FindObject('MemoSum')as TfrxMemoView).Text:='總計餘額:';
+      PreviewForm:=TPreviewForm.Create(Application);
+      PreviewForm.frxXLSExport1.FileName:='客戶明細統計.xls';
+      frxReportF459.preview:=PreviewForm.frxPreview1;
+      frxReportF459.ShowReport; //螢幕預覽
+      PreviewForm.ShowModal;
+      FreeAndNil(PreviewForm);
+      ZQuery_pcr.Close;
+      fkey:='';
+      CloseAllPanel();
+    except
+      on E: Exception do
+        MessageDlg ('錯誤: '+E.Message, mtError,[mbOK], 0);
+    end;
+    wwDBGrid1.DataSource.DataSet.EnableControls;
+  end;
+end;
+
+procedure TCustForm.wwDBGrid1CalcCellColors(Sender: TObject; Field: TField;
+  State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
+begin
+  if (Field.FieldName='crcode') or (Field.FieldName='crname') then
+     if ZQuery_cr.FieldByName('crmoney').AsFloat<0 then
+       AFont.Color:=clYellow;
+  if Highlight then
+    begin
+    AFont.Color:=ClWhite;
+    end;
+end;
+
+procedure TCustForm.Action_CtrlAltF7Execute(Sender: TObject);
+begin
+  fkey:='CAF7';
+  PanelDateSet.BringToFront;
+  MaskEditDate1.SetFocus;
+  RzProgressBar1.Percent:=0;
+end;
+
+procedure TCustForm.MaskEditDate1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  indata, toDay: string;
+  str1: TStringList;
+  c: integer;
+begin
+  if Key=VK_Return then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
+  {if Key=VK_Return then
+    begin
+    Key:=0;
+    toDay:=ChinaDate1(Now);
+    ZQuery_wio.Close;
+    ZQuery_wio.SQL.Clear;
+    ZQuery_wio.SQL.Add('SELECT w.wicode, w.widate, c.crcode, c.crmoney FROM cr c');
+    ZQuery_wio.SQL.Add('LEFT JOIN wio w ON w.crcode=c.crcode AND w.widate<''' + MaskEditDate1.Text + '''');
+    ZQuery_wio.SQL.Add('LEFT JOIN wo x ON x.crcode=c.crcode AND x.widate<''' + MaskEditDate1.Text + '''');
+    ZQuery_wio.SQL.Add('WHERE crmoney>0 AND w.widate is null AND x.worealmo is null');
+    ZQuery_wio.SQL.Add('ORDER BY crcode');
+    ZQuery_wio.Open;
+    if not zQuery_wio.Eof then
+      begin
+      //Print
+      wwDBGrid1.DataSource.DataSet.DisableControls;
+      indata:='';
+      While not ZQuery_wio.Eof do
+        begin
+        indata:=indata+''''+ZQuery_wio.FieldByName('crcode').AsString+''',';
+        ZQuery_wio.Next;
+        end;
+      indata:=indata+'''''';
+      try
+        ZQuery_pcr.Close;
+        ZQuery_pcr.SQL.Clear;
+        ZQuery_pcr.SQL.Add('SELECT * FROM cr');
+        ZQuery_pcr.SQL.Add('WHERE crcode in (' + indata + ')');
+        ZQuery_pcr.SQL.Add('ORDER BY crmoney');
+        ZQuery_pcr.Open;
+        frxReportF459.LoadFromFile(WDM.WPath+'Report\CustRepF45.rep');
+        (frxReportF459.FindObject('MemoTitle')as TfrxMemoView).Text:='☆☆☆客戶餘額統計報表☆☆☆';
+        (frxReportF459.FindObject('MemoDate')as TfrxMemoView).Text:=ChinaDate1(Date);
+        (frxReportF459.FindObject('MemoSum')as TfrxMemoView).Text:='總計餘額:';
+        PreviewForm:=TPreviewForm.Create(Application);
+        PreviewForm.frxXLSExport1.FileName:='客戶餘額統計';
+        PreviewForm.RzToolbarButtonF8.Visible:=True;
+        frxReportF459.preview:=PreviewForm.frxPreview1;
+        frxReportF459.ShowReport; //螢幕預覽
+        PreviewForm.ShowModal;
+        FreeAndNil(PreviewForm);
+      except
+        on E: Exception do
+          MessageDlg ('錯誤: '+E.Message, mtError,[mbOK], 0);
+      end;
+      wwDBGrid1.DataSource.DataSet.EnableControls;
+      ZQuery_pcr.First;
+      while not ZQuery_pcr.Eof do
+        begin
+        RzProgressBar1.Percent:=Trunc((ZQuery_pcr.RecNo/ZQuery_pcr.RecordCount)*100);
+        ZQuery_pcr.Edit;
+        ZQuery_pcr.FieldByName('crmoney1').AsFloat:=ZQuery_pcr.FieldByName('crmoney').AsFloat;
+        ZQuery_pcr.FieldByName('crmoney').AsFloat:=0;
+        ZQuery_pcr.FieldByName('crdate2').AsString:=toDay;
+        ZQuery_pcr.Post;
+        ZQuery_pcr.Next;
+        end;
+      end;
+    fkey:='';
+    CloseAllPanel();
+    ZQuery_cr.Close;
+    ZQuery_cr.Open;
+    end;}
+end;
+
+procedure TCustForm.CrDateEdit2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin  
+  if Key=VK_Return then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
+end;
+
+procedure TCustForm.CheckBox1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=VK_Return then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
+end;
+
+procedure TCustForm.CheckBox2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=VK_Return then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
+end;
+
+procedure TCustForm.CheckBox3KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=VK_Return then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
+end;
+
+procedure TCustForm.Edit_AreaKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=VK_Return then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    end;
 end;
 
 end.

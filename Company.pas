@@ -143,6 +143,9 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     ZSQLMonitor1: TZSQLMonitor;
+    Label35: TLabel;
+    DBComboBox10: TDBComboBox;
+    Label36: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Action_EscExecute(Sender: TObject);
     procedure Action_PgDnExecute(Sender: TObject);
@@ -299,6 +302,7 @@ begin
   WPath:=ExtractFilePath(Application.ExeName);
 
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -522,7 +526,6 @@ begin
   RzPanel3.Font.Size:=WSIZE.Value;
 
   WDM.StyleIndex.Value:=ComboBox1.ItemIndex;
-  
   Image1.Picture.LoadFromFile(PathName.Value);
   PictureName:=PathName.Value;
 end;

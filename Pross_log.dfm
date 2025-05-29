@@ -58,20 +58,21 @@ object Pross_logForm: TPross_logForm
     TitleButtons = False
     OnCalcCellColors = wwDBGrid1CalcCellColors
     OnDblClick = wwDBGrid1DblClick
+    OnKeyDown = wwDBGrid1KeyDown
     PaintOptions.ActiveRecordColor = clHighlight
     GroupFieldName = 'pross_date'
   end
   object PanelDateSet: TPanel
     Left = 296
     Top = 128
-    Width = 193
-    Height = 97
+    Width = 329
+    Height = 249
     BevelWidth = 5
     Color = clFuchsia
     TabOrder = 1
     object Label8: TLabel
       Left = 8
-      Top = 48
+      Top = 58
       Width = 56
       Height = 27
       Caption = '日期'
@@ -83,21 +84,65 @@ object Pross_logForm: TPross_logForm
       ParentFont = False
     end
     object Label10: TLabel
-      Left = 32
+      Left = 5
       Top = 5
-      Width = 116
+      Width = 319
       Height = 27
-      Caption = '設定日期'
+      Align = alTop
+      Alignment = taCenter
+      Caption = '查詢'
+      Color = clBlack
       Font.Charset = ANSI_CHARSET
       Font.Color = clWhite
       Font.Height = -27
       Font.Name = '標楷體'
       Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object Label1: TLabel
+      Left = 176
+      Top = 58
+      Width = 28
+      Height = 27
+      Caption = '～'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -27
+      Font.Name = '標楷體'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 8
+      Top = 106
+      Width = 112
+      Height = 27
+      Caption = '客戶編號'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -27
+      Font.Name = '標楷體'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 154
+      Width = 112
+      Height = 27
+      Caption = '電腦編號'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -27
+      Font.Name = '標楷體'
+      Font.Style = []
       ParentFont = False
     end
     object MaskEditDate1: TMaskEdit
-      Left = 65
-      Top = 44
+      Left = 64
+      Top = 56
       Width = 111
       Height = 37
       AutoSelect = False
@@ -107,11 +152,74 @@ object Pross_logForm: TPross_logForm
       Font.Height = -24
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      ImeMode = imSAlpha
       MaxLength = 9
       ParentFont = False
       TabOrder = 0
       Text = '   /  /  '
       OnKeyDown = MaskEditDate1KeyDown
+    end
+    object MaskEditDate2: TMaskEdit
+      Left = 201
+      Top = 54
+      Width = 111
+      Height = 37
+      AutoSelect = False
+      EditMask = '999/99/99;1;_'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ImeMode = imSAlpha
+      MaxLength = 9
+      ParentFont = False
+      TabOrder = 1
+      Text = '   /  /  '
+      OnKeyDown = MaskEditDate2KeyDown
+    end
+    object EditCode: TEdit
+      Left = 128
+      Top = 104
+      Width = 185
+      Height = 37
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnKeyDown = EditCodeKeyDown
+    end
+    object Button1: TButton
+      Left = 128
+      Top = 200
+      Width = 97
+      Height = 33
+      Caption = '查詢'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = '新細明體'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      OnClick = Button1Click
+    end
+    object EditTelb: TEdit
+      Left = 128
+      Top = 152
+      Width = 185
+      Height = 37
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      OnKeyDown = EditTelbKeyDown
     end
   end
   object RzToolbar1: TRzToolbar
@@ -141,7 +249,7 @@ object Pross_logForm: TPross_logForm
       Width = 90
       Height = 22
       Action = Action_F1
-      Caption = 'F1.設定日期'
+      Caption = 'F1.查詢'
       HotNumGlyphs = 0
     end
     object RzToolbarButtonEsc: TRzToolbarButton

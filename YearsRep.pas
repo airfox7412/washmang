@@ -288,8 +288,8 @@ begin
       ZQuery_wio.Open;
       m9:=Round(ZQuery_wio.FieldByName('texmo').AsFloat);   //衣物加工額
       m5:=Round(ZQuery_wio.FieldByName('twamo').AsFloat);   //衣物設定額
-      m6:=Round(ZQuery_wio.FieldByName('tsum').AsFloat)-m9; //衣物實際額
-      m7:=m5-m6;                                     //衣物折扣額
+      m6:=Round(ZQuery_wio.FieldByName('tsum').AsFloat); //衣物實際額
+      //m7:=m5-m6;                                     //衣物折扣額
       m8:=ZQuery_wio.FieldByName('tquty').AsInteger; //衣物總件數
       ZQuery_wio.Close;
 
@@ -301,7 +301,7 @@ begin
       m9:=m9+Round(ZQuery_stbwio.FieldByName('texmo').AsFloat);   //歷史衣物加工額
       m5:=m5+Round(ZQuery_stbwio.FieldByName('twamo').AsFloat);   //歷史衣物設定額
       m6:=m6+Round(ZQuery_stbwio.FieldByName('tsum').AsFloat)-m9; //歷史衣物實際額
-      m7:=m7+m5-m6;                                     //歷史衣物折扣額
+      m7:=m5-m6;                                     //歷史衣物折扣額
       m8:=m8+ZQuery_stbwio.FieldByName('tquty').AsInteger; //歷史衣物總件數
       ZQuery_stbwio.Close;
 
@@ -377,6 +377,7 @@ var
   i: Integer;
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;

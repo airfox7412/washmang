@@ -99,9 +99,9 @@ type
     procedure Action_F10Execute(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure wwDBGrid1KeyUp(Sender: TObject; var Key: Word;
+    procedure SearchEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure SearchEditKeyUp(Sender: TObject; var Key: Word;
+    procedure wwDBGrid1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private
     { Private declarations }
@@ -120,7 +120,7 @@ var
   QueryCustForm: TQueryCustForm;
   fkey, crcode, fname, AdrStr: String;
   scflag, hotkey: Boolean;
-  pint, qint: Integer;
+  pint, qint, picno: Integer;
   FBCode: String;
 
 implementation
@@ -427,6 +427,7 @@ end;
 procedure TQueryCustForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -444,10 +445,10 @@ begin
   PanelWicode.SendToBack;
   PanelWisno.SendToBack;
   PanelCust.SendToBack;
-  fname:=WDM.ZQuery_cr.FieldByName('crcode').AsString+'.jpg';
-  if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+  fname:=WDM.WPath+'Captures\'+WDM.ZQuery_cr.FieldByName('crcode').AsString+'_01.jpg';
+  if FileExists(fname) then
     begin
-    Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
+    Image1.Picture.LoadFromFile(fname);
     Image1.Visible:=True;
     end
   else
@@ -623,10 +624,11 @@ begin
     calnotget();
     scflag:=False;
     Timer1.Enabled:=True;
-    fname:=WDM.ZQuery_cr.FieldByName('crcode').AsString+'.jpg';
-    if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+    picno:=1;
+    fname:=WDM.WPath+'Captures\'+WDM.ZQuery_cr.FieldByName('crcode').AsString+'_01.jpg';
+    if FileExists(fname) then
       begin
-      Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
+      Image1.Picture.LoadFromFile(fname);
       Image1.Visible:=True;
       end
     else
@@ -663,8 +665,8 @@ begin
   if fkey='' then
     begin
     fkey:='CP';
-    fname:=WDM.ZQuery_cr.FieldByName('crcode').AsString+'.jpg';
-    if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+    fname:=WDM.ZQuery_cr.FieldByName('crcode').AsString+'_';
+    if FileExists(WDM.WPath+'Captures\'+fname+'01.jpg') then
       begin
       try
         ShowPicForm := TShowPicForm.Create(Application);
@@ -684,30 +686,39 @@ begin
 end;
 
 procedure TQueryCustForm.Action_F11Execute(Sender: TObject);
+var
+  picPath, prename: String;
 begin
   if fkey='' then
     begin
-    fkey:='F11';
-    crcode:=WDM.ZQuery_cr.FieldByName('crcode').AsString;
-    fname:=crcode+'.jpg';
+    //fkey:='F11';
+    picno:=1;
+    pname:=WDM.ZQuery_cr.FieldByName('crcode').AsString;
     try
+      picPath:=WDM.WPath+'Captures\';
+      prename:=pname+'_';
+      while FileExists(picPath+prename+StrZero(picno,2)+'.jpg') do
+        begin
+        picno:=picno+1;
+        end;
+      pname:=prename+StrZero(picno,2)+'.jpg';
       GetCamForm := TGetCamForm.Create(Application);
-      GetCamForm.Caption:=fname;
+      GetCamForm.Caption:=pname;
       GetCamForm.BitBtn2.Enabled:=True;
       GetCamForm.ShowModal;
       FreeAndNil(GetCamForm);
-      if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
-        begin
-        Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
-        Image1.Visible:=True;
-        end
-      else
-        Image1.SendToBack;
-      fkey:='';
     except
       on E: Exception do
         MessageDlg ('¿ù»~: '+E.Message, mtError, [mbOK], 0);
     end;
+    if FileExists(picPath+pname) then
+      begin
+      Image1.Picture.LoadFromFile(picPath+pname);
+      Image1.Visible:=True;
+      picno:=picno+1;
+      end
+    else
+      Image1.Visible:=False;
     end;
 end;
 
@@ -716,6 +727,14 @@ begin
   fkey:='';
   calnotget();
   Action_F3Execute(Self);
+  pname:=WDM.WPath+'Captures\'+WDM.ZQuery_cr.FieldByName('crcode').AsString+'_01.jpg';
+  if FileExists(pname) then
+    begin
+    Image1.Picture.LoadFromFile(pname);
+    Image1.Visible:=true;
+    end
+  else
+    Image1.Visible:=False;
 end;
 
 procedure TQueryCustForm.Action_F8Execute(Sender: TObject);
@@ -840,19 +859,7 @@ begin
     FBCode:=UpperCase(FBCode+Char(Key));
 end;
 
-procedure TQueryCustForm.wwDBGrid1KeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (fkey='')AND(Key=VK_RETURN) then
-    begin
-    Key:=0;
-    selflag:=True;
-    FBCode:='';
-    Close;
-    end;
-end;
-
-procedure TQueryCustForm.SearchEditKeyUp(Sender: TObject; var Key: Word;
+procedure TQueryCustForm.SearchEditKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key=VK_Return then
@@ -887,6 +894,18 @@ begin
       hotkey:=false;
     end;
   Key:=0;
+end;
+
+procedure TQueryCustForm.wwDBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin 
+  if (fkey='')AND(Key=VK_RETURN) then
+    begin
+    Key:=0;
+    selflag:=True;
+    FBCode:='';
+    Close;
+    end;
 end;
 
 end.

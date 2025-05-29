@@ -119,7 +119,7 @@ begin
     begin
     if MessageDlg('照片是否儲存？', mtWarning, [mbYes, mbNo], 0)=mrYes then
       begin
-      fpath:=ExtractFilePath(Application.ExeName)+'Captures\';
+      fpath:=WDM.WPath+'Captures\';
       if Not DirectoryExists(fpath) then
         Mkdir(fpath);
       jpg:= TJPEGImage.Create;

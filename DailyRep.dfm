@@ -512,7 +512,7 @@ object DailyRepForm: TDailyRepForm
     Left = 384
     Top = 152
     Width = 130
-    Height = 152
+    Height = 185
     Color = clFuchsia
     TabOrder = 1
     object Label6: TLabel
@@ -531,8 +531,8 @@ object DailyRepForm: TDailyRepForm
     object ListBox1: TListBox
       Left = 25
       Top = 37
-      Width = 77
-      Height = 102
+      Width = 80
+      Height = 132
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -32
@@ -542,7 +542,8 @@ object DailyRepForm: TDailyRepForm
       Items.Strings = (
         '���L'
         '��L'
-        '�渹')
+        '�渹'
+        '�s��')
       ParentFont = False
       TabOrder = 0
       OnKeyDown = ListBox1KeyDown
@@ -2921,7 +2922,7 @@ object DailyRepForm: TDailyRepForm
     PrintOptions.Printer = '�w�]'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40336.6754507292
-    ReportOptions.LastChange = 41059.9632255208
+    ReportOptions.LastChange = 45794.5932369792
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -3093,7 +3094,7 @@ object DailyRepForm: TDailyRepForm
           ParentFont = False
         end
         object Memo38: TfrxMemoView
-          Left = 404.40971
+          Left = 338.40971
           Top = 26.45671
           Width = 60.47244339
           Height = 18.89765
@@ -3177,39 +3178,8 @@ object DailyRepForm: TDailyRepForm
               '= ')
           ParentFont = False
         end
-        object Memo51: TfrxMemoView
-          Left = 472.44125
-          Top = 26.45671
-          Width = 71.81107
-          Height = 18.89765
-          DisplayFormat.DecimalSeparator = '.'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8 = (
-            '收款日期')
-          ParentFont = False
-        end
-        object Memo52: TfrxMemoView
-          Left = 340.1577
-          Top = 26.45671
-          Width = 56.69291339
-          Height = 18.89765
-          DisplayFormat.DecimalSeparator = '.'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          HAlign = haRight
-          Memo.UTF8 = (
-            '原金額')
-          ParentFont = False
-        end
         object Memo53: TfrxMemoView
-          Left = 699.21305
+          Left = 500.21305
           Top = 26.45671
           Width = 71.81107
           Height = 18.89765
@@ -3240,21 +3210,6 @@ object DailyRepForm: TDailyRepForm
             '實收金額')
           ParentFont = False
         end
-        object Memo55: TfrxMemoView
-          Left = 551.81138
-          Top = 26.45671
-          Width = 64.25201
-          Height = 18.89765
-          DisplayFormat.DecimalSeparator = '.'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8 = (
-            '收款時間')
-          ParentFont = False
-        end
         object Memo56: TfrxMemoView
           Left = 264.5671
           Top = 26.45671
@@ -3272,9 +3227,9 @@ object DailyRepForm: TDailyRepForm
           ParentFont = False
         end
         object Memo57: TfrxMemoView
-          Left = 627.40198
+          Left = 417.40198
           Top = 26.45671
-          Width = 64.25197339
+          Width = 75.5905511811024
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
           Font.Charset = DEFAULT_CHARSET
@@ -3283,7 +3238,7 @@ object DailyRepForm: TDailyRepForm
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8 = (
-            '收款人員')
+            '收款方式')
           ParentFont = False
         end
         object Memo1: TfrxMemoView
@@ -3340,37 +3295,8 @@ object DailyRepForm: TDailyRepForm
             '[frxDBDS_Wo."crcode"]')
           ParentFont = False
         end
-        object frxDBDS_Wowidate: TfrxMemoView
-          Left = 472.44125
-          Width = 71.81107
-          Height = 18.89765
-          DataField = 'widate'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[frxDBDS_Wo."widate"]')
-          ParentFont = False
-        end
-        object frxDBDS_Wowototal: TfrxMemoView
-          Left = 340.1577
-          Width = 56.69295
-          Height = 18.89765
-          DataField = 'woptotal'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          HAlign = haRight
-          Memo.UTF8 = (
-            '[frxDBDS_Wo."woptotal"]')
-          ParentFont = False
-        end
         object frxDBDS_Wowoptotal: TfrxMemoView
-          Left = 404.40971
+          Left = 338.40971
           Width = 60.47248
           Height = 18.89765
           DataField = 'wototal'
@@ -3401,7 +3327,7 @@ object DailyRepForm: TDailyRepForm
           ParentFont = False
         end
         object frxDBDS_WoKind: TfrxMemoView
-          Left = 699.21305
+          Left = 500.21305
           Width = 71.81107
           Height = 18.89765
           DataField = 'Kind'
@@ -3412,20 +3338,6 @@ object DailyRepForm: TDailyRepForm
           Font.Style = []
           Memo.UTF8 = (
             '[frxDBDS_Wo."Kind"]')
-          ParentFont = False
-        end
-        object frxDBDS_Wowitime: TfrxMemoView
-          Left = 551.81138
-          Width = 64.25201
-          Height = 18.89765
-          DataField = 'witime'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[frxDBDS_Wo."witime"]')
           ParentFont = False
         end
         object frxDBDS_Wowocntmo: TfrxMemoView
@@ -3444,17 +3356,19 @@ object DailyRepForm: TDailyRepForm
           ParentFont = False
         end
         object frxDBDS_Wosfname: TfrxMemoView
-          Left = 627.40198
-          Width = 64.25201
+          Left = 417.40198
+          Width = 75.59055118
           Height = 18.89765
-          DataField = 'sfname'
+          DataField = 'KindType'
+          DataSet = frxDBDS_Wo
+          DataSetName = 'frxDBDS_Wo'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8 = (
-            '[frxDBDS_Wo."sfname"]')
+            '[frxDBDS_Wo."KindType"]')
           ParentFont = False
         end
         object Memo2: TfrxMemoView
@@ -3521,7 +3435,7 @@ object DailyRepForm: TDailyRepForm
       PrintOnPreviousPage = True
       OnBeforePrint = 'Page1OnBeforePrint'
       object ReportTitle1: TfrxReportTitle
-        Height = 323.24428
+        Height = 510.73253
         Top = 18.89765
         Width = 786.14224
         object Memo6: TfrxMemoView
@@ -3547,7 +3461,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo28: TfrxMemoView
           Left = 18.89765
-          Top = 304.34663
+          Top = 489.34663
           Width = 752.12642118
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3568,7 +3482,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo41: TfrxMemoView
           Left = 226.77165354
-          Top = 103.70872
+          Top = 147.70872
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3583,7 +3497,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo42: TfrxMemoView
           Left = 226.77165354
-          Top = 126.3859
+          Top = 170.3859
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3598,7 +3512,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo43: TfrxMemoView
           Left = 226.77165354
-          Top = 149.06308
+          Top = 193.06308
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3623,12 +3537,12 @@ object DailyRepForm: TDailyRepForm
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8 = (
-            '門市營業現金總額')
+            '門市營業總金額')
           ParentFont = False
         end
         object Memo44: TfrxMemoView
           Left = 226.7718
-          Top = 171.74026
+          Top = 215.74026
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3643,7 +3557,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo45: TfrxMemoView
           Left = 226.7718
-          Top = 194.41744
+          Top = 238.41744
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3658,7 +3572,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo46: TfrxMemoView
           Left = 226.7718
-          Top = 240.09462
+          Top = 284.09462
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3673,7 +3587,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo47: TfrxMemoView
           Left = 226.7718
-          Top = 262.7718
+          Top = 306.7718
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3688,7 +3602,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo48: TfrxMemoView
           Left = 226.7718
-          Top = 285.44898
+          Top = 329.44898
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3701,7 +3615,7 @@ object DailyRepForm: TDailyRepForm
             '衣物總件數')
           ParentFont = False
         end
-        object Memo11: TfrxMemoView
+        object MemoTotal: TfrxMemoView
           Left = 385.51206
           Top = 72.03154
           Width = 94.48825
@@ -3716,9 +3630,9 @@ object DailyRepForm: TDailyRepForm
           HAlign = haRight
           ParentFont = False
         end
-        object Memo12: TfrxMemoView
+        object MemoVip: TfrxMemoView
           Left = 385.51206
-          Top = 103.70872
+          Top = 147.70872
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3731,9 +3645,9 @@ object DailyRepForm: TDailyRepForm
           HAlign = haRight
           ParentFont = False
         end
-        object Memo13: TfrxMemoView
+        object MemoCashMoney: TfrxMemoView
           Left = 385.51206
-          Top = 126.3859
+          Top = 170.3859
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3746,9 +3660,9 @@ object DailyRepForm: TDailyRepForm
           HAlign = haRight
           ParentFont = False
         end
-        object Memo14: TfrxMemoView
+        object MemoCashDiscount: TfrxMemoView
           Left = 385.51206
-          Top = 149.06308
+          Top = 193.06308
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3763,7 +3677,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo15: TfrxMemoView
           Left = 385.51206
-          Top = 171.74026
+          Top = 215.74026
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3778,7 +3692,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo16: TfrxMemoView
           Left = 385.51206
-          Top = 194.41744
+          Top = 238.41744
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3793,7 +3707,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo17: TfrxMemoView
           Left = 385.51206
-          Top = 217.41744
+          Top = 261.41744
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3808,7 +3722,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo18: TfrxMemoView
           Left = 385.51206
-          Top = 240.09462
+          Top = 284.09462
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3823,7 +3737,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo19: TfrxMemoView
           Left = 385.51206
-          Top = 262.7718
+          Top = 306.7718
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -3853,7 +3767,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo24: TfrxMemoView
           Left = 483.77984
-          Top = 103.70872
+          Top = 147.70872
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3868,7 +3782,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo25: TfrxMemoView
           Left = 483.77984
-          Top = 126.3859
+          Top = 170.3859
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3883,7 +3797,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo26: TfrxMemoView
           Left = 483.77984
-          Top = 149.06308
+          Top = 193.06308
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3898,7 +3812,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo27: TfrxMemoView
           Left = 483.77984
-          Top = 171.74026
+          Top = 215.74026
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3913,7 +3827,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo29: TfrxMemoView
           Left = 483.77984
-          Top = 194.41744
+          Top = 238.41744
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3928,7 +3842,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo30: TfrxMemoView
           Left = 483.77984
-          Top = 240.09462
+          Top = 284.09462
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3943,7 +3857,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo31: TfrxMemoView
           Left = 483.77984
-          Top = 262.7718
+          Top = 306.7718
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3958,7 +3872,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo32: TfrxMemoView
           Left = 483.77984
-          Top = 285.44898
+          Top = 329.44898
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3973,7 +3887,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo4: TfrxMemoView
           Left = 226.7718
-          Top = 217.09462
+          Top = 261.09462
           Width = 151.18110236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -3988,7 +3902,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo20: TfrxMemoView
           Left = 385.51206
-          Top = 285.12616
+          Top = 329.12616
           Width = 94.48825
           Height = 18.89765
           DisplayFormat.FormatStr = '%2.0n'
@@ -4003,7 +3917,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo8: TfrxMemoView
           Left = 483.77984
-          Top = 217.09462
+          Top = 261.09462
           Width = 18.89755236
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -4018,7 +3932,7 @@ object DailyRepForm: TDailyRepForm
         end
         object Memo7: TfrxMemoView
           Left = 226.7718
-          Top = 87.14966
+          Top = 133.14966
           Width = 275.90564118
           Height = 18.89765
           DisplayFormat.DecimalSeparator = '.'
@@ -4033,6 +3947,366 @@ object DailyRepForm: TDailyRepForm
             
               '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ' +
               '- - -')
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          Left = 226.7718
+          Top = 350.46475
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '平均單價')
+          ParentFont = False
+        end
+        object Memo35: TfrxMemoView
+          Left = 385.51206
+          Top = 350.14193
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo5: TfrxMemoView
+          Left = 483.77984
+          Top = 350.14193
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object MemoLine: TfrxMemoView
+          Left = 226.7718
+          Top = 376.92146
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            'LinePay收款總額')
+          ParentFont = False
+        end
+        object MemoLinePay: TfrxMemoView
+          Left = 385.51206
+          Top = 376.59864
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo60: TfrxMemoView
+          Left = 483.77984
+          Top = 376.59864
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object MemoTaiwan: TfrxMemoView
+          Left = 226.7718
+          Top = 399.59864
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            'TaiwanPay收款總額')
+          ParentFont = False
+        end
+        object MemoTaiwanPay: TfrxMemoView
+          Left = 385.51206
+          Top = 399.27582
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo63: TfrxMemoView
+          Left = 483.77984
+          Top = 399.27582
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object MemoCredit: TfrxMemoView
+          Left = 226.7718
+          Top = 422.27582
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '刷卡收款總額')
+          ParentFont = False
+        end
+        object MemoCard: TfrxMemoView
+          Left = 385.51206
+          Top = 421.953
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo66: TfrxMemoView
+          Left = 483.77984
+          Top = 421.953
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object Memo51: TfrxMemoView
+          Left = 226.99227
+          Top = 94.48825
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '門市現金實收總額')
+          ParentFont = False
+        end
+        object MemoCash: TfrxMemoView
+          Left = 385.73253
+          Top = 94.48825
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo55: TfrxMemoView
+          Left = 484.00031
+          Top = 94.48825
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object Memo58: TfrxMemoView
+          Left = 227.31509
+          Top = 116.82684
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '電子支付總金額')
+          ParentFont = False
+        end
+        object MemoEpay: TfrxMemoView
+          Left = 386.05535
+          Top = 116.82684
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo61: TfrxMemoView
+          Left = 484.32313
+          Top = 116.82684
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object Memo11: TfrxMemoView
+          Left = 226.7718
+          Top = 446.30736
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '轉帳收款總額')
+          ParentFont = False
+        end
+        object MemoAccount: TfrxMemoView
+          Left = 385.51206
+          Top = 445.98454
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo13: TfrxMemoView
+          Left = 483.77984
+          Top = 445.98454
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
+          ParentFont = False
+        end
+        object Memo14: TfrxMemoView
+          Left = 226.7718
+          Top = 468.98454
+          Width = 151.18110236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '街口收款總額')
+          ParentFont = False
+        end
+        object MemoStree: TfrxMemoView
+          Left = 385.51206
+          Top = 468.66172
+          Width = 94.48825
+          Height = 18.89765
+          DisplayFormat.FormatStr = '%2.0n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          ParentFont = False
+        end
+        object Memo59: TfrxMemoView
+          Left = 483.77984
+          Top = 468.66172
+          Width = 18.89755236
+          Height = 18.89765
+          DisplayFormat.DecimalSeparator = '.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8 = (
+            '元')
           ParentFont = False
         end
       end
@@ -10069,7 +10343,9 @@ object DailyRepForm: TDailyRepForm
       'crname=crname'
       'Kind=Kind'
       'crtelb=crtelb'
-      'crtel=crtel')
+      'crtel=crtel'
+      'paytype=paytype'
+      'KindType=KindType')
     DataSet = ZQueryF5
     Left = 328
     Top = 378
@@ -10168,6 +10444,17 @@ object DailyRepForm: TDailyRepForm
       KeyFields = 'crcode'
       Size = 10
       Lookup = True
+    end
+    object ZQueryF5paytype: TStringField
+      FieldName = 'paytype'
+      Size = 1
+    end
+    object ZQueryF5KindType: TStringField
+      DisplayWidth = 10
+      FieldKind = fkCalculated
+      FieldName = 'KindType'
+      Size = 10
+      Calculated = True
     end
   end
   object frxDesigner1: TfrxDesigner

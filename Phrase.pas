@@ -92,6 +92,7 @@ type
     frxDBDataset1: TfrxDBDataset;
     frxDBDatasetCompy: TfrxDBDataset;
     Action_CAF9: TAction;
+    ZReadOnlyQuery1: TZReadOnlyQuery;
     procedure RzPageControl1Change(Sender: TObject);
     procedure Action_ExitExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -125,6 +126,7 @@ type
       ABrush: TBrush);
     procedure Action_F9Execute(Sender: TObject);
     procedure Action_CAF9Execute(Sender: TObject);
+    procedure ZTableStyleBeforePost(DataSet: TDataSet);
   private
     { private declarations }
   public
@@ -218,6 +220,7 @@ end;
 procedure TPhraseForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -306,6 +309,23 @@ begin
     frxReportF9.ShowReport; //螢幕預覽
     PreviewForm.ShowModal;
     FreeAndNil(PreviewForm);
+    end;
+end;
+
+procedure TPhraseForm.ZTableStyleBeforePost(DataSet: TDataSet);
+begin
+  if (ZTableStyle.State in [dsInsert]) then
+    begin
+    ZReadOnlyQuery1.Close;
+    ZReadOnlyQuery1.SQL.Clear;
+    ZReadOnlyQuery1.SQL.Add('SELECT * FROM wastyle');
+    ZReadOnlyQuery1.SQL.Add('WHERE wastyle='''+ZTableStyle.FieldByName('wastyle').AsString+'''');
+    ZReadOnlyQuery1.Open;
+    if not ZReadOnlyQuery1.Eof then
+      begin
+      MessageDlg ('衣物名稱重複', mtError, [mbOK], 0);
+      Abort;
+      end;
     end;
 end;
 

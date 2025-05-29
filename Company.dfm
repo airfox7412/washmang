@@ -24,7 +24,7 @@ object CompanyForm: TCompanyForm
   TextHeight = 13
   object RzToolbar1: TRzToolbar
     Left = 0
-    Top = 491
+    Top = 490
     Width = 782
     Height = 29
     Align = alBottom
@@ -66,8 +66,8 @@ object CompanyForm: TCompanyForm
     Left = 0
     Top = 0
     Width = 782
-    Height = 491
-    ActivePage = TabSheet1
+    Height = 490
+    ActivePage = TabSheet2
     Align = alClient
     Color = 12845056
     UseColoredTabs = True
@@ -78,7 +78,7 @@ object CompanyForm: TCompanyForm
     Font.Style = []
     ParentColor = False
     ParentFont = False
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 1
     TextColors.Selected = clWhite
     TextColors.Unselected = clGray
@@ -91,13 +91,13 @@ object CompanyForm: TCompanyForm
         Left = 0
         Top = 0
         Width = 778
-        Height = 465
-        VertScrollBar.Position = 77
+        Height = 464
+        VertScrollBar.Position = 78
         Align = alClient
         TabOrder = 0
         object RzPanel4: TRzPanel
           Left = 0
-          Top = -77
+          Top = -78
           Width = 757
           Height = 538
           Align = alTop
@@ -360,6 +360,29 @@ object CompanyForm: TCompanyForm
             Height = 21
             Alignment = taRightJustify
             Caption = 'VIP顯示'
+            Transparent = True
+          end
+          object Label35: TLabel
+            Left = 478
+            Top = 496
+            Width = 44
+            Height = 21
+            Alignment = taRightJustify
+            Caption = '標籤'
+            Transparent = True
+          end
+          object Label36: TLabel
+            Left = 589
+            Top = 496
+            Width = 165
+            Height = 21
+            Caption = '(0.熱感 1.點陣)'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clAqua
+            Font.Height = -21
+            Font.Name = '細明體'
+            Font.Style = []
+            ParentFont = False
             Transparent = True
           end
           object wwDBEdit1: TwwDBEdit
@@ -826,6 +849,26 @@ object CompanyForm: TCompanyForm
               '否'
               '是')
           end
+          object DBComboBox10: TDBComboBox
+            Left = 526
+            Top = 492
+            Width = 50
+            Height = 29
+            Color = clWhite
+            DataField = 'hotordot'
+            DataSource = DS_Compy
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clNavy
+            Font.Height = -21
+            Font.Name = '細明體'
+            Font.Style = []
+            ItemHeight = 21
+            Items.Strings = (
+              '0'
+              '1')
+            ParentFont = False
+            TabOrder = 24
+          end
         end
       end
     end
@@ -988,7 +1031,7 @@ object CompanyForm: TCompanyForm
           object Label14: TLabel
             Left = 4
             Top = 4
-            Width = 100
+            Width = 208
             Height = 24
             Align = alTop
             Alignment = taCenter
@@ -1074,7 +1117,7 @@ object CompanyForm: TCompanyForm
           Font.Height = -16
           Font.Name = '細明體'
           Font.Style = []
-          ItemHeight = 0
+          ItemHeight = 16
           ParentFont = False
           TabOrder = 0
           OnChange = ComboBox1Change
@@ -1230,7 +1273,9 @@ object CompanyForm: TCompanyForm
     HostName = 'localhost'
     Database = 'washshop'
     User = 'root'
+    Password = 'root'
     Catalog = 'washshop'
+    Connected = True
     DesignConnection = True
     SQLHourGlass = True
     Left = 520

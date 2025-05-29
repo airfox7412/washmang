@@ -41,7 +41,9 @@ uses
   BatchSend in 'BatchSend.pas' {batchForm},
   Employee in 'Employee.pas' {EmpForm},
   CustDel in 'CustDel.pas' {CustDelForm},
-  CheckLogFile in 'CheckLogFile.pas' {CheckForm};
+  CheckLogFile in 'CheckLogFile.pas' {CheckForm},
+  PrinterLib in 'PrinterLib.pas',
+  util_utf8 in 'util_utf8.pas';
 
 {$R *.RES}
 

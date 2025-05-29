@@ -563,7 +563,6 @@ object CustRepForm: TCustRepForm
     User = 'root'
     Password = 'root'
     Catalog = 'washshop'
-    Connected = True
     DesignConnection = True
     SQLHourGlass = True
     Left = 464
@@ -2685,7 +2684,6 @@ object CustRepForm: TCustRepForm
   end
   object ZTableCompy: TZTable
     Connection = ZConnection1
-    Active = True
     TableName = 'compy'
     Left = 528
     Top = 152

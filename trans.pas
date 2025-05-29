@@ -98,6 +98,7 @@ end;
 procedure TTransForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -106,6 +107,7 @@ begin
   ZConnection1.Database:=WDM.mydbname.Value;
 
   ZConnection2.Connected:=False;
+  ZConnection2.HostName:=WDM.hostname.Value;
   ZConnection2.Protocol:=WDM.protocol.Value;
   ZConnection2.User:=WDM.myuser.Value;
   ZConnection2.Password:=WDM.mypassword.Value;

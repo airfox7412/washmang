@@ -291,7 +291,6 @@ object History1Form: THistory1Form
     User = 'root'
     Password = 'root'
     Catalog = 'washshop'
-    Connected = True
     DesignConnection = True
     SQLHourGlass = True
     Left = 621

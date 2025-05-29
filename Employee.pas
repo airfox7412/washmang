@@ -485,6 +485,7 @@ end;
 procedure TEmpForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -666,10 +667,10 @@ begin
   gname:=getgname(ZQuery_emp.FieldByName('egroup').AsInteger);
   ComboBox1.ItemIndex:=ComboBox1.Items.IndexOf(gname);
 
-  fname:=ZQuery_emp.FieldByName('eno').AsString+'.jpg';
-  if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+  fname:=WDM.WPath+'Captures\'+ZQuery_emp.FieldByName('eno').AsString+'_01.jpg';
+  if FileExists(fname) then
     begin
-    Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
+    Image1.Picture.LoadFromFile(fname);
     Image1.Visible:=True;
     end
   else
@@ -926,16 +927,16 @@ begin
   if fkey='' then
     begin
     fkey:='F11';
-    fname:=ZQuery_emp.FieldByName('eno').AsString+'.jpg';
+    fname:=ZQuery_emp.FieldByName('eno').AsString+'01.jpg';
     try
       GetCamForm := TGetCamForm.Create(Application);
       GetCamForm.Caption:=fname;
       GetCamForm.BitBtn2.Enabled:=True;
       GetCamForm.ShowModal;
       FreeAndNil(GetCamForm);
-      if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+      if FileExists(WDM.WPath+'Captures\'+fname) then
         begin
-        Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
+        Image1.Picture.LoadFromFile(WDM.WPath+'Captures\'+fname);
         Image1.Visible:=True;
         end
       else
@@ -955,8 +956,8 @@ begin
   if fkey='' then
     begin
     fkey:='CP';
-    fname:=ZQuery_emp.FieldByName('crcode').AsString+'.jpg';
-    if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
+    fname:=ZQuery_emp.FieldByName('eno').AsString;
+    if FileExists(WDM.WPath+'Captures\'+fname) then
       begin
       try
         ShowPicForm := TShowPicForm.Create(Application);

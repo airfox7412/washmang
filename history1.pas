@@ -319,22 +319,19 @@ var
 begin
   if fkey='' then
     begin
-    if ZQuery_wio.FieldByName('picture').Value<>'' then
+    picname:=WDM.WPath+'Captures\'+ZQuery_wio.FieldByName('wicode').AsString+'_'+ZQuery_wio.FieldByName('wisno').AsString+'_01.jpg';
+    if FileExists(picname) then
       begin
-      picname:=ExtractFilePath(Application.ExeName)+'Captures\'+ZQuery_wio.FieldByName('picture').Value;
-      if FileExists(picname) then
-        begin
-        Image1.Picture.LoadFromFile(picname);
-        Image1.Visible:=True;
-        wwDBGrid1.SetFocus;
-        end;
+      Image1.Picture.LoadFromFile(picname);
+      Image1.Visible:=True;
+      wwDBGrid1.SetFocus;
       end
     else
       begin
       Image1.Visible:=False;
       wwDBGrid1.SetFocus;
-      end; 
-    end;
+      end;
+  end;
 end;
 
 procedure THistory1Form.wwDBGrid1CalcCellColors(Sender: TObject;
@@ -379,6 +376,7 @@ end;
 procedure THistory1Form.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;

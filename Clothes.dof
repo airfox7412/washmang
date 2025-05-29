@@ -39,7 +39,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=D:\Project\washmang
+OutputDir=..\
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -51,13 +51,17 @@ UsePackages=0
 [Parameters]
 RunParams=0939599120
 HostApplication=
+[Language]
+ActiveLang=
+ProjectLang=$00000404
+RootDir=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=2
-MinorVer=1
-Release=1
-Build=1
+MinorVer=2
+Release=0
+Build=0
 Debug=0
 PreRelease=0
 Special=0
@@ -67,24 +71,18 @@ Locale=1028
 CodePage=950
 [Version Info Keys]
 CompanyName=冀鑫資訊有限公司
-FileDescription=增加門市資料異動紀錄
-FileVersion=2.1.1.1
+FileDescription=修正收件離開洗號重新排列
+FileVersion=2.2.0.0
 InternalName=門市洗衣店系統
 LegalCopyright=門市洗衣店系統
 LegalTrademarks=門市洗衣店系統
 OriginalFilename=門市洗衣店系統
 ProductName=門市洗衣店系統
-ProductVersion=2015.09.01
+ProductVersion=2015.09.14
 Comments=
-[Excluded Packages]
-$(DELPHI)\Bin\dclite50.bpl=Borland Integrated Translation Environment
-$(DELPHI)\Bin\dclie50.bpl=Internet Explorer Components
-$(DELPHI)\Bin\dclocx50.bpl=Borland Sample Imported ActiveX Controls
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
-Count=3
-Item0=D:\Project\washmang
-Item1=Z:\Project\washmang
-Item2=C:\project\washmang
+Count=1
+Item0=..\

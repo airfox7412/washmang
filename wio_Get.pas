@@ -8,7 +8,7 @@ uses
   ExtCtrls, Grids, DBGrids, ComCtrls, Buttons, Wwdbigrd,
   wwdbedit, ActnList, Wwdatsrc, RzButton, RzPanel, Wwdbgrid, ZDataset,
   ZAbstractRODataset, ZAbstractDataset, ZConnection, MovePanel, Menus,
-  RzBckgnd;
+  RzBckgnd, frxClass, frxDBSet;
 
 type
   TWioGetForm = class(TForm)
@@ -126,6 +126,53 @@ type
     RadioButton3: TRadioButton;
     ZReadOnlyQuery_vip: TZReadOnlyQuery;
     ActionCtrlF3: TAction;
+    DBText6: TDBText;
+    RzToolbarButtonF9: TRzToolbarButton;
+    Action_F9: TAction;
+    Panel_F9: TPanel;
+    Label18: TLabel;
+    Label22: TLabel;
+    Wicode1: TEdit;
+    Wicode2: TEdit;
+    Label16: TLabel;
+    Button_Print: TButton;
+    frxReport1: TfrxReport;
+    ZQueryF9: TZQuery;
+    StringField1: TStringField;
+    StringField2: TStringField;
+    StringField3: TStringField;
+    StringField4: TStringField;
+    FloatField1: TFloatField;
+    StringField5: TStringField;
+    StringField6: TStringField;
+    IntegerField1: TIntegerField;
+    FloatField2: TFloatField;
+    StringField7: TStringField;
+    StringField8: TStringField;
+    StringField9: TStringField;
+    FloatField3: TFloatField;
+    IntegerField2: TIntegerField;
+    StringField10: TStringField;
+    StringField11: TStringField;
+    TimeField1: TTimeField;
+    StringField12: TStringField;
+    StringField13: TStringField;
+    StringField14: TStringField;
+    StringField15: TStringField;
+    StringField16: TStringField;
+    StringField17: TStringField;
+    StringField18: TStringField;
+    StringField19: TStringField;
+    StringField20: TStringField;
+    StringField21: TStringField;
+    StringField22: TStringField;
+    ZQueryF9crmoney: TFloatField;
+    ZQueryF9crtelb: TStringField;
+    frxDBDataset1: TfrxDBDataset;
+    frxDBDataset2: TfrxDBDataset;
+    RadioButtonEpay: TRadioButton;
+    RadioButtonCash: TRadioButton;
+    RadioGroup1: TRadioGroup;
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure Action_F3Execute(Sender: TObject);
@@ -166,6 +213,14 @@ type
     procedure ActionCtrlF3Execute(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure Action_F9Execute(Sender: TObject);
+    procedure Wicode1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Wicode2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Button_PrintClick(Sender: TObject);
+    procedure RadioButtonCashClick(Sender: TObject);
+    procedure RadioButtonEpayClick(Sender: TObject);
 
   private
     { private declarations }
@@ -176,6 +231,7 @@ type
     Function InsertLog(): Boolean;
     Function CalNotGet():Boolean;
     Function New_wo(): Boolean;
+    procedure PrintF9(wicode: string);
   end;
 
 var
@@ -252,6 +308,8 @@ begin
     ZQuery_wo.FieldByName('witime').Value:=FormatDateTime('hh:mm:ss',Time);
     ZQuery_wo.FieldByName('fritem').AsString:=fritem;
     ZQuery_wo.FieldByName('sfname').AsString:=WDM.loginid;
+    if RadioButtonEpay.Checked then
+       ZQuery_wo.FieldByName('paytype').AsInteger:=RadioGroup1.ItemIndex+1;
     ZQuery_wo.Post;
   Except
     ShowMessage('WO資料庫建立錯誤！');
@@ -316,9 +374,42 @@ begin
   end;
 end;
 
+procedure TWioGetForm.PrintF9(wicode: String);
+var
+  quty, wamo: Real;
+begin
+  quty:=0;
+  wamo:=0;
+  ZQueryF9.Close;
+  ZQueryF9.SQL.Clear;
+  ZQueryF9.SQL.Add('SELECT * FROM wio');
+  ZQueryF9.SQL.Add('WHERE wicode='''+wicode+'''');
+  ZQueryF9.Open;
+  while not ZQueryF9.Eof do
+    begin
+    quty:=quty+ZQueryF9.FieldByName('wiquty').Value;
+    wamo:=wamo+ZQueryF9.FieldByName('wiwamo').Value;
+    ZQueryF9.Next;
+    end;
+  frxReport1.LoadFromFile(WDM.WPath+'Report\DetailReport.rep');
+  (frxReport1.FindObject('Memo1')as TfrxMemoView).Text:=FloatToStr(quty)+'件';
+  (frxReport1.FindObject('Memo2')as TfrxMemoView).Text:=FloatToStr(wamo);
+  (frxReport1.FindObject('Memo3')as TfrxMemoView).Text:='0';
+  (frxReport1.FindObject('Memo4')as TfrxMemoView).Text:='0';
+  lbNowMoney.Caption:=FloatToStr(ZQueryF9.FieldByName('crmoney').Value);
+  if StrToFloat(lbNowMoney.Caption)>=0 then
+    (frxReport1.FindObject('Memo5')as TfrxMemoView).Text:='0'
+  else
+    (frxReport1.FindObject('Memo5')as TfrxMemoView).Text:=lbNowMoney.Caption;
+  frxReport1.PrepareReport;
+  frxReport1.PrintOptions.ShowDialog := False; //不顯示對話框
+  frxReport1.Print; //列印
+end;
+
 procedure TWioGetForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -330,6 +421,7 @@ begin
   Panel_Hold.SendToBack;
   Panel_Discount.SendToBack;
   Panel_History.SendToBack;
+  Panel_F9.SendToBack;
   
   lbNowMoney.Caption:='0';
   lbPay.Caption:='0';
@@ -358,6 +450,8 @@ begin
   Panel_Discount.Top:=Trunc((Height-Panel_Discount.Height)/2);
   Panel_History.Left:=Trunc((Width-Panel_History.Width)/2);
   Panel_History.Top:=Trunc((Height-Panel_History.Height)/2);
+  Panel_F9.Left:=Trunc((Width-Panel_F9.Width)/2);
+  Panel_F9.Top:=Trunc((Height-Panel_F9.Height)/2);
 end;
 
 procedure TWioGetForm.Action_F3Execute(Sender: TObject);
@@ -450,6 +544,13 @@ begin
     Edit_Discnt.Text:='0';
     fkey:='';
     end
+  else if fkey='F9' then
+    begin
+    Wicode1.Text:='';
+    Wicode2.Text:='';
+    Panel_F9.SendToBack;
+    fkey:='';
+    end
   else if fkey='F10' then
     begin
     Panel_Hold.SendToBack;
@@ -494,6 +595,7 @@ begin
       else
         lbNowMoney.Font.Color:=ClRed;
       CalNotGet();
+      Caption:='收取件作業-'+WDM.ZQuery_cr.FieldByName('cradr').AsString;
     except
       on E: Exception do
         MessageDlg ('開啟錯誤: '+E.Message, mtError, [mbOK], 0);
@@ -571,17 +673,19 @@ begin
     begin
     fkey:='F12';
     Label3.Caption:='預收款';
-    //lack:=StrToFloat(lbNowMoney.Caption);
     lack:=WDM.ZQuery_cr.FieldByName('crmoney').AsFloat;
     if lack>=0 then
       LabelP1.Font.Color:=ClWhite
     else
       LabelP1.Font.Color:=ClRed;
+    lbNowMoney.Caption:=FloatToStr(lack);
     LabelP1.Caption:=FloatToStr(lack);
     Edit_Pay.Text:='0';
     Edit_Discount.Text:='0';
     Edit_Pay.SetFocus;
     Panel_Pay.BringToFront;
+    RadioButtonCash.Checked:=true;
+    Panel_Pay.width:=340;
     MoneyBox(WDM.COMUSE.Value); //錢櫃
     end
   else
@@ -629,7 +733,6 @@ begin
     Perform(WM_NextDlgCtl, 0, 0);
     Edit_Discount.SelectAll;
     end;
-
 end;
 
 procedure TWioGetForm.wwDBGrid_HoldDblClick(Sender: TObject);
@@ -650,7 +753,7 @@ begin
       WioAddForm := TWioAddForm.Create(Application);
       WioAddForm.HoldFlag:=True;
       WioAddForm.ShowModal;
-      FreeAndNil(WioAddForm);      
+      FreeAndNil(WioAddForm);
       LabelWicode.Caption:=strZero(WDM.ZTableCompy.FieldByName('cpwino').AsInteger,6);
       LabelWisno.Caption:=strZero(WDM.ZTableCompy.FieldByName('cpwisno').AsInteger,wisnod);
       CalNotGet();
@@ -661,6 +764,7 @@ begin
       else
         lbNowMoney.Font.Color:=ClYellow;
       fkey:='';
+      GetCust();
       //lb_wicode.Caption:='';
       //lb_widate.Caption:='';
     except
@@ -887,6 +991,65 @@ begin
     FBCode:=''
   else
     FBCode:=UpperCase(FBCode+Char(Key));
+end;
+
+procedure TWioGetForm.Action_F9Execute(Sender: TObject);
+begin
+  if fkey='' then
+    begin
+    fkey:='F9';
+    Wicode1.SetFocus;
+    Panel_F9.BringToFront;
+    end;
+end;
+
+procedure TWioGetForm.Wicode1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin 
+  if (Key=VK_Return)or(Key=VK_Down)or(Key=VK_Right) then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    Wicode2.SelectAll;
+    end;
+end;
+
+procedure TWioGetForm.Wicode2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key=VK_Return)or(Key=VK_Down)or(Key=VK_Right) then
+    begin
+    Key:=0;
+    Perform(WM_NextDlgCtl, 0, 0);
+    Button_Print.SetFocus;
+    end;
+end;
+
+procedure TWioGetForm.Button_PrintClick(Sender: TObject);
+var
+  sint, eint: Integer;
+  wicode: String;
+begin
+  sint:=StrToInt(Wicode1.Text);
+  eint:=StrToInt(Wicode2.Text);
+  while eint>=sint do
+    begin
+    wicode:=StrZero(sint,6);
+    PrintF9(wicode);
+    sint:=sint+1;
+    end;
+  fkey:='';
+  Panel_F9.SendToBack;
+end;
+
+procedure TWioGetForm.RadioButtonCashClick(Sender: TObject);
+begin
+  Panel_Pay.Width:=340;
+end;
+
+procedure TWioGetForm.RadioButtonEpayClick(Sender: TObject);
+begin
+  Panel_Pay.Width:=500;
 end;
 
 end.

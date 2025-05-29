@@ -369,7 +369,7 @@ var
 
   OldEditStr: String;
   oldvalue, q_crcode: String;
-  HintTop, pcnt, wisnod: Integer;
+  HintTop, pcnt, wisnod, picno: Integer;
   fkey, pname: String;
   PayVal, DiscountVal, TotalVal, crmoneyVal: Real;
   ppaa, menuflag, gflag: Boolean;
@@ -385,8 +385,6 @@ Function Rounda(Value: Extended; Len: Integer): Extended;
 begin
   Result:= StrToFloat(Format('%1.'+IntToStr(Len)+'f',[Value]));
 end;
-
-
 
 procedure TWioDetailForm.AddDel_wio();
 begin
@@ -667,8 +665,6 @@ begin
   ZQuery_wio.FieldByName('wiquty').Value:=quty;
   ZQuery_wio.FieldByName('wisum').Value:=price;
   ZQuery_wio.FieldByName('pps').Value:=pps;
-  if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
-    ZQuery_wio.FieldByName('picture').AsString:=fname;
   ZQuery_wio.Post;  //寫入資料庫
 
   datestr:=ChinaDate1(Date);
@@ -875,31 +871,33 @@ end;
 
 procedure TWioDetailForm.Action_F11Execute(Sender: TObject);
 var
-  fname,code,sno: String;
+  picPath, prename,code,sno: String;
 begin
   if (fkey='') then
     begin
+    picPath:=WDM.WPath+'Captures\';
     code:=ZQuery_wio.FieldByName('wicode').Value;
     sno:=ZQuery_wio.FieldByName('wisno').Value;
-    fname:=code+'_'+sno+'.jpg';
+    prename:=code+'_'+sno+'_';
     try
+      pname:=prename+StrZero(picno,2)+'.jpg';
       GetCamForm := TGetCamForm.Create(Application);
-      GetCamForm.Caption:=fname;
+      GetCamForm.Caption:=pname;
       GetCamForm.BitBtn2.Enabled:=True;
       GetCamForm.ShowModal;
       FreeAndNil(GetCamForm);
-      if FileExists(ExtractFilePath(Application.ExeName)+'Captures\'+fname) then
-        begin
-        ZQuery_wio.Edit;
-        ZQuery_wio.FieldByName('picture').AsString:=fname;
-        ZQuery_wio.Post;
-        Image1.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'Captures\'+fname);
-        Image1.Visible:=True;
-        end;
     except
       on E: Exception do
         MessageDlg ('錯誤: '+E.Message, mtError, [mbOK], 0);
     end;
+  if FileExists(picPath+pname) then
+    begin
+    Image1.Picture.LoadFromFile(picPath+pname);
+    Image1.Visible:=True;
+    picno:=picno+1;
+    end
+  else
+    Image1.Visible:=False;
     end;
 end;
 
@@ -1045,7 +1043,7 @@ procedure TWioDetailForm.Image1Click(Sender: TObject);
 begin
   try
     ShowPicForm := TShowPicForm.Create(Application);
-    ShowPicForm.PicName:=ZQuery_wio.FieldByName('picture').AsString;
+    ShowPicForm.PicName:=ZQuery_wio.FieldByName('wicode').AsString+'_'+ZQuery_wio.FieldByName('wisno').AsString+'_';
     ShowPicForm.ShowModal;
     FreeAndNil(ShowPicForm);
     wwDBGrid1.SetFocus;
@@ -1058,6 +1056,7 @@ end;
 procedure TWioDetailForm.FormCreate(Sender: TObject);
 begin
   ZConnection1.Connected:=False;
+  ZConnection1.HostName:=WDM.hostname.Value;
   ZConnection1.Protocol:=WDM.protocol.Value;
   ZConnection1.User:=WDM.myuser.Value;
   ZConnection1.Password:=WDM.mypassword.Value;
@@ -1124,7 +1123,7 @@ end;
 
 procedure TWioDetailForm.wwDBGrid1RowChanged(Sender: TObject);
 var
-  picname: String;
+  crcode, code, sno, picname, picpath: String;
 begin
   Calwio(); //計算洗單金額
   WDM.crcode:=ZQuery_wio.FieldByName('crcode').AsString;
@@ -1153,25 +1152,21 @@ begin
   else
     DBText4.Font.Color:=ClYellow;
 
+  crcode:=ZQuery_wio.FieldByName('crcode').AsString;
+  code:=ZQuery_wio.FieldByName('wicode').AsString;
+  sno:=ZQuery_wio.FieldByName('wisno').AsString;
+  picpath:=WDM.WPath+'Captures\';
+  picname:=picpath+code+'_'+sno+'_01.jpg';
+  picno:=1;
   if fkey='' then
     begin
-    if ZQuery_wio.FieldByName('picture').AsString<>'' then
+    if FileExists(picname) then
       begin
-      picname:=ExtractFilePath(Application.ExeName)+'Captures\'+ZQuery_wio.FieldByName('picture').AsString;
-      if FileExists(picname) then
-        begin
-        Image1.Picture.LoadFromFile(picname);
-        Image1.Visible:=True;
-        //wwDBGrid1.SetFocus;
-        end
-      else
-        Image1.Visible:=False;
+      Image1.Picture.LoadFromFile(picname);
+      Image1.Visible:=True;
       end
     else
-      begin
       Image1.Visible:=False;
-      end;
-    //wwDBGrid1.SetFocus;
     end;
 end;
 
@@ -1765,7 +1760,7 @@ begin
       ZQuery_cr.Edit;
       ZQuery_cr.FieldByName('crmoney').AsFloat:=ZQuery_cr.FieldByName('crmoney').AsFloat+oldprice;
       ZQuery_cr.Post;
-      DeleteFile(PChar(WDM.WPath+'Captures\'+ZQuery_wio.FieldByName('picture').AsString));
+      DeleteFile(PChar(WDM.WPath+'Captures\'+ZQuery_wio.FieldByName('wicode').AsString+'_'+ZQuery_wio.FieldByName('wisno').AsString+'*.jpg'));
       ZQuery_wio.Delete;
       end;
     end

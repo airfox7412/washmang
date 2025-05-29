@@ -11,10 +11,10 @@ unit LCUtils;
 interface
 
 uses
-  DBITypes, DBIProcs,
-  SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
-  Forms, Dialogs, DBTables, DB, StdCtrls, ExtCtrls, Grids, DBGrids, Buttons,
-  DBCtrls, Mask, LZExpand, Printers, wwdbedit, Wwdotdot, Wwdbcomb, Wwkeycb;
+  DBITypes, DBIProcs, SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics,
+  Controls, Forms, Dialogs, DBTables, DB, StdCtrls, ExtCtrls, Grids, DBGrids,
+  Buttons, DBCtrls, Mask, LZExpand, Printers, Tlhelp32,
+  Wwkeycb, wwdbedit, Wwdotdot, Wwdbcomb;//, LbCipher, LbClass;
 
 type
   TPickDlg = class(TForm)
@@ -23,6 +23,8 @@ type
     CancelBtn: TButton;
     Label1: TLabel;
     Label2: TLabel;
+    wwIncrementalSearch1: TwwIncrementalSearch;
+    wwKeyCombo1: TwwKeyCombo;
   private
      oTable : TTABLE;
      ackeyField : TStringList;
@@ -32,15 +34,18 @@ type
 
   end;
 
+function SimKB(FBCode:String):Boolean;
+
+function IsLeadByteTw(c:Char):Boolean;  
 { ¦r¦ê¨ç¼Æ }
-function PadL( cStr:string; nLen:Word; cPad:Char ):string; //¥ªÃä¸É¦r¤¸
-function PadC( cStr:string; nLen:Word; cPad:Char ):string; //¥ª¥kÃä¸É¦r¤¸
-function PadR( cStr:string; nLen:Word; cPad:Char ):string; //¥ªÃä¸É¦r¤¸
+function PadL( cStr:string; nLen:Word; cPad:Char ):string;
+function PadC( cStr:string; nLen:Word; cPad:Char ):string;
+function PadR( cStr:string; nLen:Word; cPad:Char ):string;
 function RTrim( cStr:string ):string;
 function LTrim( cStr:string ):string;
 function StrZero( nVal, nLen: LongInt ):string;
-function LeftStr( cStr: string; nLen: LongInt ):string;
-function RightStr( cStr: string; nLen: LongInt ):string;
+function Left( cStr: string; nLen: LongInt ):string;
+function Right( cStr: string; nLen: LongInt ):string;
 function SubStr( cStr: string; nStart, nLen: LongInt ):string;
 function TDMY( cStr: string ):TDateTime;
 function AllTrim(cStr:string) :string;
@@ -52,10 +57,13 @@ function MixStrings( oStrs:TStrings; cSepCh:string ):string;
 FUNCTION SayCase( cValue:string; aValue, aShowTxt: array of string ):string;
 { ´ú¸Õ¦r¦ê¬O§_¬°­^¤å¦r¦ê }
 FUNCTION StrIsAlpha( cTestStr : STRING ) : Boolean;
+{ ´ú¸Õ¦r¦ê¬O§_¬°¼Æ¦r¦r¦ê }
+FUNCTION StrIsNumber( cTestStr : STRING ) : Boolean;
 
 { ¤é´Á¨ç¼Æ }
 Procedure SetDateLen( nLength : Integer );
 function DateNum(cDate:String) : TDateTime;   { ±N¤¤¦¡¤é´Á¦r¦êÂà´«¬° TDateTime }
+function DateNum1(cDate:String) : TDateTime;   { ±N¤¤¦¡¤é´Á¦r¦êÂà´«¬° TDateTime }
 function ChinaDate( dDateTime:TDateTime ):String;   { Âà´« DateTime ¬°¤¤¦¡¤é´Á¦r¦ê-YYYMMDD }
 function ChinaDate1( dDateTime:TDateTime ):String;   { Âà´« DateTime ¬°¤¤¦¡¤é´Á¦r¦ê-YYY/MM/DD }
 function DateStr:String;                    { ¨ú±o¤¤¦¡¨t²Î¤é´Á¦r¦ê-YYMMDD }
@@ -81,9 +89,9 @@ procedure CalcPassDays( cStDt, cEndDt:string; var nMons, nDays:Word ); { ­pºâ¾ã¤
 { ±N¼Æ¦rÂà¦¨°ê¦r¼Æ¦r¦r¦ê }
 function CNum( nNum : Extended; nType:integer ):string;
 { ±N¼Æ¦r¦r¦êÂà¦¨°ê¦r¼Æ¦r¦r¦ê, ¦³¤GºØ®æ¦¡ }
-function NumToChinaNum( cNum:String; nType:Integer ):string;
-{ ±N¼Æ¦rÂà¦¨¬P´Á }
-function NumToChinaWeek( cNum:String ):string;
+function NumToChinaNum( cNum:string; nType:integer ):string;
+function NumToChinaWeek( cNum:Integer ):string;
+
 { ¥i±N«ü©w¦ì¼Æ¤§¯BÂI¼Æ°µ¥|±Ë¤­¤J¤§°Ê§@ }
 function lcRound( nFloat:Extended; nPos:Integer ):Extended;
 
@@ -103,32 +111,225 @@ FUNCTION ShowMsg(cMsg:string) : integer;
 FUNCTION CalcStdWeight( lSex:Boolean; nHeight, nWeight:Word ):Boolean;
 { ¶Ç¦^¼Ð·ÇÅé­«¤§¦r¦ê }
 FUNCTION GetStdWeight( lSex:Boolean; nHeight, nWeight:Word ):string;
+{procedure CopyFile(Source, Dest: String);}
+function CreateMsgForm:TForm;
+procedure UpdateMsg( aForm:TForm; cMsg:string );
 function ExtractFileNameNoExt(cFile : String):string;
 function AddSlashToPath( cPath:string ):string;
 procedure PrintTextFile( cFile:string ); { ±N¤@¤å¦rÀÉ°e¦Ü¦Lªí¾÷ }
 function GetAutoNo(p1:string; p2:integer):string;
+function Utf8ToAnsi(x: string): ansistring;
+function AnsiToUtf8(x: ansistring): string;
+procedure MoneyBox(aflag:Integer); //¿úÂd¶}±Ò
+Function KillTask(ExeFileName: string): integer;
+Function EncodeString(x: string): string;
+Function DecodeString(x: string): string;
+Function GetMonthDay(const ADate: TDateTime): Word;
 
 VAR
-   PickDlg : TPickDlg;
+  PickDlg : TPickDlg;
 
 implementation
 
 {$R *.DFM}
 
-uses SHELLAPI;
+uses SHELLAPI, WDModule;
 
 const
   ChinaNumMap1 : array[ '0'..'9' ] of string =
                     ( '¢¯', '¤@', '¤G', '¤T', '¥|', '¤­', '¤»', '¤C', '¤K', '¤E' );
   ChinaNumMap2 : array[ '0'..'9' ] of string =
                     ( '¹s', '³ü', '¶L', '°Ñ', '¸v', '¥î', '³°', '¬m', '®Ã', '¨h' );
-  ChinaWeek : array['0'..'7'] of string =
-                    ( '','¤@', '¤G', '¤T', '¥|', '¤­', '¤»', '¤é' );
+  ChinaWeek : array[ 0..6 ] of string =
+                    ( '¤é', '¤@', '¤G', '¤T', '¥|', '¤­', '¤»' );
+
 var
    cDBName:string;
    nYearLen : Integer;
    lQry, Selrec : Boolean;
    BM : TBookmarkStr;
+
+function SimKB(FBCode:String):Boolean;
+var
+  bcint: integer;
+begin
+  bcint:=Length(FBCode)-2;
+  FBCode:=copy(FBCode,bcint,3);
+  if FBCode='F01' then
+    keybd_event(VK_F1,0,0,0)
+  else if FBCode='F02' then
+    keybd_event(VK_F2,0,0,0)
+  else if FBCode='F03' then
+    keybd_event(VK_F3,0,0,0)
+  else if FBCode='F04' then
+    keybd_event(VK_F4,0,0,0)
+  else if FBCode='F05' then
+    keybd_event(VK_F5,0,0,0)
+  else if FBCode='F06' then
+    keybd_event(VK_F6,0,0,0)
+  else if FBCode='F07' then
+    keybd_event(VK_F7,0,0,0)
+  else if FBCode='F08' then
+    keybd_event(VK_F8,0,0,0)
+  else if FBCode='F09' then
+    keybd_event(VK_F9,0,0,0)
+  else if FBCode='F10' then
+    keybd_event(VK_F10,0,0,0)
+  else if FBCode='F11' then
+    keybd_event(VK_F11,0,0,0)
+  else if FBCode='F12' then
+    keybd_event(VK_F12,0,0,0)
+  else if FBCode='ESC' then
+    keybd_event(VK_ESCAPE,0,0,0)
+  else
+    begin
+    if Length(FBCode)>1 then
+      Result:=True
+    else
+      Result:=False;
+    end;
+end;
+
+Function GetMonthDay(const ADate: TDateTime): Word;
+var
+  Year, Month, Day: Word;
+  lastday: TDateTime;
+  yflag: Boolean;
+begin
+  DecodeDate(ADate, Year, Month, Day);
+  Month:=Month+1;
+  if Month=13 then Month:=1;
+  lastday:=EncodeDate(Year, Month,1)-1;
+  //yflag:=IsLeapYear(Yearof(lastday));
+  DecodeDate(lastday, Year, Month, Day);
+  year:=year+1911;
+  if IsLeapYear(year)and(month=2) then
+    Result:=Day+1
+  else
+    Result:=Day;
+end;
+
+Function EncodeString(x: string): string;
+var
+  i: integer;
+  b1, b2: byte;
+begin
+  Result := x;
+  for i := Length(Result) downto 1 do
+    begin
+    b1 := $C0 or (ord(Result[i]) shr 6);
+    b2 := $80 or (ord(Result[i]) and $3F);
+    Result[i] := chr(b1);
+    Insert(chr(b2), Result, i + 1);
+    end;
+end;
+
+Function DecodeString(x: string): string;
+var 
+  i: integer; 
+  b1, b2: byte; 
+begin 
+  Result := x; 
+  i := 1; 
+  while i <= Length(Result) do begin 
+    if (ord(Result[i]) and $80) <> 0 then
+      begin
+      b1 := ord(Result[i]); 
+      b2 := ord(Result[i + 1]); 
+      if (b1 and $F0) <> $C0 then 
+        Result[i] := #128 
+      else
+        begin
+        Result[i] := Chr((b1 shl 6) or (b2 and $3F));
+        Delete(Result, i + 1, 1);
+        end;
+      end;
+    inc(i);
+  end; 
+end;
+
+Function KillTask(ExeFileName: string): integer;
+const
+  PROCESS_TERMINATE=$0001;
+var
+  ContinueLoop: BOOL;
+  FSnapshotHandle: THandle;
+  FProcessEntry32: TProcessEntry32; //Tlhelp32
+begin
+  result := 0;
+  FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  FProcessEntry32.dwSize := Sizeof(FProcessEntry32);
+  ContinueLoop := Process32First(FSnapshotHandle,
+  FProcessEntry32);
+  while integer(ContinueLoop) <> 0 do
+    begin
+    if ((UpperCase(ExtractFileName(FProcessEntry32.szExeFile)) =UpperCase(ExeFileName))
+      or (UpperCase(FProcessEntry32.szExeFile) =UpperCase(ExeFileName))) then
+    Result := Integer(TerminateProcess(OpenProcess(PROCESS_TERMINATE, BOOL(0),FProcessEntry32.th32ProcessID), 0));
+    ContinueLoop := Process32Next(FSnapshotHandle,FProcessEntry32);
+    end;
+  CloseHandle(FSnapshotHandle);
+end;
+
+function Utf8ToAnsi(x: string): ansistring;
+  { Function that recieves UTF8 string and converts 
+    to ansi string } 
+var 
+  i: integer; 
+  b1, b2: byte; 
+begin 
+  Result := x; 
+  i := 1; 
+  while i <= Length(Result) do begin 
+    if (ord(Result[i]) and $80) <> 0 then begin 
+      b1 := ord(Result[i]); 
+      b2 := ord(Result[i + 1]); 
+      if (b1 and $F0) <> $C0 then 
+        Result[i] := #128 
+      else begin 
+        Result[i] := Chr((b1 shl 6) or (b2 and $3F)); 
+        Delete(Result, i + 1, 1); 
+      end; 
+    end; 
+    inc(i); 
+  end; 
+end;
+
+function AnsiToUtf8(x: ansistring): string;
+  { Function that recieves ansi string and converts
+    to UTF8 string }
+var
+  i: integer;
+  b1, b2: byte;
+begin
+  Result := x;
+  for i := Length(Result) downto 1 do
+    if Result[i] >= #127 then begin
+      b1 := $C0 or (ord(Result[i]) shr 6);
+      b2 := $80 or (ord(Result[i]) and $3F);
+      Result[i] := chr(b1);
+      Insert(chr(b2), Result, i + 1);
+    end;
+end;
+
+procedure MoneyBox(aflag:Integer);
+var
+  F: TextFile;
+begin
+  if aflag=1 then
+    begin
+    AssignFile(F, 'COM1');// LPT2,COM1,COM2...
+    Rewrite(F);
+    Write(F, '1');
+    CloseFile(F);
+    end;
+end;
+
+function IsLeadByteTw(c:Char):Boolean;
+begin
+  //®Ú¾ÚªþÄÝÀ³¥Îµ{¦¡¤¤ªº"¦r¤¸¹ïÀ³ªí"­pºâ¦Ó±o ($81 .. $FE)
+  Result:=(c in [Char($81)..Char($FE)]);
+end;
 
 function IsParadoxDB( oTbl:TTable ):Boolean;
 var
@@ -191,8 +392,7 @@ begin
    end;
 end;
 
-FUNCTION VaMExist(const aKeyValue : Array of const; tbl : TTable; cIndexName : STRING )
-                :Boolean;
+FUNCTION VaMExist(const aKeyValue : Array of const; tbl : TTable; cIndexName : STRING ):Boolean;
 VAR
    lParadox:Boolean;
    cOldIndexName : STRING;
@@ -250,6 +450,21 @@ begin
        end;
 end;
 
+FUNCTION StrIsNumber( cTestStr : STRING ) : Boolean;
+VAR
+   n, nLen : Integer;
+   lNotNumber : Boolean;
+BEGIN
+   lNotNumber := False;
+   nLen := Length( cTestStr );
+   n := 0;
+   REPEAT
+      lNotNumber := NOT ( cTestStr[n] IN [ '0'..'9'] );
+      INC( n );
+   UNTIL ( (lNotNumber) OR (n = nLen) );
+   StrIsNumber := NOT lNotNumber;
+END;
+
 FUNCTION StrIsAlpha( cTestStr : STRING ) : Boolean;
 VAR
    n, nLen : Integer;
@@ -265,6 +480,52 @@ BEGIN
    StrIsAlpha := NOT lNotAlpha;
 END;
 
+FUNCTION VaSayRela( cKeyValue : String; tbl : TTable; cIndexName : STRING;
+                oEdit:TDBEDIT; cRetField:STRING ):Boolean;
+VAR
+   lParadox:Boolean;
+   cOldIndexName : STRING;
+   aIndexList : TStringList;
+   tbm : TBookMark;
+   lFound : Boolean;
+BEGIN
+   lParadox := IsParadoxDB( tbl );
+   WITH tbl DO
+   BEGIN
+      aIndexList := TStringList.Create;
+      if ( lParadox ) then
+         GetFieldNames( aIndexList )
+      else
+         GetIndexNames( aIndexList );
+      IF ( aIndexList.IndexOf( cIndexName ) > -1 ) THEN
+      BEGIN
+         if ( lParadox ) then
+            cOldIndexName := IndexFieldNames
+         else
+            cOldIndexName := IndexName;
+         DisableControls;
+         tbm := GetBookMark;
+         if ( lParadox ) then
+            IndexFieldNames := cIndexName
+         else
+            IndexName := cIndexName;
+         lFound := FindKey( [cKeyValue] );
+         IF ( lFound ) THEN
+            oEdit.Text := FieldByName( cRetField ).AsString;
+         GotoBookMark( tbm );
+         freeBookMark( tbm );
+         if ( lParadox ) then
+            IndexFieldNames := cOldIndexName
+         else
+            IndexName := cOldIndexName;
+         EnableControls;
+      END
+      ELSE
+         RAISE Exception.Create( '¯Á¤Þ:'+cIndexName+'¤£¦s¦b' );
+      aIndexList.free;
+      VaSayRela:= lFound;
+   END;
+END;
 
 FUNCTION ShowMsg(cMsg:string) : integer;
 var
@@ -400,7 +661,7 @@ begin
    nYearLen := nLength;
 end;
 
-FUNCTION DateNum(cDate:String):TDateTime; { ¨ú±o¤é´Á¼Æ¦r : TDateTime }
+FUNCTION DateNum(cDate:String):TDateTime; { ¨ú±o¤é´Á¼Æ¦r : TDateTime      }
 var
    nYear, nMonth, nDate : word;
 begin
@@ -410,13 +671,23 @@ begin
    Result := EncodeDate(nYear, nMonth, nDate);
 end;
 
-FUNCTION ChinaDate( dDateTime:TDateTime ):String; { Âà´« DateTime ¬°¤¤¦¡¤é´Á¦r¦ê-YYMMDD   }
+FUNCTION DateNum1(cDate:String):TDateTime; { ¨ú±o¤é´Á¼Æ¦r : TDateTime      }
 var
    nYear, nMonth, nDate : word;
 begin
+   nYear := StrToInt(copy(cDate,1,nYearLen))+1911;
+   nMonth := StrToInt(copy(cDate,nYearLen+2,2));
+   nDate := StrToInt(copy(cDate,nYearLen+5,2));
+   Result := EncodeDate(nYear, nMonth, nDate);
+end;
+
+FUNCTION ChinaDate( dDateTime:TDateTime ):String; { Âà´« DateTime ¬°¤¤¦¡¤é´Á¦r¦ê-YYMMDD   }
+var
+   nYear, nMonth, nDate : word;
+   ymdStr: String;
+begin
    DecodeDate(dDateTime, nYear, nMonth, nDate);
-   Result := Copy( FormatDateTime('yyyymmdd',
-      EncodeDate(nYear-1911, nMonth, nDate)), 5-nYearLen, 8);
+   Result:=StrZero(nYear-1911,3)+StrZero(nMonth,2)+StrZero(nDate,2);
 end;
 
 FUNCTION DateStr:String;   { ¨ú±o¤¤¦¡¨t²Î¤é´Á¦r¦ê-YYMMDD }
@@ -433,8 +704,7 @@ var
    nHour, nMin, nSec, nMSec : word;
 begin
    DecodeTime(Time, nHour, nMin, nSec, nMSec);
-   TimeStr := FormatDateTime('hhnn',
-       EncodeTime(nHour, nMin, nSec, nMSec));
+   TimeStr := FormatDateTime('hhnn',EncodeTime(nHour, nMin, nSec, nMSec));
 end;
 
 FUNCTION VaDate(cDateStr:String):Boolean;   {  ÀË¬d¤¤¦¡¤é´Á¦r¦ê¬O§_¦Xªk }
@@ -484,8 +754,8 @@ var
    nYear, nMonth, nDate : word;
 begin
    DecodeDate(dDateTime, nYear, nMonth, nDate);
-   Result := Copy( FormatDateTime('yyyy/mm/dd',
-      EncodeDate(nYear-1911, nMonth, nDate)), 5-nYearLen, 9);
+   Result:=StrZero(nYear-1911,3)+'/'+StrZero(nMonth,2)+'/'+StrZero(nDate,2);
+   //Result := Copy( FormatDateTime('yyyy/mm/dd',EncodeDate(nYear-1911, nMonth, nDate)), 5-nYearLen, 9);
 end;
 
 { ¨ú±on¤ë¥÷«á¤§¤é´Á¦r¦ê }
@@ -759,7 +1029,8 @@ begin
    Result := WinExec( pStr, nShowType );
 end;
 
-function ExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
+function ExecuteFile(const FileName, Params, DefaultDir: string;
+  ShowCmd: Integer): THandle;
 var
    zFileName, zParams, zDir: array[0..79] of Char;
 begin
@@ -859,7 +1130,7 @@ begin
       RESULT := '­t'+RESULT;
 end;
 
-function NumToChinaNum( cNum:String; nType:Integer ):string;
+function NumToChinaNum( cNum:string; nType:integer ):string;
 var
    n, nLen:LongInt;
 begin
@@ -875,11 +1146,11 @@ begin
    except
       Result := '';
    end;
-end;
+end; 
 
-function NumToChinaWeek( cNum:String ):string;
+function NumToChinaWeek( cNum:Integer ):string;
 begin
-  Result := ChinaWeek[cNum[1]];
+  Result := ChinaWeek[cNum];
 end;
 
 function lcRound( nFloat:Extended; nPos:Integer ):Extended;
@@ -1066,6 +1337,35 @@ begin
    end;
 end;
 
+function CreateMsgForm:TForm;
+var
+   lblMsg:TLabel;
+begin
+   try
+      Result := TForm.Create( Application );
+      with Result do
+      begin
+         Color := clWhite;
+         FormStyle := fsStayOnTop;
+         Caption := 'ª¬ºAÅV¥Üµøµ¡';
+      end;
+      lblMsg := TLabel.Create( Result );
+      with lblMsg do
+      begin
+         Name := 'lblMsg';
+         Color := clBtnHighlight;
+      end;
+   except
+     ShowMessage('ª¬ºAÅV¥Üµøµ¡¶}±Ò¿ù»~¡I');
+   end;
+end;
+
+procedure UpdateMsg( aForm:TForm; cMsg:string );
+begin
+{   aForm.lblMsg.Caption := cMsg;
+   aForm.lblMsg.Update;  }
+end;
+
 Function ExtractFileNameNoExt(cFile : String):string;
 var
    nPos : integer;
@@ -1121,7 +1421,7 @@ begin
    Result := PadL( IntToStr(nVal), nLen, '0' );
 end;
 
-function LeftStr( cStr: string; nLen: LongInt ):string;
+function Left( cStr: string; nLen: LongInt ):string;
 var
    nLength: LongInt;
 begin
@@ -1136,7 +1436,7 @@ begin
    else  Result := '';
 end;
 
-function RightStr( cStr: string; nLen: LongInt ):string;
+function Right( cStr: string; nLen: LongInt ):string;
 var
    nLength: LongInt;
 begin

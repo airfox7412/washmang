@@ -58,7 +58,7 @@ object QueryCustForm: TQueryCustForm
     TitleButtons = False
     OnCalcCellColors = wwDBGrid1CalcCellColors
     OnDblClick = wwDBGrid1DblClick
-    OnKeyUp = wwDBGrid1KeyUp
+    OnKeyDown = wwDBGrid1KeyDown
     IndicatorIconColor = clYellow
     PaintOptions.ActiveRecordColor = clHighlight
   end
@@ -198,7 +198,7 @@ object QueryCustForm: TQueryCustForm
       ParentFont = False
       TabOrder = 0
       OnChange = SearchEditChange
-      OnKeyUp = SearchEditKeyUp
+      OnKeyDown = SearchEditKeyDown
     end
     object Button1: TButton
       Left = 196
